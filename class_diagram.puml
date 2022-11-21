@@ -1,0 +1,72 @@
+    @startuml
+
+    skinparam style strictuml
+    skinparam classAttributeIconSize 0
+    skinparam classFontStyle Bold
+    hide enum methods
+
+    class Main{
+        + main() : int
+    }
+
+    package Controller{
+        class Game{
+            - game : pieces[]
+            - nextToPlay : Boolean
+        }
+    }
+
+    package View{
+
+    }
+
+
+
+    package Model{
+
+        interface Piece{
+            - posX : Integer
+            - posY : Integer
+            - chessName : String
+            - value : Integer
+            - team : Boolean
+
+            - movementBase(piece[]) : List<List<Boolean>>
+            - attackMovement(piece[]) : List<List<Boolean>>
+            - goTo(destX : Integer, destY : Integer)
+            - getTeam() : Boolean
+            - getValue : Integer
+            - getChessName : String
+        }
+
+        class Pawn implements Piece{
+
+        }
+
+        class King implements Piece{
+
+        }
+
+        class Queen implements Piece{
+
+        }
+
+        class Bishop implements Piece{
+
+        }
+
+        class Rook implements Piece{
+
+        }
+
+        class Knight implements Piece{
+
+        }
+
+    }
+
+    main -> Game : "instantiate"
+
+
+
+    @enduml
