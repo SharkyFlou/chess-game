@@ -16,6 +16,7 @@
             
             + clickedOnSomeCase(int posX, int posY)
             + play()
+            + tare()
             + win()
         }
 
@@ -46,16 +47,22 @@
             - previewCasesAtk : Boolean[] 
 
             + Board() : Board
-            + clickedOnSomeCase(int posX, int posY)
-            - isCasePreviewMvmt(int posX, int posY) : Boolean
-            - isCasePreviewAtk(int posX, posY) : Boolean
-            - isCaseContainPlayerPiece(int posX, posY) : Boolean
+            + clickedOnSomeCase(int posX, int posY, team Boolean) : Result
+            - isCasePreviewMvmt(posX : Integer, posY : Integer) : Boolean
+            - isCasePreviewAtk(posX : Integer, posY : Integer) : Boolean
+            - isCaseContainPlayerPiece(posX : Integer, posY : Integer, team Boolean) : Boolean
             - movePiece(int oldPosX, int oldPosY, int newPosX, int newPosY)
             - destroyPiece(int posX, int posY)
             - getPiece(int posX, posY)
             - notifyObsPrev()
             - notifyObsEndPrev()
             - notifyObsMov()
+            + addObs(obs BoardObserver)
+            + initBoard()
+            + win(team : Boolean)
+            - notifyObsWin(team : Boolean)
+            + tare()
+            - notifyObsTare()
         }
 
         
@@ -101,7 +108,17 @@
         interface BoardObservers{
             + displayBoard(piece[] pieces) {abstract}
             + displayPreview(Boolean[] previews, Boolean typeMvmt) {abstract}
-            + hideDisplay() {abstract}
+            + hidePreview() {abstract}
+            + displayWin(team: Boolean)
+            + displayTare()
+            
+        }
+
+        Enum Result{
+            WIN
+            NEXT
+            TARE
+            NOTHING
         }
     }
 
@@ -112,13 +129,17 @@
          class DisplayBoard implements BoardObservers{
             + displayBoard(piece[] pieces)
             + displayPreview(Boolean[] previews, Boolean typeMvmt)
-            + hideDisplay()
+            + hidePreview()
+            + displayWin(team: Boolean)
+            + displayTare()
         }
 
         class Terminal implements BoardObservers{
             + displayBoard(piece[] pieces)
             + displayPreview(Boolean[] previews, Boolean typeMvmt)
-            + hideDisplay()
+            + hidePreview()
+            + displayWin(team: Boolean)
+            + displayTare()
         }
     }
 
@@ -129,12 +150,15 @@
    
 
     GameFacade "1\n board" o-> Board : "own >"
+    GameFacade ..> Result : "use >"
     
 
 
     Board "pieces\n*" -> Piece : "contains >"
 
     Board ..> PieceFactory : "uses >"
+    Board "*\n observers" o-> BoardObservers : "is observed by"
+    Board ..> Result : "use >"
     
     PieceFactory .u.> Pawn : "instantiate >" 
     PieceFactory .u.> King : "instantiate >" 
