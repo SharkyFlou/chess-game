@@ -10,35 +10,68 @@
     }
 
     package Controller{
-        class Game{
-            - game : pieces[]
+        class GameFacade{
             - nextToPlay : Boolean
-
+            
+            
+            + clickedOnSomeCase(int posX, int posY)
             + play()
+            + win()
         }
+
+        
     }
 
-    package View{
-
-    }
-
+    
 
 
     package Model{
 
-        interface Piece{
-            - posX : Integer
-            - posY : Integer
+
+        class PieceFactory{
+            + createPawn(team : Boolean) : Piece
+            + createKing(team : Boolean) : Piece
+            + createQueen(team : Boolean) : Piece
+            + Bishop(team : Boolean) : Piece
+            + createRook(team : Boolean) : Piece
+            + createKnight(team : Boolean) : Piece
+        }
+        
+
+        class Board{
+            - allPieceImages : Image[] 
+            - whitePts : Integer
+            - blackPts : Integer
+            - previewCasesMvmt : Boolean[] 
+            - previewCasesAtk : Boolean[] 
+
+            + Board() : Board
+            + clickedOnSomeCase(int posX, int posY)
+            - isCasePreviewMvmt(int posX, int posY) : Boolean
+            - isCasePreviewAtk(int posX, posY) : Boolean
+            - isCaseContainPlayerPiece(int posX, posY) : Boolean
+            - movePiece(int oldPosX, int oldPosY, int newPosX, int newPosY)
+            - destroyPiece(int posX, int posY)
+            - getPiece(int posX, posY)
+            - notifyObsPrev()
+            - notifyObsEndPrev()
+            - notifyObsMov()
+        }
+
+        
+        
+        abstract class Piece{
             - chessName : String
             - value : Integer
             - team : Boolean
+            - imageLink : String
 
-            - movementBase(piece[]) : List<List<Boolean>>
-            - attackMovement(piece[]) : List<List<Boolean>>
-            - goTo(destX : Integer, destY : Integer)
-            - getTeam() : Boolean
-            - getValue : Integer
-            - getChessName : String
+            + Piece() : Piece 
+            + movementBase(piece[] pieces, posX : Integer, posY : Integer) : Boolean[] {abstract}
+            + attackMovement(piece[] pieces, posX : Integer, posY : Integer) : Boolean[] {abstract}
+            + getTeam() : Boolean
+            + getValue() : Integer
+            + getChessName() : String
         }
 
         class Pawn implements Piece{
@@ -65,9 +98,59 @@
 
         }
 
+        interface BoardObservers{
+            + displayBoard(piece[] pieces) {abstract}
+            + displayPreview(Boolean[] previews, Boolean typeMvmt) {abstract}
+            + hideDisplay() {abstract}
+        }
     }
 
-    main -> Game : "instantiate"
+    package View{
+
+        'two observers
+        'this one is displaying everything with swing
+         class DisplayBoard implements BoardObservers{
+            + displayBoard(piece[] pieces)
+            + displayPreview(Boolean[] previews, Boolean typeMvmt)
+            + hideDisplay()
+        }
+
+        class Terminal implements BoardObservers{
+            + displayBoard(piece[] pieces)
+            + displayPreview(Boolean[] previews, Boolean typeMvmt)
+            + hideDisplay()
+        }
+    }
+
+    
+    
+
+    'Terminal o-> PreviewMovement
+   
+
+    GameFacade "1\n board" o-> Board : "own >"
+    
+
+
+    Board "pieces\n*" -> Piece : "contains >"
+
+    Board ..> PieceFactory : "uses >"
+    
+    PieceFactory .u.> Pawn : "instantiate >" 
+    PieceFactory .u.> King : "instantiate >" 
+    PieceFactory .u.> Queen : "instantiate >" 
+    PieceFactory .u.> Bishop : "instantiate >" 
+    PieceFactory .u.> Rook : "instantiate >" 
+    PieceFactory .u.> Knight : "instantiate >" 
+
+    BoardObservers ..|> Board : "Observes"
+
+    Main -d-> GameFacade : "instantiate >"
+    Main -d-> DisplayBoard : "instantiate >"
+    Main -d-> Terminal : "instantiate >"
+
+    DisplayBoard o-u-> GameFacade : "owns >"
+
 
 
 
