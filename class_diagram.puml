@@ -166,7 +166,7 @@
     
 
 
-    Board "pieces\n*" -> Piece : "contains >"
+    Board "pieces\n*" -l-> Piece : " contains >"
 
     Board ..> PieceFactory : "uses >"
     Board "*\n observers" o---> BoardObservers : "is observed by"
@@ -185,6 +185,7 @@
     Main -.d.> Terminal : "instantiate >"
     Main -.d.> Board : "instantiate >"
 
-    DisplayBoard o-u-> GameFacade : "owns >"
+    DisplayBoard "1\nfacade" o-u-> GameFacade : "owns >"
+    Terminal "1\nfacade" o-u-> GameFacade : "owns >"
 
     @enduml
