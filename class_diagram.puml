@@ -16,25 +16,20 @@
         class GameFacade{
             - nextToPlay : Boolean
             + clickedOnSomeCase(posX  : Integer, posY : Integer)
+            + changePiecePromotion(posX : Integer, posY : Integer)
             + play()
             + draw()
             + win()
         }
-
-        
     }
-
-    
 
 
     package Model{
-
-
         class PieceFactory{
             + createPawn(team : Boolean) : Piece
             + createKing(team : Boolean) : Piece
             + createQueen(team : Boolean) : Piece
-            + Bishop(team : Boolean) : Piece
+            + createBishop(team : Boolean) : Piece
             + createRook(team : Boolean) : Piece
             + createKnight(team : Boolean) : Piece
         }
@@ -62,8 +57,11 @@
             + initBoard()
             + win(team : Boolean)
             - notifyObsWin(team : Boolean)
+
             + draw()
             - notifyObsDraw()
+            - notifyObsPromo()
+            - notifyPieceTaken(team : Boolean, imageLink : String)
         }
 
         
@@ -122,6 +120,7 @@
         interface BoardObservers{
             + displayBoard(pieces : Piece[]) {abstract}
             + displayPreview(previews : Boolean[] , typeMvmt : Boolean) {abstract}
+            + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview() {abstract}
             + displayWin(team : Boolean)
             + displayDraw()
@@ -142,25 +141,25 @@
          class DisplayBoard implements BoardObservers{
             + displayBoard(pieces : Piece[] )
             + displayPreview(previews : Boolean[], typeMvmt : Boolean)
+            + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
             + displayWin(team : Boolean)
+
             + displayDraw()
+            + displayPieceTaken(team : Boolean, imageLink : String)
         }
 
         class Terminal implements BoardObservers{
             + displayBoard(piece[] pieces)
             + displayPreview(Boolean[] previews, Boolean typeMvmt)
+            + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
             + displayWin(team: Boolean)
+
             + displayDraw()
+            + displayPieceTaken(team : Boolean, imageLink : String)
         }
     }
-
-    
-    
-
-    'Terminal o-> PreviewMovement
-   
 
     GameFacade "1\n board" o-> Board : "own >"
     GameFacade ..> Result : "use >"
@@ -184,10 +183,8 @@
     Main .d.> GameFacade : "instantiate >"
     Main .d.> DisplayBoard : "instantiate >"
     Main -.d.> Terminal : "instantiate >"
+    Main -.d.> Board : "instantiate >"
 
     DisplayBoard o-u-> GameFacade : "owns >"
-
-
-
 
     @enduml
