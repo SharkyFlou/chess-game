@@ -1,5 +1,8 @@
     @startuml
 
+
+'a faire, trouver comment faire le "enroque"
+
     skinparam style strictuml
     skinparam classAttributeIconSize 0
     skinparam classFontStyle Bold
@@ -12,11 +15,9 @@
     package Controller{
         class GameFacade{
             - nextToPlay : Boolean
-            
-            
             + clickedOnSomeCase(posX  : Integer, posY : Integer)
             + play()
-            + tare()
+            + draw()
             + win()
         }
 
@@ -61,8 +62,8 @@
             + initBoard()
             + win(team : Boolean)
             - notifyObsWin(team : Boolean)
-            + tare()
-            - notifyObsTare()
+            + draw()
+            - notifyObsDraw()
         }
 
         
@@ -123,20 +124,19 @@
             + displayPreview(previews : Boolean[] , typeMvmt : Boolean) {abstract}
             + hidePreview() {abstract}
             + displayWin(team : Boolean)
-            + displayTare()
+            + displayDraw()
             
         }
 
         Enum Result{
             WIN
             NEXT
-            TARE
+            DRAW
             NOTHING
         }
     }
 
     package View{
-
         'two observers
         'this one is displaying everything with swing
          class DisplayBoard implements BoardObservers{
@@ -144,7 +144,7 @@
             + displayPreview(previews : Boolean[], typeMvmt : Boolean)
             + hidePreview()
             + displayWin(team : Boolean)
-            + displayTare()
+            + displayDraw()
         }
 
         class Terminal implements BoardObservers{
@@ -152,7 +152,7 @@
             + displayPreview(Boolean[] previews, Boolean typeMvmt)
             + hidePreview()
             + displayWin(team: Boolean)
-            + displayTare()
+            + displayDraw()
         }
     }
 
@@ -170,17 +170,16 @@
     Board "pieces\n*" -> Piece : "contains >"
 
     Board ..> PieceFactory : "uses >"
-    Board "*\n observers" o-> BoardObservers : "is observed by"
+    Board "*\n observers" o---> BoardObservers : "is observed by"
     Board ..> Result : "use >"
     
-    PieceFactory .d.> Pawn : "instantiate >" 
-    PieceFactory .d.> King : "instantiate >" 
-    PieceFactory .d.> Queen : "instantiate >" 
-    PieceFactory .d.> Bishop : "instantiate >" 
-    PieceFactory .d.> Rook : "instantiate >" 
-    PieceFactory .d.> Knight : "instantiate >" 
+    PieceFactory ..d.> Pawn : "instantiate >"
+    PieceFactory ..d.> King : "instantiate >"
+    PieceFactory ..d.> Queen : "instantiate >"
+    PieceFactory ..d.> Bishop : "instantiate >"
+    PieceFactory ..d.> Rook : "instantiate >"
+    PieceFactory ..d.> Knight : "instantiate >"
 
-    BoardObservers ..|> Board : "Observes"
 
     Main .d.> GameFacade : "instantiate >"
     Main .d.> DisplayBoard : "instantiate >"
