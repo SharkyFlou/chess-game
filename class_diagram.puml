@@ -25,44 +25,48 @@
 
 
     package Model{
-        class PieceFactory{
-            + createPawn(team : Boolean) : Piece
-            + createKing(team : Boolean) : Piece
-            + createQueen(team : Boolean) : Piece
-            + createBishop(team : Boolean) : Piece
-            + createRook(team : Boolean) : Piece
-            + createKnight(team : Boolean) : Piece
-        }
-        
 
-        class Board{
-            - allPieceImages : Image[] 
-            - whitePts : Integer
-            - blackPts : Integer
+        class Supervisor{ 
             - previewCasesMvmt : Boolean[] 
             - previewCasesAtk : Boolean[] 
 
-            + Board() : Board
-            + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean) : Result
+            + Supervisor()
+            + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean)
             - isCasePreviewMvmt(posX : Integer, posY : Integer) : Boolean
             - isCasePreviewAtk(posX : Integer, posY : Integer) : Boolean
-            - isCaseContainPlayerPiece(posX : Integer, posY : Integer, team Boolean) : Boolean
-            - movePiece(oldPosX : Integer, oldPosY : Integer, newPosX : Integer, newPosY : Integer)
-            - destroyPiece(posX : Integer, posY : Integer)
-            - getPiece(posX : Integer, posY : Integer)
-            - notifyObsPrev()
-            - notifyObsEndPrev()
-            - notifyObsMov()
-            + addObs(obs : BoardObserver)
-            + initBoard()
-            + win(team : Boolean)
-            - notifyObsWin(team : Boolean)
-
-            + draw()
-            - notifyObsDraw()
-            - notifyObsPromo()
-            - notifyPieceTaken(team : Boolean, imageLink : String)
+            - pawnMvmt()
+            - pwnAtk()
+            - bishopMvmt()
+            - queenMvmt()
+            + addObs(obs : InteractionsObserver)
+            - notifyPrev()
+            - notifyEndPrev()
+            - notifyPromotion()
         }
+
+        class Manager{
+            - whitePts : Integer
+            - blackPts : Integer
+            + addPoints(team : Boolean, pts : Integer)
+            + getPoints(team : Boolean)
+            + addObs(obs : InteractionsObserver)
+            - notifyWin(team : Boolean)
+            - notifyDraw()
+        }
+
+        class Board{
+            + Board()
+            + initBoard()
+            + getPiece(posX : Integer, posY : Integer)
+            + doesCaseContainPlayerPiece(posX : Integer, posY : Integer, team Boolean) : Boolean
+            + movePiece(oldPosX : Integer, oldPosY : Integer, newPosX : Integer, newPosY : Integer)
+            + destroyPiece(posX : Integer, posY : Integer)
+            + addObs(obs : InteractionsObserver)
+            - notifyPieceTaken(team : Boolean, imageLink : String)
+            - notifyMov()
+        }
+
+        
 
         
         
@@ -73,52 +77,40 @@
             - imageLink : String
 
             + Piece(team : Boolean) : Piece 
-            + movementBase(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[] {abstract}
-            + attackMovement(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[] {abstract}
             + getTeam() : Boolean
             + getValue() : Integer
             + getChessName() : String
         }
 
         class Pawn implements Piece{
-            + Pawn(team : Boolean) : Pawn 
-            + movementBase(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
-            + attackMovement(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
-            -HasMadeFirstMove : Boolean
+            + Pawn(team : Boolean)
+            - HasMadeFirstMove : Boolean
+            + getHasMoved() : Boolean
+            + Moove()
         }
 
         class King implements Piece{
-            + King(team : Boolean) : King 
-            + movementBase(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
-            + attackMovement(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
+            + King(team : Boolean)
         }
 
         class Queen implements Piece{
-            + Queen(team : Boolean) : Queen 
-            + movementBase(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
-            + attackMovement(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
+            + Queen(team : Boolean)
         }
 
         class Bishop implements Piece{
-            + Bishop(team : Boolean) : PawBishopn 
-            + movementBase(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
-            + attackMovement(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
+            + Bishop(team : Boolean) 
         }
 
         class Rook implements Piece{
-            + Rook(team : Boolean) : Rook 
-            + movementBase(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
-            + attackMovement(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
+            + Rook(team : Boolean)
         }
 
         class Knight implements Piece{
-            + Knight(team : Boolean) : Knight 
-            + movementBase(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
-            + attackMovement(pieces : Piece[] , posX : Integer, posY : Integer) : Boolean[]
+            + Knight(team : Boolean)
         }
 
-        interface BoardObservers{
-            + displayBoard(pieces : Piece[]) {abstract}
+        interface GameObservers{
+            + DisplayGame(pieces : Piece[]) {abstract}
             + displayPreview(previews : Boolean[] , typeMvmt : Boolean) {abstract}
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview() {abstract}
@@ -126,31 +118,23 @@
             + displayDraw()
             
         }
-
-        Enum Result{
-            WIN
-            NEXT
-            DRAW
-            NOTHING
-        }
     }
 
     package View{
         'two observers
         'this one is displaying everything with swing
-         class DisplayBoard implements BoardObservers{
-            + displayBoard(pieces : Piece[] )
+         class DisplayGame implements GameObservers{
+            + DisplayGame(pieces : Piece[] )
             + displayPreview(previews : Boolean[], typeMvmt : Boolean)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
             + displayWin(team : Boolean)
-
             + displayDraw()
             + displayPieceTaken(team : Boolean, imageLink : String)
         }
 
-        class Terminal implements BoardObservers{
-            + displayBoard(piece[] pieces)
+        class Terminal implements GameObservers{
+            + DisplayGame(piece[] pieces)
             + displayPreview(Boolean[] previews, Boolean typeMvmt)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
@@ -161,31 +145,32 @@
         }
     }
 
-    GameFacade "1\n board" o-> Board : "own >"
-    GameFacade ..> Result : "use >"
+    GameFacade "1\n Supervisor" o-> Supervisor : "own >"
+    GameFacade "1\n manager" o-> Manager : "own >"
     
 
+    Supervisor ..> PieceFactory : "uses >"
+    Supervisor "*\n observers" o--> GameObservers : "is observed by"
+    Supervisor "1\nboard" *-d-> Board : "own >" 
+    
+    Board ..d.> Pawn : "instantiate >"
+    Board ..d.> King : "instantiate >"
+    Board ..d.> Queen : "instantiate >"
+    Board ..d.> Bishop : "instantiate >"
+    Board ..d.> Rook : "instantiate >"
+    Board ..d.> Knight : "instantiate >"
 
     Board "pieces\n*" -l-> Piece : " contains >"
-
-    Board ..> PieceFactory : "uses >"
-    Board "*\n observers" o---> BoardObservers : "is observed by"
-    Board ..> Result : "use >"
-    
-    PieceFactory ..d.> Pawn : "instantiate >"
-    PieceFactory ..d.> King : "instantiate >"
-    PieceFactory ..d.> Queen : "instantiate >"
-    PieceFactory ..d.> Bishop : "instantiate >"
-    PieceFactory ..d.> Rook : "instantiate >"
-    PieceFactory ..d.> Knight : "instantiate >"
+    Board "*\n observers" o--> GameObservers : "is observed by"
 
 
     Main .d.> GameFacade : "instantiate >"
-    Main .d.> DisplayBoard : "instantiate >"
-    Main -.d.> Terminal : "instantiate >"
-    Main -.d.> Board : "instantiate >"
+    Main .d.> DisplayGame : "instantiate >"
+    Main .d.> Terminal : "instantiate >"
+    Main .d.> Supervisor : "instantiate >"
+    Main .d.> Manager : "instantiate >"
 
-    DisplayBoard "1\nfacade" o-u-> GameFacade : "owns >"
+    DisplayGame "1\nfacade" o-u-> GameFacade : "owns >"
     Terminal "1\nfacade" o-u-> GameFacade : "owns >"
 
     @enduml
