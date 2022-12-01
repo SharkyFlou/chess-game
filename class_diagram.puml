@@ -21,12 +21,8 @@
             + draw()
             + win()
         }
-    }
 
-
-    package Model{
-
-        class Supervisor{ 
+        class Supervisor{
             - previewCasesMvmt : Boolean[] 
             - previewCasesAtk : Boolean[] 
 
@@ -43,6 +39,33 @@
             - notifyEndPrev()
             - notifyPromotion()
         }
+
+
+    }
+
+
+
+    class interactions{ 
+        - previewCasesMvmt : Boolean[] 
+        - previewCasesAtk : Boolean[] 
+
+        + Supervisor()
+        + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean)
+        - isCasePreviewMvmt(posX : Integer, posY : Integer) : Boolean
+        - isCasePreviewAtk(posX : Integer, posY : Integer) : Boolean
+        - pawnMvmt()
+        - pwnAtk()
+        - bishopMvmt()
+        - queenMvmt()
+        + addObs(obs : InteractionsObserver)
+        - notifyPrev()
+        - notifyEndPrev()
+        - notifyPromotion()
+    }
+
+    package Model{
+
+        
 
         class Manager{
             - whitePts : Integer
@@ -109,7 +132,7 @@
             + Knight(team : Boolean)
         }
 
-        interface GameObservers{
+        interface BoardObserver{
             + DisplayGame(pieces : Piece[]) {abstract}
             + displayPreview(previews : Boolean[] , typeMvmt : Boolean) {abstract}
             + displayPromotion(posX : Integer, posY : Integer)
@@ -118,12 +141,16 @@
             + displayDraw()
             
         }
+
+        interface ManagerObserver{
+            + DisplayScore(team : Boolean)
+        }
     }
 
     package View{
         'two observers
         'this one is displaying everything with swing
-         class DisplayGame implements GameObservers{
+         class DisplayGame implements BoardObserver{
             + DisplayGame(pieces : Piece[] )
             + displayPreview(previews : Boolean[], typeMvmt : Boolean)
             + displayPromotion(posX : Integer, posY : Integer)
@@ -133,7 +160,7 @@
             + displayPieceTaken(team : Boolean, imageLink : String)
         }
 
-        class Terminal implements GameObservers{
+        class Terminal implements BoardObserver{
             + DisplayGame(piece[] pieces)
             + displayPreview(Boolean[] previews, Boolean typeMvmt)
             + displayPromotion(posX : Integer, posY : Integer)
@@ -143,34 +170,193 @@
             + displayDraw()
             + displayPieceTaken(team : Boolean, imageLink : String)
         }
+
+        class PanelPlayer as "PanelPlayer extends Jpanel"{}
+
+        class PanelBoard as "PanelBoard extends PanelBoard"{} 
+
+
     }
 
-    GameFacade "1\n Supervisor" o-> Supervisor : "own >"
-    GameFacade "1\n manager" o-> Manager : "own >"
+    PanelPlayer <- DisplayGame : "use <"
+    PanelBoard <-d- DisplayGame : "use >"
+    'PanelBoard ..d.> JPanel : "extends >"
+
     
+
+    'GameFacade "1\n Supervisor" o-> Supervisor : "own >"
+    GameFacade "1\n manager" o-> Manager : "own >"
+    Main ..> Board : "instantiate >"
+    Manager "*\n observers" o--> ManagerObserver : "is observed by"
+
 
     Supervisor ..> PieceFactory : "uses >"
-    Supervisor "*\n observers" o--> GameObservers : "is observed by"
-    Supervisor "1\nboard" *-d-> Board : "own >" 
+    'Supervisor "*\n observers" o--> ManagerObservers : "is observed by"
+    'Supervisor "1\nboard" *-d-> Board : "own >" 
     
-    Board ..d.> Pawn : "instantiate >"
-    Board ..d.> King : "instantiate >"
-    Board ..d.> Queen : "instantiate >"
-    Board ..d.> Bishop : "instantiate >"
-    Board ..d.> Rook : "instantiate >"
-    Board ..d.> Knight : "instantiate >"
+    Supervisor -> Board : "use >"
+
+    Board ...d.> Pawn : "instantiate >"
+    Board ...d.> King : "instantiate >"
+    Board ...d.> Queen : "instantiate >"
+    Board ...d.> Bishop : "instantiate >"
+    Board ...d.> Rook : "instantiate >"
+    Board ...d.> Knight : "instantiate >"
 
     Board "pieces\n*" -l-> Piece : " contains >"
-    Board "*\n observers" o--> GameObservers : "is observed by"
+    Board "*\n observers" o--> BoardObserver : "is observed by"
 
 
     Main .d.> GameFacade : "instantiate >"
     Main .d.> DisplayGame : "instantiate >"
     Main .d.> Terminal : "instantiate >"
-    Main .d.> Supervisor : "instantiate >"
-    Main .d.> Manager : "instantiate >"
+    'Main .d.> Supervisor : "instantiate >"
+    Main ..d.> Manager : "instantiate >"
 
     DisplayGame "1\nfacade" o-u-> GameFacade : "owns >"
     Terminal "1\nfacade" o-u-> GameFacade : "owns >"
+
+    @enduml
+'############################################################
+    @startuml
+
+
+'a faire, trouver comment faire le "enroque"
+
+    skinparam style strictuml
+    skinparam classAttributeIconSize 0
+    skinparam classFontStyle Bold
+    hide enum methods
+
+    class Main{
+        + main() : int
+    }
+
+
+    package model{
+        class Board{
+
+            + Board()
+            + initBoard()
+            + getPiece(posX : Integer, posY : Integer)
+            + doesCaseContainPlayerPiece(posX : Integer, posY : Integer, team Boolean) : Boolean
+            + movePiece(oldPosX : Integer, oldPosY : Integer, newPosX : Integer, newPosY : Integer)
+            + destroyPiece(posX : Integer, posY : Integer)
+            + addObs(obs : InteractionsObserver)
+            - notifyPieceTaken(team : Boolean, imageLink : String)
+            - notifyMov()
+        
+        }
+
+        class Piece{
+
+        }
+
+        class Pawn{
+
+        }
+
+        class Bishop{
+
+        }
+
+        class King{
+
+        }
+
+        class Queen{
+
+        }
+
+        class Knight{
+
+        }
+
+        class Rook{
+
+        }
+
+        class BoardObserver{
+
+        }
+
+        class Manager{
+
+        }
+
+        class ManagerObserver{
+
+        }
+
+
+    }
+
+    package controller{
+        class Supervisor{
+            + setBoard()
+        }
+
+        class GameFacade{
+
+        }
+
+    }
+
+    package view{
+        class DisplayBoard{
+            + setBoard()
+        }
+
+        class Terminal{
+            + setBoard()
+        }
+
+        class PanelBoard{
+
+        }
+
+        class PanelPlayer{
+
+        }
+
+
+    }
+
+
+    'main
+    Main ..l> Board : "instantiate >"
+    Main ...> GameFacade : "instantiate >"
+    Main .l.> DisplayBoard : "instantiate >"
+    Main ...> Terminal : "instantiate >"
+    Main .d.> Supervisor : "instantiate >"
+    Main ..d.> Manager : "instantiate >"
+    
+    'view
+    DisplayBoard o-d-> PanelBoard : "use >"
+    DisplayBoard o--> PanelPlayer : "use >"
+
+    'model
+    Board "*\n observers" o--> BoardObserver : "is observed by"
+    Manager "*\n observers" o--> ManagerObserver : "is observed by"
+   
+    'controller
+    
+   
+
+
+    'relation view - controller
+    'cette relation envoie la position de la case cliquee a controller
+    DisplayBoard -> Supervisor : "calls >"  
+
+    'relation view - model
+    
+
+    'relation controller - model
+    Supervisor -> Board : "use"
+
+
+    'layout
+    Board -[hidden]> Manager
+    'DisplayBoard -[hidden]> Supervisor : "consults >"
 
     @enduml
