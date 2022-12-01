@@ -1,6 +1,6 @@
-Rapport
+Rapport A31-Chessgame FLU HOOGLAND
 
-Choix 1ère séance :
+1ère séance :
 Début d'un diagramme, résumant les intéractions entre les classes:
 - Une interface "Pièce" contient les fonctions de déplacement, d'attaque, etc... 
 - Utilisation du Template Method : chaque pièce (cavalier, pion, roi, reinne, fou, tour) implémente cette classe.
@@ -12,3 +12,17 @@ Choix 2ème séance :
 - Rajout de View
 - Utilisation de Factory Method
 - Rajout d'observeurs
+
+
+Choix 3e séance : 
+- Changements faits au PUML : 
+    - La classe Board doit être divisée en plusieurs sub-classes. L'idée est de dépourvoir le Board d'autant de responsabilités
+    - Pièce n'est pas censée gérer ses mouvements, c'est une des subclasses de Board
+    - Les relations entre classes ont été modifiées, le PUML a été nettoyé
+- Définition de toutes les classes par Model, View et Controller
+
+Choix 4e seance :
+Passage au codage, modifications du PUML
+- Création de Board, Interactions (qui gère le mouvement) et Manager (qui gère les victoires, règles et le "backend" du chess)
+- On enlève le FactoryMethod, vu que chaque pièce peut être créée avec les attributs propres à chacune (pas de problème auquel répondre)
+- 
