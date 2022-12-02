@@ -8,6 +8,9 @@ public abstract class Piece {
 
     public Piece(boolean newTeam, String givenName, int pieceValue, String image){
         team = newTeam;
+        chessName=givenName;
+        value = pieceValue;
+        imageLink = image;
     }
     public boolean getTeam(){
         return team;

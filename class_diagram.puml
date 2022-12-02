@@ -190,7 +190,6 @@
     Manager "*\n observers" o--> ManagerObserver : "is observed by"
 
 
-    Supervisor ..> PieceFactory : "uses >"
     'Supervisor "*\n observers" o--> ManagerObservers : "is observed by"
     'Supervisor "1\nboard" *-d-> Board : "own >" 
     
