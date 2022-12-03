@@ -65,7 +65,7 @@ public class DisplayGame extends JFrame{
         gbc.weighty = 40;
         add(panelMidLeft, gbc);
 
-        panelMidMid = new JPanel(new GridLayout(0, 9));
+        panelMidMid = new JPanel(new GridLayout(0, 10));
         panelMidMid.setBorder(BorderFactory.createTitledBorder(eBorder, "mid"));
         panelMidMid.setBackground(Color.gray);
         gbc.gridx = 1;
@@ -88,7 +88,7 @@ public class DisplayGame extends JFrame{
         gbc.weighty = 40;
         add(panelMidRight, gbc);
 
-        //creationBoardBlackWhite();
+        creationBoardBlackWhite();
 
         setVisible(true);
     }
@@ -136,18 +136,35 @@ public class DisplayGame extends JFrame{
                     new JLabel(COLS.substring(ii, ii + 1),
                     SwingConstants.CENTER));
         }
+
+        chessBoard.add(new JLabel(""));
+
         // fill the black non-pawn piece row
-        for (int ii = 0; ii < 8; ii++) {
-            for (int jj = 0; jj < 8; jj++) {
-                switch (jj) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 10; j++) {
+                switch (j) {
                     case 0:
-                        chessBoard.add(new JLabel("" + (ii + 1),
+                        chessBoard.add(new JLabel("" + (8- i),
                                 SwingConstants.CENTER));
+                        break;
+                    case 9:
+                        chessBoard.add(new JLabel("" + (8- i),
+                                SwingConstants.CENTER));
+                        break;
                     default:
-                        chessBoard.add(chessBoardButtons[jj][ii]);
+                        chessBoard.add(chessBoardButtons[j-1][i]);
+                        break;
+
                 }
             }
         }
+        /*
+        for (int i = 0; i < 8; i++) {
+            chessBoard.add(
+                    new JLabel(COLS.substring(i, i + 1),
+                    SwingConstants.CENTER));
+        }
+        */
 
 
     }
