@@ -1,5 +1,6 @@
 import controller.GameFacade;
 import controller.Supervisor;
+import model.Board;
 import view.*;
 
 
@@ -7,8 +8,9 @@ public class Main {
     public static void main(String[] args) {
         Supervisor supervisor = new Supervisor();
         GameFacade gameFacade = new GameFacade();
-        DisplayGame display = new DisplayGame(supervisor,gameFacade);
-
+        Board board = new Board();
+        board.initBoard();
+        DisplayGame display = new DisplayGame(supervisor,gameFacade,board);
 
         
 

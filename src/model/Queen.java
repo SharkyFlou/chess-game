@@ -5,7 +5,7 @@ public class Queen extends Piece{
         super(newTeam,
         "queen",
         9,
-        "queen_img");
+        "queen");
     }
     
     

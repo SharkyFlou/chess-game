@@ -5,7 +5,7 @@ public class Rook extends FirstMovement{
         super(newTeam,
         "rook",
         5,
-        "rook_img");
+        "rook");
         
     }
 

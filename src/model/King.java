@@ -5,7 +5,7 @@ public class King extends FirstMovement{
         super(newTeam,
         "king",
         -1,
-        "king_img"
+        "king"
         );
     }
 

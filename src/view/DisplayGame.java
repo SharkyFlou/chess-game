@@ -8,164 +8,174 @@ import java.awt.image.BufferedImage;
 
 import controller.GameFacade;
 import controller.Supervisor;
+import model.Board;
+import model.Piece;
 
+import java.net.URL;
 
 
 public class DisplayGame extends JFrame{
 
     private Supervisor supervisor;
     private GameFacade gameFacade;
+    private Board board;
 
     private JPanel panelTitle;
-    private JPanel panelMidLeft;
-    private JPanel panelMidMid;
-    private JPanel panelMidRight;
-    private JPanel chessBoard;
+    private JPanel panelLow;
+    private JPanel panelLowLeft;
+    private JPanel panelLowMid;
+    private JPanel panelLowRight;
     private JButton[][] chessBoardButtons = new JButton[8][8];
     private static final String COLS = "ABCDEFGH";
 
-    public DisplayGame(Supervisor Xsupervisor, GameFacade XgameFacade){
+    public DisplayGame(Supervisor Xsupervisor, GameFacade XgameFacade, Board xBoard){
         supervisor = Xsupervisor;
         gameFacade = XgameFacade;
+        board = xBoard;
         setTitle("Best chess game");
-        setSize(1080, 607);
+        setSize(1080, 800);
+        setMinimumSize(new Dimension(1080,607));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-
-        setLayout(new GridBagLayout());
-        GridBagConstraints  gbc = new GridBagConstraints();
-        Border eBorder = BorderFactory.createEtchedBorder();
+        setLayout( new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
 
         panelTitle = new JPanel();
-        panelTitle.setBorder(BorderFactory.createTitledBorder(eBorder, "up"));
         panelTitle.setBackground(Color.darkGray);
-        gbc.gridx = gbc.gridy = 0;
-        gbc.gridwidth = gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridwidth = 3;
-        gbc.insets = new Insets(2, 2, 2, 2);
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.weightx = gbc.weighty = 10;
-        add(panelTitle, gbc);
+        panelTitle.setSize(new Dimension(1080,200));
+        panelTitle.setMinimumSize(new Dimension(1080,100));
+        add(panelTitle);
 
 
         
 
-        panelMidLeft = new JPanel();
-        panelMidLeft.setBorder(BorderFactory.createTitledBorder(eBorder, "left"));
-        panelMidLeft.setBackground(Color.lightGray);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.SOUTHWEST;
-        gbc.insets = new Insets(2, 2, 2, 2);
-        gbc.weightx = 10;
-        gbc.weighty = 40;
-        add(panelMidLeft, gbc);
-
-        panelMidMid = new JPanel(new GridLayout(0, 10));
-        panelMidMid.setBorder(BorderFactory.createTitledBorder(eBorder, "mid"));
-        panelMidMid.setBackground(Color.gray);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.SOUTH;
-        gbc.weightx = gbc.weighty = 40;
-        add(panelMidMid, gbc);
+        panelLow = new JPanel();
+        panelLow.setLayout( new BoxLayout(panelLow, BoxLayout.X_AXIS));
+        panelLow.setSize(new Dimension(1080,507));
+        panelLow.setMinimumSize(new Dimension(1080,507));
+        add(panelLow);
         
-        panelMidRight = new JPanel();
-        panelMidRight.setBorder(BorderFactory.createTitledBorder(eBorder, "right"));
-        panelMidRight.setBackground(Color.lightGray);
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.gridwidth = gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.SOUTHEAST;
-        gbc.weightx = 10;
-        gbc.weighty = 40;
-        add(panelMidRight, gbc);
+
+
+
+        panelLowLeft = new JPanel();
+        panelLowLeft.setBackground(Color.lightGray);
+        panelLowLeft.setSize(new Dimension(180,507));
+        panelLowLeft.setMinimumSize(new Dimension(180,507));
+        panelLow.add(panelLowLeft);
+
+        
+
+
+        
+
+        panelLowMid = new JPanel(new GridLayout(0, 10));
+        panelLowMid.setBackground(Color.gray);
+        panelLowMid.setSize(new Dimension(720,507));
+        panelLowMid.setMinimumSize(new Dimension(720,507));
+        panelLow.add(panelLowMid);
+
+        
+        panelLowRight = new JPanel();
+        panelLowRight.setBackground(Color.lightGray);
+        panelLowRight.setSize(new Dimension(720,507));
+        panelLowRight.setMinimumSize(new Dimension(720,507));
+        panelLow.add(panelLowRight);
+
+        
+
+        
 
         creationBoardBlackWhite();
-
+        updateChess();
         setVisible(true);
-    }
-
-    public void boardMaj(){
-
     }
 
     public void creationBoardBlackWhite(){
 
-        //panelMidMid.add(new JLabel("?"), BorderLayout.LINE_START);
-        chessBoard = new JPanel(new GridLayout(10, 10));
-        chessBoard.setBorder(new LineBorder(Color.BLACK));
-        panelMidMid.add(chessBoard);
+        //panelLowMid.add(new JLabel("?"), BorderLayout.LINE_START);
 
-        panelMidMid.setBorder(new LineBorder(Color.BLACK));
+        panelLowMid.setBorder(new LineBorder(Color.BLACK));
 
         // create the chess board squares
         Insets buttonMargin = new Insets(0,0,0,0);
 
         //Create the chess board
-        for (int ii = 0; ii < chessBoardButtons.length; ii++) {
-            for (int jj = 0; jj < chessBoardButtons[ii].length; jj++) {
+        for (int i = 0; i < chessBoardButtons.length; i++) {
+            for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 JButton b = new JButton();
                 b.setMargin(buttonMargin);
                 // our chess pieces are 64x64 px in size, so we'll
                 // 'fill this in' using a transparent icon..
                 ImageIcon icon = new ImageIcon(
                         new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
+                //ImageIcon icon = new ImageIcon("/resources/bbishop.png");
                 b.setIcon(icon);
-                if ((jj % 2 == 1 && ii % 2 == 1) || (jj % 2 == 0 && ii % 2 == 0)) {
+                if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
                     b.setBackground(Color.WHITE);
                 } else {
-                    b.setBackground(Color.BLACK);
+                    b.setBackground(Color.DARK_GRAY);
                 }
-                chessBoardButtons[jj][ii] = b;
+                chessBoardButtons[j][i] = b;
             }
         }
 
         //fill the chess board
-        chessBoard.add(new JLabel(""));
+        panelLowMid.add(new JLabel(""));
         // fill the top row
-        for (int ii = 0; ii < 8; ii++) {
-            chessBoard.add(
-                    new JLabel(COLS.substring(ii, ii + 1),
+        for (int i = 0; i < 8; i++) {
+            panelLowMid.add(
+                    new JLabel(COLS.substring(i, i + 1),
                     SwingConstants.CENTER));
         }
 
-        chessBoard.add(new JLabel(""));
+        panelLowMid.add(new JLabel(""));
 
         // fill the black non-pawn piece row
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 10; j++) {
                 switch (j) {
                     case 0:
-                        chessBoard.add(new JLabel("" + (8- i),
+                    panelLowMid.add(new JLabel("" + (8- i),
                                 SwingConstants.CENTER));
                         break;
                     case 9:
-                        chessBoard.add(new JLabel("" + (8- i),
+                    panelLowMid.add(new JLabel("" + (8- i),
                                 SwingConstants.CENTER));
                         break;
                     default:
-                        chessBoard.add(chessBoardButtons[j-1][i]);
+                    panelLowMid.add(chessBoardButtons[j-1][i]);
                         break;
 
                 }
             }
         }
-        /*
+
+        
+        panelLowMid.add(new JLabel(""));
         for (int i = 0; i < 8; i++) {
-            chessBoard.add(
+            panelLowMid.add(
                     new JLabel(COLS.substring(i, i + 1),
                     SwingConstants.CENTER));
         }
-        */
+        
 
 
+    }
+
+
+
+
+    public void updateChess(){
+        for(int i = 0 ; i < 8; i++){
+            for(int j = 0 ; j < 8; j++){
+                Piece newPiece = board.getPiece(j,i);
+                if(newPiece!=null){
+                    URL temp = Main.class.getResource("/resources/"+newPiece.getImageLink()+".png");
+                    chessBoardButtons[i][j].setIcon(new ImageIcon(temp));
+                }
+                
+            }
+        }
     }
 }

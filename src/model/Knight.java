@@ -5,7 +5,7 @@ public class Knight extends Piece{
         super(newTeam,
         "knight",
         3,
-        "knight_img");
+        "knight");
     }
 
 }

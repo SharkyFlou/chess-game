@@ -6,7 +6,7 @@ public class Bishop extends Piece{
         super(newTeam,
         "bishop",
         3,
-        "bishop_img"
+        "bishop"
         );
     }
 

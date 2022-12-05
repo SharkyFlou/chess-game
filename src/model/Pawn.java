@@ -5,7 +5,7 @@ public class Pawn extends FirstMovement{
         super(newTeam,
         "pawn",
         1,
-        "pawn_img"
+        "pawn"
         );
         
     }
