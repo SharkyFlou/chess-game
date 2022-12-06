@@ -1,6 +1,6 @@
 package model;
 
-public class FirstMovement extends Piece{
+public abstract class FirstMovement extends Piece{
     private boolean hasMoved;
 
     public FirstMovement(boolean newTeam, String givenName, int pieceValue, String image){
@@ -15,4 +15,6 @@ public class FirstMovement extends Piece{
     public void mooveIt(){
         hasMoved=true;
     }
+
+    public abstract Boolean[][] getTheoricalMvmt(int posX, int posY);
 }

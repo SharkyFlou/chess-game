@@ -10,4 +10,9 @@ public class Bishop extends Piece{
         );
     }
 
+    public Boolean[][] getTheoricalMvmt(int posX, int posY) {
+        Boolean[][] canGoTo = super.initTabFalse();
+        return canGoTo;
+    }
+
 }

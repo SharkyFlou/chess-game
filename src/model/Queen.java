@@ -7,6 +7,9 @@ public class Queen extends Piece{
         9,
         "queen");
     }
-    
+    public Boolean[][] getTheoricalMvmt(int posX, int posY) {
+        Boolean[][] canGoTo = super.initTabFalse();
+        return canGoTo;
+    }
     
 }

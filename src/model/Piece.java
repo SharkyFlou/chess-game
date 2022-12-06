@@ -31,4 +31,16 @@ public abstract class Piece {
     public String getImageLink(){
         return imageLink;
     }
+
+    public abstract Boolean[][] getTheoricalMvmt(int posX, int posY);
+
+    protected Boolean[][] initTabFalse(){
+        Boolean[][] tab = new Boolean[8][8];
+        for(int i = 0; i<8; i++){
+            for(int j = 0; j<8; j++){
+                tab[i][j]=false;
+            }
+        }
+        return tab;
+    } 
 }

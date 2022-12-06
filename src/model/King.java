@@ -9,4 +9,9 @@ public class King extends FirstMovement{
         );
     }
 
+    public Boolean[][] getTheoricalMvmt(int posX, int posY) {
+        Boolean[][] canGoTo = super.initTabFalse();
+        return canGoTo;
+    }
+
 }

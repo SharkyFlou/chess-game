@@ -158,9 +158,6 @@ public class DisplayGame extends JFrame{
                     new JLabel(COLS.substring(i, i + 1),
                     SwingConstants.CENTER));
         }
-        
-
-
     }
 
 
@@ -175,6 +172,19 @@ public class DisplayGame extends JFrame{
                     chessBoardButtons[i][j].setIcon(new ImageIcon(temp));
                 }
                 
+            }
+        }
+    }
+
+    public void resetChessBoardColor(){
+        //go around each jButton and put the basic color again
+        for (int i = 0; i < chessBoardButtons.length; i++) {
+            for (int j = 0; j < chessBoardButtons[i].length; j++) {
+                if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
+                    chessBoardButtons[i][j].setBackground(Color.WHITE);
+                } else {
+                    chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
+                }
             }
         }
     }

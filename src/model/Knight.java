@@ -8,4 +8,9 @@ public class Knight extends Piece{
         "knight");
     }
 
+    public Boolean[][] getTheoricalMvmt(int posX, int posY) {
+        Boolean[][] canGoTo = super.initTabFalse();
+        return canGoTo;
+    }
+
 }
