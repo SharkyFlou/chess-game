@@ -99,7 +99,7 @@
         }
 
         class ManagerObserver{
-            + DisplayScore(team : Boolean)
+            + {abstract} DisplayScore(team : Boolean)
         }
 
 
@@ -148,21 +148,22 @@
             + displayWin(team : Boolean)
             + displayDraw()
             + displayPieceTaken(team : Boolean, imageLink : String)
+            + displayScore(team : Boolean)
         }
 
         class Terminal{
             + setBoard()
+            + clickedOnCase(posx : Integer, posy : Integer)
+            + displayPreview(previews : Boolean[], typeMvmt : Boolean)
+            + displayPromotion(posX : Integer, posY : Integer)
+            + hidePreview()
         }
 
-        class PanelBoard{
-
-        }
-
-        class PanelPlayer{
-
-        }
+        
     }
 
+'class PanelBoard{}
+'class PanelPlayer{}
 
     'main
     Main ..> Board : "instantiate >"
@@ -173,8 +174,8 @@
     Main ..> Manager : "instantiate >"
     
     'view
-    DisplayBoard o-d-> PanelBoard : "use >"
-    DisplayBoard o--> PanelPlayer : "use >"
+    'DisplayBoard o-d-> PanelBoard : "use >"
+    'DisplayBoard o--> PanelPlayer : "use >"
 
     'model
     Board "*\n observers" o--> BoardObserver : "is observed by"
@@ -194,7 +195,7 @@
     Board ..> King 
     Board ..> Queen 
 
-    Board "pieces\n*" --> Piece : " contains >"
+    Board "pieces\n*" -> Piece : " contains >"
 
     'controller
     GameFacade o--> Supervisor : "instantiates >"
@@ -204,7 +205,7 @@
 
     'relation view - controller
     'cette relation envoie la position de la case cliquee a controller
-    DisplayBoard -> GameFacade : "calls >"  
+    DisplayBoard -right-> GameFacade : "calls >"  
     GameFacade -> DisplayGame : "affiche"
     
     'relation view - model
@@ -213,7 +214,7 @@
     DisplayBoard ..|> BoardObserver : ""
 
     'relation controller - model
-    Supervisor -> Board : "use"
+    Supervisor --> Board : "use"
 
 
     'layout
