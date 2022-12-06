@@ -1,5 +1,6 @@
 package view;
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.AttributeSet.ColorAttribute;
@@ -116,6 +117,13 @@ public class DisplayGame extends JFrame{
                 } else {
                     b.setBackground(Color.DARK_GRAY);
                 }
+
+                
+
+                b.addActionListener(actionEvent -> {
+                    clickedOnSomeCase(b);
+                });
+
                 chessBoardButtons[j][i] = b;
             }
         }
@@ -184,6 +192,16 @@ public class DisplayGame extends JFrame{
                     chessBoardButtons[i][j].setBackground(Color.WHITE);
                 } else {
                     chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
+                }
+            }
+        }
+    }
+
+    public void clickedOnSomeCase(JButton jButton){
+        for (int i = 0; i < chessBoardButtons.length; i++) {
+            for (int j = 0; j < chessBoardButtons[i].length; j++) {
+                if(chessBoardButtons[i][j]==jButton){
+                    System.out.println("Cliked on :"+i+";"+j);
                 }
             }
         }
