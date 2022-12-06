@@ -10,6 +10,7 @@ public class Main {
         GameFacade gameFacade = new GameFacade();
         Board board = new Board();
         board.initBoard();
+
         DisplayGame display = new DisplayGame(supervisor, gameFacade, board);
         display.resetChessBoardColor();
 
