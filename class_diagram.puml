@@ -359,9 +359,6 @@
         class DisplayBoard{
             + setBoard()
             + clickedOnCase(posx : Integer, posy : Integer)
-        }
-
-        class DisplayPiece{
             + displayPreview(previews : Boolean[], typeMvmt : Boolean)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
@@ -384,18 +381,16 @@
         class PanelPlayer{
 
         }
-
-
     }
 
 
     'main
-    Main .left.> Board : "instantiate >"
+    Main ..> Board : "instantiate >"
     Main ...> GameFacade : "instantiate >"
-    Main .left.> DisplayBoard : "instantiate >"
+    Main ..> DisplayBoard : "instantiate >"
     Main ..> Terminal : "instantiate >"
-    Main .right.> Supervisor : "instantiate >"
-    Main .right.> Manager : "instantiate >"
+    Main ..> Supervisor : "instantiate >"
+    Main ..> Manager : "instantiate >"
     
     'view
     DisplayBoard o-d-> PanelBoard : "use >"
@@ -419,20 +414,23 @@
     Board ..> King 
     Board ..> Queen 
 
-    Board "pieces\n*" -left-> Piece : " contains >"
+    Board "pieces\n*" --> Piece : " contains >"
 
     'controller
-    GameFacade o-> Supervisor : "instantiates >"
-    
+    GameFacade o--> Supervisor : "instantiates >"
+    Supervisor --> GameFacade : "return"
    
 
 
     'relation view - controller
     'cette relation envoie la position de la case cliquee a controller
     DisplayBoard -> GameFacade : "calls >"  
-
-    'relation view - model
+    GameFacade -> DisplayGame : "affiche"
     
+    'relation view - model
+    DisplayGame ..|> ManagerObserver : ""
+    Terminal ..|> ManagerObserver : ""
+    DisplayBoard ..|> BoardObserver : ""
 
     'relation controller - model
     Supervisor -> Board : "use"
