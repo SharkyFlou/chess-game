@@ -168,13 +168,10 @@ public class DisplayGame extends JFrame{
         }
     }
 
-
-
-
     public void updateChess(){
         for(int i = 0 ; i < 8; i++){
             for(int j = 0 ; j < 8; j++){
-                Piece newPiece = board.getPiece(j,i);
+                Piece newPiece = board.getPiece(i,j);
                 if(newPiece!=null){
                     URL temp = Main.class.getResource("/resources/"+newPiece.getImageLink()+".png");
                     chessBoardButtons[i][j].setIcon(new ImageIcon(temp));

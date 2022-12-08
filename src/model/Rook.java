@@ -13,5 +13,6 @@ public class Rook extends FirstMovement{
         Boolean[][] canGoTo = super.initTabFalse();
         return canGoTo;
     }
+    
 
 }
