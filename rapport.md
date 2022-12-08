@@ -25,4 +25,12 @@ Choix 4e seance :
 Passage au codage, modifications du PUML
 - Création de Board, Interactions (qui gère le mouvement) et Manager (qui gère les victoires, règles et le "backend" du chess)
 - On enlève le FactoryMethod, vu que chaque pièce peut être créée avec les attributs propres à chacune (pas de problème auquel répondre)
-- 
+Création du squelette de chaque classe décrite dans le PUML.
+Création de la view DisplayGame qui affiche déjà un échiquier.
+Inititalisaton du Board, création des pièces aux bon endroits.
+Début calcul mouvement des pièces.
+
+Choix 5e seance : 
+Modification du PUML : 
+- Ajout de la classe Mover, responsable de calculer les déplacements et attaques réelement possible, et de renvoyer un tableau de tableau de booléan correspondant
+
