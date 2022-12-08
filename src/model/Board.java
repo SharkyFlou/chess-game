@@ -40,9 +40,7 @@ public class Board {
         }
     }
 
-    public Piece getPiece(int posX, int posY) {
-        if (posX < 0 || posX > 7 || posY < 0 || posY > 7) {
-            System.out.println("Trying to access a piece out of the board : " + posX + ";" + posY);
+
     public Piece getPiece(int posY,int posX){
         if(posX < 0 || posX > 7 || posY < 0 || posY > 7){
             System.out.println("Trying to access a piece out of the board : "+posX+";"+posY);
@@ -57,39 +55,7 @@ public class Board {
         return false;
     }
 
-    public boolean doesCaseContainPieceOfTeam(int posX, int posY, boolean team) {
-        if (this.getPiece(posX, posY).getTeam() == team) {
-            return true;
-        }
-        return false;
-    }
 
-    public void movePiece(int oldPosX, int oldPosY, int newPosX, int newPosY) {
-        if (doesCaseContainPiece(oldPosX, oldPosY)) {
-            Piece pieceBougee = getPiece(oldPosX, oldPosY);
-            destroyPiece(oldPosX, oldPosY);
-            board[newPosX][newPosY] = pieceBougee;
-            // gere le premier mouvement
-            if (pieceBougee.getChessName() == "pawn" ||
-                    pieceBougee.getChessName() == "rook" ||
-                    pieceBougee.getChessName() == "king") {
-                /*
-                 * if (!pieceBougee.hasItMoved())
-                 * (FirstMovement)pieceBougee.hasMoved = true;
-                 */
-            }
-        }
-    }
-
-    public void destroyPiece(int posX, int posY) {
-        board[posX][posY] = null;
-    }
-
-    public boolean doesCaseContainPiece(int posX, int posY) {
-        if (this.getPiece(posX, posY) != null)
-            return true;
-        return false;
-    }
 
     public boolean doesCaseContainPieceOfTeam(int posX, int posY, boolean team) {
         if (this.getPiece(posX, posY).getTeam() == team) {

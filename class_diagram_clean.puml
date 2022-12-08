@@ -31,7 +31,15 @@
         }
 
         class Mover{
-            + compareTheoreticalToPhysical(mvtPiece : Boolean[], board : Piece[]) : Boolean[]
+            + giveRealMvt(posY : Integer, posX : Integer) : Boolean[]
+            + giveRealAtk(posY : Integer, posX : Integer) : Boolean[]
+            - calculateMvmtPawn(posY : Integer, posX : Integer) : Boolean[]
+            - calculateAtkPawn(posY : Integer, posX : Integer) : Boolean[]
+            ' the boolean mvmts, when true calcul the mvmt, when false calcul the atk
+            - calculateMvmtAtkPlus(posY : Integer, posX : Integer, mvmt : Boolean, reach : Integer) : Boolean[]
+            - calculateMvmtAtkCross(posY : Integer, posX : Integer, mvmt : Boolean, reach : Integer) : Boolean[]
+            - calculateMvmtAtkKnight(posY : Integer, posX : Integer, mvmt : Boolean) : Boolean[]
+            - calculateMvmtAtkPlusCross(posY : Integer, posX : Integer, mvmt : Boolean, reach : Integer) : Boolean[]
         }
 
         class Piece{
@@ -115,6 +123,8 @@
     package controller{
 
         class Supervisor{
+            - casesPreviewedMvt : Boolean[]
+            - casesPreviewedAtk : Boolean[]
             - lastClickedPiecePosx : Integer
             - lastClickedPiecePosy : Integer 
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
@@ -192,12 +202,12 @@
     ' Piece <|.down.. King 
     ' Piece <|.down.. Queen 
 
-    Board ..> Pawn 
-    Board ..> Knight 
-    Board ..> Bishop 
-    Board ..> Rook 
-    Board ..> King 
-    Board ..> Queen 
+    Board ..> Pawn : "instantiate >"
+    Board ..> Knight : "instantiate >"
+    Board ..> Bishop : "instantiate >"
+    Board ..> Rook : "instantiate >"
+    Board ..> King : "instantiate >"
+    Board ..> Queen : "instantiate >"
 
     Board "pieces\n*" -> Piece : " contains >"
 
@@ -218,11 +228,20 @@
     DisplayBoard ..|> BoardObserver : ""
 
     'relation controller - model
-    Supervisor --> Board : "use"
+    Supervisor --> Board : "uses >"
+    Supervisor -r-> Mover : "uses >"
 
 
     'layout
     Board -[hidden]> Manager
     'DisplayBoard -[hidden]> Supervisor : "consults >"
+
+    Mover "board\n1" o-> Board : "own >"
+    Mover .u.> Rook : "uses >"
+    Mover .u.> Pawn : "uses >"
+    Mover .u.> King : "uses >"
+    Mover .u.> Bishop : "uses >"
+    Mover .u.> Queen : "uses >"
+    Mover .u.> King : "uses >"
 
     @enduml
