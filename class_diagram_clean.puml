@@ -33,28 +33,28 @@
         class Mover{
             - casesPreviewedMvt : Boolean[]
             - casesPreviewedAtk : Boolean[]
-            + isCasePreviewMvmt(posX : Integer, posY : Integer) : Boolean
+            + isCasePreviewMvt(posX : Integer, posY : Integer) : Boolean
             + isCasePreviewAtk(posX : Integer, posY : Integer) : Boolean
             + emptyPreviews()
-            + giveRealMvt(posY : Integer, posX : Integer)
-            + giveRealAtk(posY : Integer, posX : Integer)
-            - calculateMvmtPawn(posY : Integer, posX : Integer) : Boolean[]
+            + calculateRealMvt(posY : Integer, posX : Integer)
+            + calculateRealAtk(posY : Integer, posX : Integer)
+            - calculateMvtPawn(posY : Integer, posX : Integer) : Boolean[]
             - calculateAtkPawn(posY : Integer, posX : Integer) : Boolean[]
-            ' the boolean mvmts, when true calcul the mvmt, when false calcul the atk
-            - calculateMvmtAtkPlus(posY : Integer, posX : Integer, mvmt : Boolean, reach : Integer) : Boolean[]
-            - calculateMvmtAtkCross(posY : Integer, posX : Integer, mvmt : Boolean, reach : Integer) : Boolean[]
-            - calculateMvmtAtkKnight(posY : Integer, posX : Integer, mvmt : Boolean) : Boolean[]
-            - calculateMvmtAtkPlusCross(posY : Integer, posX : Integer, mvmt : Boolean, reach : Integer) : Boolean[]
+            ' the boolean mvts, when true calcul the mvt, when false calcul the atk
+            - calculateMvtAtkPlus(posY : Integer, posX : Integer, mvt : Boolean, reach : Integer) : Boolean[]
+            - calculateMvtAtkCross(posY : Integer, posX : Integer, mvt : Boolean, reach : Integer) : Boolean[]
+            - calculateMvtAtkKnight(posY : Integer, posX : Integer, mvt : Boolean) : Boolean[]
+            - calculateMvtAtkPlusCross(posY : Integer, posX : Integer, mvt : Boolean, reach : Integer) : Boolean[]
             + addObserver(obs : PreviewObserver)
             - notifyObsDisplayAtk(cases : Boolean[])
-            - notifyObsDisplayMvmt(cases : Boolean[])
+            - notifyObsDisplayMvt(cases : Boolean[])
             - notifyObsEraseDisplay()
         }
 
         interface PreviewObserver{
-            displayPreviewAtk(atkCases : Boolean[])
-            displayPreviewMvmt(mvmtCases : Boolean[])
-            erasePreview()
+            +displayPreviewAtk(atkCases : Boolean[])
+            +displayPreviewMvt(mvtCases : Boolean[])
+            +erasePreview()
         }
 
         class Piece{
@@ -138,7 +138,7 @@
             - lastClickedPiecePosy : Integer 
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
             + setBoard()
-            + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean)
+            + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean) : Boolean
             
             + addObs(obs : InteractionsObserver)
             - notifyPrev()
@@ -160,7 +160,7 @@
         class DisplayBoard{
             + setBoard()
             + clickedOnCase(posx : Integer, posy : Integer)
-            + displayPreview(previews : Boolean[], typeMvmt : Boolean)
+            + displayPreview(previews : Boolean[], typeMvt : Boolean)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
         }
@@ -175,7 +175,7 @@
         class Terminal{
             + setBoard()
             + clickedOnCase(posx : Integer, posy : Integer)
-            + displayPreview(previews : Boolean[], typeMvmt : Boolean)
+            + displayPreview(previews : Boolean[], typeMvt : Boolean)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
         }
@@ -199,9 +199,9 @@
     'DisplayBoard o--> PanelPlayer : "use >"
 
     'model
-    Board "*\n observers" o--> BoardObserver : "is observed by"
-    Manager "*\n observers" o--> ManagerObserver : "is observed by"
-    Mover "*\n observers" o--> PreviewObserver : "is observed by"
+    Board  o--> "*\n -observers" BoardObserver : "is observed by >"
+    Manager  o--> "*\n -observers" ManagerObserver : "is observed by >"
+    Mover  o--> "*\n -observers" PreviewObserver : > is observed by
    
     ' Piece <|.down.. Knight 
     ' Piece <|.down.. Pawn 
@@ -217,7 +217,7 @@
     Board ..> King : "instantiate >"
     Board ..> Queen : "instantiate >"
 
-    Board "pieces\n*" -> Piece : " contains >"
+    Board -> "-pieces\n*" Piece : " contains >"
 
     'controller
     GameFacade o--> Supervisor : "instantiates >"
@@ -228,7 +228,7 @@
     'relation view - controller
     'cette relation envoie la position de la case cliquee a controller
     DisplayBoard -right-> GameFacade : "calls >"  
-    GameFacade -> DisplayGame : "affiche"
+    GameFacade -> DisplayGame : "display >"
     
     'relation view - model
     DisplayGame ..|> ManagerObserver : ""
@@ -242,10 +242,11 @@
 
 
     'layout
-    Board -[hidden]> Manager
+    Board o-> "1\n -manager" Manager : > contains 
+    
     'DisplayBoard -[hidden]> Supervisor : "consults >"
 
-    Mover "board\n1" o-> Board : "own >"
+    Mover  o-> "1\n-board" Board : "own >"
     Mover .u.> Rook : "uses >"
     Mover .u.> Pawn : "uses >"
     Mover .u.> King : "uses >"
