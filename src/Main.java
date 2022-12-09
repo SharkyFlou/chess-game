@@ -1,24 +1,29 @@
 import controller.GameFacade;
 import controller.Supervisor;
 import model.Board;
-import model.Knight;
+import model.Mover;
 import view.*;
 
 public class Main {
     public static void main(String[] args) {
-        
+        Supervisor supervisor = new Supervisor();
+        GameFacade gameFacade = new GameFacade(supervisor);
         Board board = new Board();
+
+        Mover mover = new Mover(board);
+        
 
         
 
         DisplayGame display = new DisplayGame(supervisor, gameFacade, board);
         board.addObs(display);
+        mover.addObs(display);
 
         board.initBoard();
         display.resetChessBoardColor();
 
-        Supervisor supervisor = new Supervisor();
-        GameFacade gameFacade = new GameFacade();
+        supervisor.addBoardMover(board, mover);
+        
 
         // Piece test = board[0][1];
         /*
