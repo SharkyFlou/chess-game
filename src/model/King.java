@@ -18,8 +18,8 @@ public class King extends FirstMovement {
     //
 
     // <-----pos Y------->
-    public Boolean[][] getTheoricalMvmt(int posX, int posY) {
-        Boolean[][] canGoTo = super.initTabFalse();
+    public boolean[][] getTheoricalMvt(int posX, int posY) {
+        boolean[][] canGoTo = super.initTabFalse();
         // 8 positions possibles
 
         /*

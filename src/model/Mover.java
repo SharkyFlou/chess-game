@@ -32,6 +32,16 @@ public class Mover {
         }
     }
 
+    public boolean[][] initializePreviews() {
+        boolean[][] initializer = new boolean[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                initializer[i][j] = false;
+            }
+        }
+        return initializer;
+    }
+
     public void calculateRealMvt(int posX, int posY) {
         Piece currentPieceMvt = board.getPiece(posX, posY);
         if (currentPieceMvt.getChessName() == "pawn")
@@ -47,18 +57,19 @@ public class Mover {
     }
 
     private boolean[][] calculateMvtPawn(int posX, int posY) {
-        boolean realMvtPawn[][];
+        boolean realMvtPawn[][] = initializePreviews();
+        ;
         return realMvtPawn; // initializer
     }
 
     private boolean[][] calculateAtkPawn(int posX, int posY) {
-        boolean realAtkPawn[][];
+        boolean realAtkPawn[][] = initializePreviews();
         return realAtkPawn; // initializer
     }
 
     // GERE LES MOUVEMENTS
 
-    // Boolean mvt = correspond a
+    // boolean mvt = correspond a
     // true = mvt
     // false = atk
 
@@ -66,25 +77,25 @@ public class Mover {
     private boolean[][] calculateMvtAtkPlus(int posX, int posY, int reach, boolean mvt) {
         Rook rook = new Rook(true);
 
-        boolean realMvtAtkPlus[][];
+        boolean realMvtAtkPlus[][] = initializePreviews();
         return realMvtAtkPlus; // initializer
     }
 
     // bishop, reine, roi
     private boolean[][] calculateMvtAtkCross(int posX, int posY, int reach, boolean mvt) {
-        boolean realMvtAtkCross[][];
+        boolean realMvtAtkCross[][] = initializePreviews();
         return realMvtAtkCross; // initializer
     }
 
     // reine, roi
     private boolean[][] calculateMvtAtkPlusCross(int posX, int posY, int reach, boolean mvt) {
-        boolean realMvtAtkCross[][];
+        boolean realMvtAtkCross[][] = initializePreviews();
         return realMvtAtkCross; // initializer
     }
 
     // chevalier
     private boolean[][] calculateMvtAtkKnight(int posX, int posY, int reach, boolean mvt) {
-        boolean realMvtAtkKnight[][];
+        boolean realMvtAtkKnight[][] = initializePreviews();
         return realMvtAtkKnight;
     }
 
@@ -104,9 +115,9 @@ public class Mover {
         }
     }
 
-    public void notifyDisplayMvmt(Piece piece) {
+    public void notifyDisplayMvt(Piece piece) {
         for (PreviewObserver obs : listObs) {
-            obs.displayPreviewMvmt(casesPreviewMvt);
+            obs.displayPreviewMvt(casesPreviewMvt);
         }
     }
 }

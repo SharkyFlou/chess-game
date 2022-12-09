@@ -20,8 +20,8 @@ public class Bishop extends Piece {
     //
 
     // <-----pos Y------->
-    public Boolean[][] getTheoricalMvmt(int posX, int posY) {
-        Boolean[][] canGoTo = super.initTabFalse();
+    public boolean[][] getTheoricalMvt(int posX, int posY) {
+        boolean[][] canGoTo = super.initTabFalse();
         // int nw = 1, ne = 1, sw = 1, se = 1;
 
         // 8 positions possibles = KING

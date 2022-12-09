@@ -20,8 +20,8 @@ public class Rook extends FirstMovement {
     //
 
     // <-----pos Y------->
-    public Boolean[][] getTheoricalMvmt(int posX, int posY) {
-        Boolean[][] canGoTo = super.initTabFalse();
+    public boolean[][] getTheoricalMvt(int posX, int posY) {
+        boolean[][] canGoTo = super.initTabFalse();
 
         // KING
         if (reach == 1) {

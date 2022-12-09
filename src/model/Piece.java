@@ -36,10 +36,10 @@ public abstract class Piece {
         return imageLink;
     }
 
-    public abstract Boolean[][] getTheoricalMvmt(int posX, int posY);
+    public abstract boolean[][] getTheoricalMvt(int posX, int posY);
 
-    protected Boolean[][] initTabFalse() {
-        Boolean[][] tab = new Boolean[8][8];
+    protected boolean[][] initTabFalse() {
+        boolean[][] tab = new boolean[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 tab[i][j] = false;

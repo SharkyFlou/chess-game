@@ -40,7 +40,7 @@
             + calculateRealAtk(posY : Integer, posX : Integer)
             - calculateMvtPawn(posY : Integer, posX : Integer) : Boolean[]
             - calculateAtkPawn(posY : Integer, posX : Integer) : Boolean[]
-            ' the boolean mvts, when true calcul the mvt, when false calcul the atk
+            ' the Boolean mvts, when true calcul the mvt, when false calcul the atk
             - calculateMvtAtkPlus(posY : Integer, posX : Integer, mvt : Boolean, reach : Integer) : Boolean[]
             - calculateMvtAtkCross(posY : Integer, posX : Integer, mvt : Boolean, reach : Integer) : Boolean[]
             - calculateMvtAtkKnight(posY : Integer, posX : Integer, mvt : Boolean) : Boolean[]

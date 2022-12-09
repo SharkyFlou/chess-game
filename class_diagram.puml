@@ -23,17 +23,17 @@
         }
 
         class Supervisor{
-            - previewCasesMvmt : Boolean[] 
+            - previewCasesMvt : Boolean[] 
             - previewCasesAtk : Boolean[] 
 
             + Supervisor()
             + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean)
-            - isCasePreviewMvmt(posX : Integer, posY : Integer) : Boolean
+            - isCasePreviewMvt(posX : Integer, posY : Integer) : Boolean
             - isCasePreviewAtk(posX : Integer, posY : Integer) : Boolean
-            - pawnMvmt()
+            - pawnMvt()
             - pwnAtk()
-            - bishopMvmt()
-            - queenMvmt()
+            - bishopMvt()
+            - queenMvt()
             + addObs(obs : InteractionsObserver)
             - notifyPrev()
             - notifyEndPrev()
@@ -46,17 +46,17 @@
 
 
     class interactions{ 
-        - previewCasesMvmt : Boolean[] 
+        - previewCasesMvt : Boolean[] 
         - previewCasesAtk : Boolean[] 
 
         + Supervisor()
         + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean)
-        - isCasePreviewMvmt(posX : Integer, posY : Integer) : Boolean
+        - isCasePreviewMvt(posX : Integer, posY : Integer) : Boolean
         - isCasePreviewAtk(posX : Integer, posY : Integer) : Boolean
-        - pawnMvmt()
+        - pawnMvt()
         - pwnAtk()
-        - bishopMvmt()
-        - queenMvmt()
+        - bishopMvt()
+        - queenMvt()
         + addObs(obs : InteractionsObserver)
         - notifyPrev()
         - notifyEndPrev()
@@ -134,7 +134,7 @@
 
         interface BoardObserver{
             + DisplayGame(pieces : Piece[]) {abstract}
-            + displayPreview(previews : Boolean[] , typeMvmt : Boolean) {abstract}
+            + displayPreview(previews : Boolean[] , typeMvt : Boolean) {abstract}
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview() {abstract}
             + displayWin(team : Boolean)
@@ -152,7 +152,7 @@
         'this one is displaying everything with swing
          class DisplayGame implements BoardObserver{
             + DisplayGame(pieces : Piece[] )
-            + displayPreview(previews : Boolean[], typeMvmt : Boolean)
+            + displayPreview(previews : Boolean[], typeMvt : Boolean)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
             + displayWin(team : Boolean)
@@ -162,7 +162,7 @@
 
         class Terminal implements BoardObserver{
             + DisplayGame(piece[] pieces)
-            + displayPreview(Boolean[] previews, Boolean typeMvmt)
+            + displayPreview(Boolean[] previews, Boolean typeMvt)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
             + displayWin(team: Boolean)
