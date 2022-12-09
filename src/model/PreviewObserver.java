@@ -1,7 +1,9 @@
 package model;
 
 public interface PreviewObserver {
-    public void displayPreviewAtk(Boolean caseAtk[][]);
-    public void displayPreviewMvmt(Boolean caseAtk[][]);
+    public void displayPreviewAtk(boolean caseAtk[][]);
+
+    public void displayPreviewMvmt(boolean caseAtk[][]);
+
     public void erasePreviews();
 }

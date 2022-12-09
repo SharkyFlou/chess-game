@@ -6,11 +6,13 @@ import java.util.List;
 public class Mover {
     private boolean casesPreviewMvt[][];
     private boolean casesPreviewAtk[][];
+    private Board board;
+    private List<PreviewObserver> listObs = new ArrayList<PreviewObserver>();
 
-    // Board board = new Board();
+    //
 
-    public Mover(Board board) {
-
+    public Mover(Board gaveBoard) {
+        board = gaveBoard;
     }
 
     public boolean isCasePreviewMvt(int posX, int posY) {
@@ -34,7 +36,9 @@ public class Mover {
         Piece currentPieceMvt = board.getPiece(posX, posY);
         if (currentPieceMvt.getChessName() == "pawn")
             casesPreviewMvt = calculateMvtPawn(posX, posY);
-        else if(currentPieceMvt.getChessName() == "")
+        else if (currentPieceMvt.getChessName() == "") {
+        }
+    }
 
     public void calculateRealAtk(int posX, int posY) {
         Piece currentPieceAtk = board.getPiece(posX, posY);
@@ -63,21 +67,26 @@ public class Mover {
         Rook rook = new Rook(true);
 
         boolean realMvtAtkPlus[][];
-        return realMvtPawn; // initializer
+        return realMvtAtkPlus; // initializer
     }
 
     // bishop, reine, roi
     private boolean[][] calculateMvtAtkCross(int posX, int posY, int reach, boolean mvt) {
         boolean realMvtAtkCross[][];
-        return realMvtPawn; // initializer
+        return realMvtAtkCross; // initializer
+    }
+
+    // reine, roi
+    private boolean[][] calculateMvtAtkPlusCross(int posX, int posY, int reach, boolean mvt) {
+        boolean realMvtAtkCross[][];
+        return realMvtAtkCross; // initializer
     }
 
     // chevalier
     private boolean[][] calculateMvtAtkKnight(int posX, int posY, int reach, boolean mvt) {
         boolean realMvtAtkKnight[][];
-
-    private List<PreviewObserver> listObs = new ArrayList<PreviewObserver>();
-    private Board board;
+        return realMvtAtkKnight;
+    }
 
     public void addObs(PreviewObserver obs) {
         listObs.add(obs);
@@ -97,14 +106,7 @@ public class Mover {
 
     public void notifyDisplayMvmt(Piece piece) {
         for (PreviewObserver obs : listObs) {
-            obs.displayPreviewMvmt(casesPreviewMvmt);
+            obs.displayPreviewMvmt(casesPreviewMvt);
         }
     }
-
-    // reine, roi
-    private boolean[][] calculateMvtAtkPlusCross(int posX, int posY, int reach, boolean mvt) {
-        boolean realMvtAtkCross[][];
-        return realMvtPawn; // initializer
-    }
-
 }
