@@ -200,7 +200,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     }
 
     
-    public void displayPreviewMvmt(Boolean[][] caseAtk) {
+    public void displayPreviewMvt(Boolean[][] caseAtk) {
         // TODO Auto-generated method stub
         
     }
