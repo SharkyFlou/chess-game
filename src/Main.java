@@ -6,10 +6,11 @@ import view.*;
 
 public class Main {
     public static void main(String[] args) {
-
         Supervisor supervisor = new Supervisor();
         GameFacade gameFacade = new GameFacade(supervisor);
         Board board = new Board();
+
+        Mover mover = new Mover(board);
 
         Mover mover = new Mover(board);
 
