@@ -4,6 +4,12 @@ public class Mover {
     private boolean casesPreviewMvt[][];
     private boolean casesPreviewAtk[][];
 
+    // Board board = new Board();
+
+    public Mover(Board board) {
+
+    }
+
     public boolean isCasePreviewMvt(int posX, int posY) {
         return true;
     }
@@ -22,25 +28,56 @@ public class Mover {
     }
 
     public void calculateRealMvt(int posX, int posY) {
-
-    }
+        Piece currentPieceMvt = board.getPiece(posX, posY);
+        if (currentPieceMvt.getChessName() == "pawn")
+            casesPreviewMvt = calculateMvtPawn(posX, posY);
+        else if(currentPieceMvt.getChessName() == "")
 
     public void calculateRealAtk(int posX, int posY) {
-
+        Piece currentPieceAtk = board.getPiece(posX, posY);
+        if (currentPieceAtk.getChessName() == "pawn")
+            casesPreviewAtk = calculateAtkPawn(posX, posY);
     }
 
-    public boolean[][] calculateMvtPawn(int posX, int posY) {
+    private boolean[][] calculateMvtPawn(int posX, int posY) {
         boolean realMvtPawn[][];
         return realMvtPawn; // initializer
     }
 
-    public boolean[][] calculateAtkPawn(int posX, int posY) {
+    private boolean[][] calculateAtkPawn(int posX, int posY) {
         boolean realAtkPawn[][];
         return realAtkPawn; // initializer
     }
 
-    public boolean[][] calculateMvtAtkPlus(int posX, int posY, int reach) {
+    // GERE LES MOUVEMENTS
+
+    // Boolean mvt = correspond a
+    // true = mvt
+    // false = atk
+
+    // tour, reine, roi
+    private boolean[][] calculateMvtAtkPlus(int posX, int posY, int reach, boolean mvt) {
+        Rook rook = new Rook(true);
+
         boolean realMvtAtkPlus[][];
+        return realMvtPawn; // initializer
+    }
+
+    // bishop, reine, roi
+    private boolean[][] calculateMvtAtkCross(int posX, int posY, int reach, boolean mvt) {
+        boolean realMvtAtkCross[][];
+        return realMvtPawn; // initializer
+    }
+
+    // chevalier
+    private boolean[][] calculateMvtAtkKnight(int posX, int posY, int reach, boolean mvt) {
+        boolean realMvtAtkKnight[][];
+        return realMvtPawn; // initializer
+    }
+
+    // reine, roi
+    private boolean[][] calculateMvtAtkPlusCross(int posX, int posY, int reach, boolean mvt) {
+        boolean realMvtAtkCross[][];
         return realMvtPawn; // initializer
     }
 
