@@ -2,6 +2,8 @@ package model;
 
 public class Rook extends FirstMovement {
 
+    private int reach;
+
     public Rook(boolean newTeam) {
         super(newTeam,
                 "rook",
@@ -21,11 +23,26 @@ public class Rook extends FirstMovement {
     public Boolean[][] getTheoricalMvmt(int posX, int posY) {
         Boolean[][] canGoTo = super.initTabFalse();
 
-        for (int i = 0; i < 8; i++) {
-            canGoTo[posX][i] = true;
-            canGoTo[i][posY] = true;
+        // KING
+        if (reach == 1) {
+            if (posY - 1 >= 0)
+                canGoTo[posX][posY - 1] = true;
+            if (posY + 1 < 8)
+                canGoTo[posX][posY + 1] = true;
+            if (posX - 1 >= 0)
+                canGoTo[posX - 1][posY] = true;
+            if (posX + 1 < 8)
+                canGoTo[posX + 1][posY] = true;
         }
-        canGoTo[posX][posY] = false;
+        // ROOK
+        else {
+            for (int i = 0; i < 8; i++) {
+                canGoTo[posX][i] = true;
+                canGoTo[i][posY] = true;
+            }
+            canGoTo[posX][posY] = false;
+
+        }
 
         return canGoTo;
     }

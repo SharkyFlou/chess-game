@@ -139,7 +139,6 @@
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
             + setBoard()
             + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean)
-            
             + addObs(obs : InteractionsObserver)
             - notifyPrev()
             - notifyEndPrev()

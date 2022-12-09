@@ -22,29 +22,31 @@ public class King extends FirstMovement {
         Boolean[][] canGoTo = super.initTabFalse();
         // 8 positions possibles
 
-        // both sides
-        if (posY - 1 >= 0)
-            canGoTo[posX][posY - 1] = true;
-        if (posY + 1 < 8)
-            canGoTo[posX][posY + 1] = true;
-
-        // vers le bas
-        if (posX + 1 >= 0 && posX + 1 < 8) {
-            canGoTo[posX + 1][posY] = true;
-            if (posY - 1 >= 0)
-                canGoTo[posX + 1][posY - 1] = true;
-            if (posY + 1 < 8)
-                canGoTo[posX + 1][posY + 1] = true;
-        }
-
-        // vers le haut
-        if (posX - 1 >= 0 && posX - 1 < 8) {
-            canGoTo[posX - 1][posY] = true;
-            if (posY - 1 >= 0)
-                canGoTo[posX - 1][posY - 1] = true;
-            if (posY + 1 < 8)
-                canGoTo[posX - 1][posY + 1] = true;
-        }
+        /*
+         * // both sides
+         * if (posY - 1 >= 0)
+         * canGoTo[posX][posY - 1] = true;
+         * if (posY + 1 < 8)
+         * canGoTo[posX][posY + 1] = true;
+         * 
+         * // vers le bas
+         * if (posX + 1 >= 0 && posX + 1 < 8) {
+         * canGoTo[posX + 1][posY] = true;
+         * if (posY - 1 >= 0)
+         * canGoTo[posX + 1][posY - 1] = true;
+         * if (posY + 1 < 8)
+         * canGoTo[posX + 1][posY + 1] = true;
+         * }
+         * 
+         * // vers le haut
+         * if (posX - 1 >= 0 && posX - 1 < 8) {
+         * canGoTo[posX - 1][posY] = true;
+         * if (posY - 1 >= 0)
+         * canGoTo[posX - 1][posY - 1] = true;
+         * if (posY + 1 < 8)
+         * canGoTo[posX - 1][posY + 1] = true;
+         * }
+         */
         return canGoTo;
     }
 

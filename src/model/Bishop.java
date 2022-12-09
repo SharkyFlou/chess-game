@@ -45,25 +45,35 @@ public class Bishop extends Piece {
         }
         // RANGEES = BISHOP, REINE
         else {
-            // ERROR, while pas verifie
+            int posXVariable = posX, posYVariable = posY;
             // NW
-            while (posX >= 0 && posY >= 0) {
-                canGoTo[posX - reach][posY - reach] = true;
+            while (posXVariable >= 0 && posYVariable >= 0) {
+                canGoTo[posXVariable - 1][posYVariable - 1] = true;
             }
-            // NE
-            while (posX >= 0 && posY < 8) {
-                canGoTo[posX - reach][posY + reach] = true;
-            }
-            // SW
-            while (posX < 8 && posY >= 0) {
-                canGoTo[posX + reach][posY - reach] = true;
-            }
-            // SE
-            while (posX < 8 && posY < 8) {
-                canGoTo[posX + reach][posY + reach] = true;
-            }
-        }
+            posXVariable = posX;
+            posYVariable = posY;
 
+            // NE
+            while (posXVariable >= 0 && posYVariable < 8) {
+                canGoTo[posXVariable - 1][posYVariable + 1] = true;
+            }
+            posXVariable = posX;
+            posYVariable = posY;
+
+            // SW
+            while (posXVariable < 8 && posYVariable >= 0) {
+                canGoTo[posXVariable + 1][posYVariable - 1] = true;
+            }
+            posXVariable = posX;
+            posYVariable = posY;
+
+            // SE
+            while (posXVariable < 8 && posYVariable < 8) {
+                canGoTo[posXVariable + 1][posYVariable + 1] = true;
+            }
+            posXVariable = posX;
+            posYVariable = posY;
+        }
         return canGoTo;
     }
 

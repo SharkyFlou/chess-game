@@ -40,10 +40,9 @@ public class Board {
         }
     }
 
-
-    public Piece getPiece(int posY,int posX){
-        if(posX < 0 || posX > 7 || posY < 0 || posY > 7){
-            System.out.println("Trying to access a piece out of the board : "+posX+";"+posY);
+    public Piece getPiece(int posY, int posX) {
+        if (posX < 0 || posX > 7 || posY < 0 || posY > 7) {
+            System.out.println("Trying to access a piece out of the board : " + posX + ";" + posY);
             return null;
         }
         return board[posY][posX];
@@ -54,8 +53,6 @@ public class Board {
             return true;
         return false;
     }
-
-
 
     public boolean doesCaseContainPieceOfTeam(int posX, int posY, boolean team) {
         if (this.getPiece(posX, posY).getTeam() == team) {
