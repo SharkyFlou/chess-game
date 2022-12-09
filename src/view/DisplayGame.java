@@ -99,7 +99,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
                 if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
                     b.setBackground(Color.WHITE);
                 } else {
-                    b.setBackground(Color.DARK_GRAY);
+                    b.setBackground(Color.red);
                 }
 
                 b.addActionListener(actionEvent -> {
