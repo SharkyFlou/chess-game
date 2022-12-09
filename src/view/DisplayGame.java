@@ -91,7 +91,6 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
         
 
         creationBoardBlackWhite();
-        updateChess();
         setVisible(true);
     }
 
@@ -171,19 +170,6 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
         }
     }
 
-    public void updateChess(){
-        for(int i = 0 ; i < 8; i++){
-            for(int j = 0 ; j < 8; j++){
-                Piece newPiece = board.getPiece(i,j);
-                if(newPiece!=null){
-                    URL temp = Main.class.getResource("/resources/"+newPiece.getImageLink()+".png");
-                    chessBoardButtons[i][j].setIcon(new ImageIcon(temp));
-                }
-                
-            }
-        }
-    }
-
     public void resetChessBoardColor(){
         //go around each jButton and put the basic color again
         for (int i = 0; i < chessBoardButtons.length; i++) {
@@ -201,7 +187,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if(chessBoardButtons[i][j]==jButton){
-                    System.out.println("Cliked on :"+i+";"+j);
+                    gameFacade.clickedOnSomeCase(i, j);
                 }
             }
         }
@@ -227,7 +213,19 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
 
     
     public void displayGame() {
-        // TODO Auto-generated method stub
+        for(int i = 0 ; i < 8; i++){
+            for(int j = 0 ; j < 8; j++){
+                Piece newPiece = board.getPiece(i,j);
+                if(newPiece!=null){
+                    URL temp = Main.class.getResource("/resources/"+newPiece.getImageLink()+".png");
+                    chessBoardButtons[i][j].setIcon(new ImageIcon(temp));
+                }
+                
+            }
+        } 
+    }
+
+    public void displayPieceTaken(Piece piece) {
         
     }
 

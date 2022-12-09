@@ -6,13 +6,19 @@ import view.*;
 
 public class Main {
     public static void main(String[] args) {
-        Supervisor supervisor = new Supervisor();
-        GameFacade gameFacade = new GameFacade();
+        
         Board board = new Board();
-        board.initBoard();
+
+        
 
         DisplayGame display = new DisplayGame(supervisor, gameFacade, board);
+        board.addObs(display);
+
+        board.initBoard();
         display.resetChessBoardColor();
+
+        Supervisor supervisor = new Supervisor();
+        GameFacade gameFacade = new GameFacade();
 
         // Piece test = board[0][1];
         /*
