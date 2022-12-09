@@ -11,17 +11,17 @@ public class Pawn extends FirstMovement {
     }
 
     //
-    //
+    // -
     //
     // pos x
     //
-    //
+    // +
     //
 
     // <-----pos Y------->
-    public Boolean[][] getTheoricalMvmt(int posX, int posY) { // very short and easy for the class
+    public boolean[][] getTheoricalMvt(int posX, int posY) { // very short and easy for the class
 
-        Boolean[][] canGoTo = super.initTabFalse();
+        boolean[][] canGoTo = super.initTabFalse();
 
         int way = super.getTeam() ? 1 : -1;
 
@@ -36,8 +36,8 @@ public class Pawn extends FirstMovement {
         return canGoTo;
     }
 
-    public Boolean[][] getTheoreticalAttack(int posX, int posY) {
-        Boolean[][] canAttackCase = super.initTabFalse();
+    public boolean[][] getTheoreticalAttack(int posX, int posY) {
+        boolean[][] canAttackCase = super.initTabFalse();
 
         int way = super.getTeam() ? 1 : -1;
 
