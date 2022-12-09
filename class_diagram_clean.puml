@@ -31,8 +31,13 @@
         }
 
         class Mover{
-            + giveRealMvt(posY : Integer, posX : Integer) : Boolean[]
-            + giveRealAtk(posY : Integer, posX : Integer) : Boolean[]
+            - casesPreviewedMvt : Boolean[]
+            - casesPreviewedAtk : Boolean[]
+            + isCasePreviewMvmt(posX : Integer, posY : Integer) : Boolean
+            + isCasePreviewAtk(posX : Integer, posY : Integer) : Boolean
+            + emptyPreviews()
+            + giveRealMvt(posY : Integer, posX : Integer)
+            + giveRealAtk(posY : Integer, posX : Integer)
             - calculateMvmtPawn(posY : Integer, posX : Integer) : Boolean[]
             - calculateAtkPawn(posY : Integer, posX : Integer) : Boolean[]
             ' the boolean mvmts, when true calcul the mvmt, when false calcul the atk
@@ -40,6 +45,16 @@
             - calculateMvmtAtkCross(posY : Integer, posX : Integer, mvmt : Boolean, reach : Integer) : Boolean[]
             - calculateMvmtAtkKnight(posY : Integer, posX : Integer, mvmt : Boolean) : Boolean[]
             - calculateMvmtAtkPlusCross(posY : Integer, posX : Integer, mvmt : Boolean, reach : Integer) : Boolean[]
+            + addObserver(obs : PreviewObserver)
+            - notifyObsDisplayAtk(cases : Boolean[])
+            - notifyObsDisplayMvmt(cases : Boolean[])
+            - notifyObsEraseDisplay()
+        }
+
+        interface PreviewObserver{
+            displayPreviewAtk(atkCases : Boolean[])
+            displayPreviewMvmt(mvmtCases : Boolean[])
+            erasePreview()
         }
 
         class Piece{
@@ -91,13 +106,9 @@
             + KnightMovement()
         }
 
-        class BoardObserver{
-            + DisplayGame(pieces : Piece[]) {abstract}
-            + displayPreview(previews : Boolean[] , typeMvmt : Boolean) {abstract}
+        interface BoardObserver{
+            + DisplayGame()
             + displayPromotion(posX : Integer, posY : Integer)
-            + hidePreview() {abstract}
-            + displayWin(team : Boolean)
-            + displayDraw()
         }
 
         class Manager{
@@ -110,7 +121,7 @@
             + addObs(obs : InteractionsObserver)
         }
 
-        class ManagerObserver{
+        interface ManagerObserver{
             + {abstract} DisplayScore(team : Boolean)
         }
 
@@ -123,15 +134,11 @@
     package controller{
 
         class Supervisor{
-            - casesPreviewedMvt : Boolean[]
-            - casesPreviewedAtk : Boolean[]
             - lastClickedPiecePosx : Integer
             - lastClickedPiecePosy : Integer 
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
             + setBoard()
             + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean)
-            - casePreviewMvmt(posX : Integer, posY : Integer) : Boolean
-            - casePreviewAtk(posX : Integer, posY : Integer) : Boolean
             
             + addObs(obs : InteractionsObserver)
             - notifyPrev()
@@ -194,6 +201,7 @@
     'model
     Board "*\n observers" o--> BoardObserver : "is observed by"
     Manager "*\n observers" o--> ManagerObserver : "is observed by"
+    Mover "*\n observers" o--> PreviewObserver : "is observed by"
    
     ' Piece <|.down.. Knight 
     ' Piece <|.down.. Pawn 
@@ -226,6 +234,7 @@
     DisplayGame ..|> ManagerObserver : ""
     Terminal ..|> ManagerObserver : ""
     DisplayBoard ..|> BoardObserver : ""
+    DisplayBoard ..|> PreviewObserver : ""
 
     'relation controller - model
     Supervisor --> Board : "uses >"

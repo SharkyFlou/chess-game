@@ -1,5 +1,8 @@
 package model;
 
-interface BoardObserver {
+public interface BoardObserver {
+    public void displayGame();
+
+    public void displayPromotion(int posX, int posY);
     
 }

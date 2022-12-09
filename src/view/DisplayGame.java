@@ -11,10 +11,13 @@ import controller.GameFacade;
 import controller.Supervisor;
 import model.Board;
 import model.Piece;
+import model.PreviewObserver;
+import model.BoardObserver;
 
 import java.net.URL;
+import java.net.http.HttpResponse.BodyHandler;
 
-public class DisplayGame extends JFrame {
+public class DisplayGame extends JFrame implements PreviewObserver, BoardObserver {
 
     private Supervisor supervisor;
     private GameFacade gameFacade;
@@ -132,7 +135,7 @@ public class DisplayGame extends JFrame {
                                 SwingConstants.CENTER));
                         break;
                     default:
-                        panelLowMid.add(chessBoardButtons[j - 1][i]);
+                        panelLowMid.add(chessBoardButtons[i][j - 1]);
                         break;
 
                 }
@@ -181,5 +184,30 @@ public class DisplayGame extends JFrame {
                 }
             }
         }
+    }
+
+    public void displayPreviewAtk(Boolean[][] caseAtk) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayPreviewMvmt(Boolean[][] caseAtk) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void erasePreviews() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayGame() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayPromotion(int posX, int posY) {
+        // TODO Auto-generated method stub
+
     }
 }
