@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Mover {
     private boolean casesPreviewMvt[][];
     private boolean casesPreviewAtk[][];
@@ -72,7 +75,30 @@ public class Mover {
     // chevalier
     private boolean[][] calculateMvtAtkKnight(int posX, int posY, int reach, boolean mvt) {
         boolean realMvtAtkKnight[][];
-        return realMvtPawn; // initializer
+
+    private List<PreviewObserver> listObs = new ArrayList<PreviewObserver>();
+    private Board board;
+
+    public void addObs(PreviewObserver obs) {
+        listObs.add(obs);
+    }
+
+    public void notifyEraseDisplays() {
+        for (PreviewObserver obs : listObs) {
+            obs.erasePreviews();
+        }
+    }
+
+    public void notifyDisplayAtk(Piece piece) {
+        for (PreviewObserver obs : listObs) {
+            obs.displayPreviewAtk(casesPreviewAtk);
+        }
+    }
+
+    public void notifyDisplayMvmt(Piece piece) {
+        for (PreviewObserver obs : listObs) {
+            obs.displayPreviewMvmt(casesPreviewMvmt);
+        }
     }
 
     // reine, roi

@@ -1,7 +1,11 @@
 package model;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
     private Piece board[][] = new Piece[8][8];
+    List<BoardObserver> listObs = new ArrayList<BoardObserver>();
+
 
     public void initBoard() {
 
@@ -38,6 +42,7 @@ public class Board {
                 }
             }
         }
+        notifyMov();
     }
 
     public Piece getPiece(int posY, int posX) {
@@ -79,7 +84,30 @@ public class Board {
     }
 
     public void destroyPiece(int posX, int posY) {
+        if(board[posX][posY]!=null){
+            notifyPieceTaken(board[posX][posY]);
+        }
+        else{
+            System.out.println("Trying to delete a non existent piece : "+posX+";"+posY);
+        }
+        
         board[posX][posY] = null;
+    }
+
+    public void addObs(BoardObserver obs){
+        listObs.add(obs);
+    }
+
+    public void notifyMov(){
+        for (BoardObserver obs : listObs) {
+            obs.displayGame();
+        }
+    }
+
+    public void notifyPieceTaken(Piece piece){
+        for (BoardObserver obs : listObs) {
+            obs.displayPieceTaken(piece);
+        }
     }
 
 }
