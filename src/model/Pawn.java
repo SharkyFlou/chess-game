@@ -11,11 +11,11 @@ public class Pawn extends FirstMovement {
     }
 
     //
-    //
+    // -
     //
     // pos x
     //
-    //
+    // +
     //
 
     // <-----pos Y------->
