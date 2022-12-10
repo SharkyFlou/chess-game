@@ -72,7 +72,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     }
 
     private int DisplayGame(GameFacade xgameFacade, Board xBoard, int chiffre) {
-        if(chiffre<100){
+        if(chiffre<1000){
             DisplayGame dg = new DisplayGame(xgameFacade, xBoard,chiffre);
         }
         return 0;
