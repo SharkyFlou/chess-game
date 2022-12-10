@@ -33,6 +33,8 @@ public class Pawn extends FirstMovement {
             canGoTo[posX + (2 * way)][posY] = true;
         }
 
+        System.out.println("ici");
+
         return canGoTo;
     }
 
@@ -47,6 +49,8 @@ public class Pawn extends FirstMovement {
             if (posY + 1 < 8)
                 canAttackCase[posX + (1 * way)][posY + 1] = true;
         }
+
+        System.out.println("ici2");
         return canAttackCase;
     }
 

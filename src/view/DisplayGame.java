@@ -148,7 +148,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (chessBoardButtons[i][j] == jButton) {
-                    gameFacade.clickedOnSomeCase(j, i);
+                    gameFacade.clickedOnSomeCase(i, j);
                 }
             }
         }
@@ -211,7 +211,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     }
 
     public void displayPieceTaken(Piece piece) {
-        
+
     }
 
     public void displayPromotion(int posX, int posY) {

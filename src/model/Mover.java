@@ -68,7 +68,6 @@ public class Mover {
             casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 0, true, currentPieceMvt);
 
         notifyDisplayMvt();
-
     }
 
     public void calculateRealAtk(int posY, int posX) {
@@ -105,7 +104,7 @@ public class Mover {
     // roi et reine)
     // donc je le fais
     private boolean[][] calculateMvtAtkPawn(int posY, int posX, boolean mvtAtk, Piece piece) {
-
+        System.out.println("la");
         Pawn pawn = (Pawn) piece;
 
         boolean realMvtAtkPawn[][] = initializePreviews();
@@ -134,6 +133,25 @@ public class Mover {
 
             }
         }
+
+        for(int i = 0; i<8; i++){
+            for(int j = 0; j<8; j++){
+               if(realMvtAtkPawn[i][j]){
+                  System.out.print("x");
+               }
+                else{
+                    System.out.print(".");
+                }
+            }
+            System.out.print("\n");
+        }
+        if(mvtAtk){
+            realMvtAtkPawn[0][1]=true;
+        }
+        else{
+            realMvtAtkPawn[0][2]=true;
+        }
+        
         return realMvtAtkPawn;
     }
 

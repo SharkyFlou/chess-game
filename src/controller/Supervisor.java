@@ -18,12 +18,12 @@ public class Supervisor {
         mover = gaveMover;
     }
 
-    public boolean clickedOnSomeCase(int posX, int posY, boolean team) {
+    public boolean clickedOnSomeCase(int posY, int posX, boolean team) {
         if(board.getPiece(posY, posX)==null){
             System.out.println("The team "+
                 (team ? "white" : "black")+
                 " clicked on nothing in "+
-                posX+";"+posY);
+                posY+";"+posX);
 
         }
         else{
@@ -33,7 +33,7 @@ public class Supervisor {
                 (board.getPiece(posY, posX).getTeam() ? "white " : "black ")+
                 board.getPiece(posY, posX).getChessName()+
                 " in "+
-                posX+";"+posY);
+                posY+";"+posX);
         }
 
 
