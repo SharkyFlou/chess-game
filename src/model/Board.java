@@ -79,15 +79,16 @@ public class Board {
                  */
             }
         }
-        destroyPiece(oldPosY, oldPosX);
+        //destroyPiece(oldPosY, oldPosX);
+        notifyMov();
     }
 
     public void destroyPiece(int posY, int posX) {
         if(getPiece(posY, posX)!=null){
-            notifyPieceTaken(board[posX][posY]);
+            notifyPieceTaken(getPiece(posY, posX));
         }
         else{
-            System.out.println("Trying to delete a non existent piece : "+posX+";"+posY);
+            System.out.println("Trying to delete a non existent piece : "+posY+";"+posX);
         }
         
         board[posY][posX] = null;
