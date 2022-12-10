@@ -7,7 +7,7 @@ public class Mover {
     private boolean casesPreviewMvt[][];
     private boolean casesPreviewAtk[][];
     private Board board;
-    private boolean team; // a remplir
+    // private boolean team; // a remplir
     private List<PreviewObserver> listObs = new ArrayList<PreviewObserver>();
 
     //
@@ -27,8 +27,8 @@ public class Mover {
 
     // reset les tableaux de retour
     public void emptyPreviews() {
-        casesPreviewAtk=initializePreviews();
-        casesPreviewMvt=initializePreviews();
+        casesPreviewAtk = initializePreviews();
+        casesPreviewMvt = initializePreviews();
     }
 
     // initialise les tableaux de retour a 0
@@ -45,6 +45,7 @@ public class Mover {
 
     public void calculateRealMvt(int posX, int posY) {
         Piece currentPieceMvt = board.getPiece(posX, posY);
+
         if (currentPieceMvt.getChessName() == "pawn")
             casesPreviewMvt = calculateMvtAtkPawn(posX, posY, true);
         // true correspond a mvt
@@ -89,7 +90,7 @@ public class Mover {
 
         else if (currentPieceAtk.getChessName() == "queen")
             casesPreviewMvt = calculateMvtAtkPlusCross(posX, posY, 0, false);
-        
+
         notifyDisplayAtk();
     }
 
@@ -102,7 +103,8 @@ public class Mover {
     // honestly on peut melanger calculateMvtPawn et calculateAtkPawn (comme pour
     // roi et reine)
     // donc je le fais
-    private boolean[][] calculateMvtAtkPawn(int posX, int posY, boolean mvtAtk) {
+    private boolean[][] calculateMvtAtkPawn(int posX, int posY, boolean mvtAtk, Piece piece) {
+
         Pawn pawn = new Pawn(team);
 
         boolean realMvtAtkPawn[][] = initializePreviews();
@@ -135,7 +137,7 @@ public class Mover {
     }
 
     // chevalier
-    private boolean[][] calculateMvtAtkKnight(int posX, int posY, boolean mvtAtk) {
+    private boolean[][] calculateMvtAtkKnight(int posX, int posY, boolean mvtAtk, Piece piece) {
         Knight knight = new Knight(team);
         // initialise a false
         boolean realMvtAtkKnight[][] = initializePreviews();
@@ -167,14 +169,14 @@ public class Mover {
 
     // bishop, reine, roi
     // des que tu lis ça charly appelle moi car c'est une catastrophe
-    private boolean[][] calculateMvtAtkCross(int posX, int posY, int reach, boolean mvtAtk) {
+    private boolean[][] calculateMvtAtkCross(int posX, int posY, int reach, boolean mvtAtk, Piece piece) {
         Bishop bishop = new Bishop(team);
         boolean realMvtAtkCross[][] = initializePreviews();
         return realMvtAtkCross; // initializer
     }
 
     // tour, reine, roi
-    private boolean[][] calculateMvtAtkPlus(int posX, int posY, int reach, boolean mvtAtk) {
+    private boolean[][] calculateMvtAtkPlus(int posX, int posY, int reach, boolean mvtAtk, Piece piece) {
         Rook rook = new Rook(true);
 
         boolean realMvtAtkPlus[][] = initializePreviews();
@@ -188,7 +190,7 @@ public class Mover {
 
     // reine, roi
     // ceci appelle les resultats de plus + cross
-    private boolean[][] calculateMvtAtkPlusCross(int posX, int posY, int reach, boolean mvtAtk) {
+    private boolean[][] calculateMvtAtkPlusCross(int posX, int posY, int reach, boolean mvtAtk, Piece piece) {
         boolean[][] realMvtCross = calculateMvtAtkCross(posX, posY, reach, mvtAtk);
         boolean[][] realMvtPlus = calculateMvtAtkCross(posX, posY, reach, mvtAtk);
 
