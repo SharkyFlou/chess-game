@@ -17,11 +17,11 @@ public class Mover {
         emptyPreviews();
     }
 
-    public boolean isCasePreviewMvt(int posX, int posY) {
+    public boolean isCasePreviewMvt(int posY, int posX) {
         return casesPreviewMvt[posY][posX];
     }
 
-    public boolean isCasePreviewAtk(int posX, int posY) {
+    public boolean isCasePreviewAtk(int posY, int posX) {
         return casesPreviewAtk[posY][posX];
     }
 
@@ -29,6 +29,7 @@ public class Mover {
     public void emptyPreviews() {
         casesPreviewAtk=initializePreviews();
         casesPreviewMvt=initializePreviews();
+        notifyEraseDisplays();
     }
 
     // initialise les tableaux de retour a 0

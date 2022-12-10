@@ -6,7 +6,6 @@ import javax.swing.border.*;
 import java.awt.image.BufferedImage;
 
 import controller.GameFacade;
-import controller.Supervisor;
 import model.Board;
 import model.Piece;
 import model.PreviewObserver;
@@ -94,7 +93,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
                 if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
                     b.setBackground(Color.WHITE);
                 } else {
-                    b.setBackground(Color.red);
+                    b.setBackground(Color.DARK_GRAY);
                 }
 
                 b.addActionListener(actionEvent -> {
@@ -144,18 +143,6 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
         }
     }
 
-    public void resetChessBoardColor() {
-        // go around each jButton and put the basic color again
-        for (int i = 0; i < chessBoardButtons.length; i++) {
-            for (int j = 0; j < chessBoardButtons[i].length; j++) {
-                if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
-                    chessBoardButtons[i][j].setBackground(Color.WHITE);
-                } else {
-                    chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
-                }
-            }
-        }
-    }
 
     public void clickedOnSomeCase(JButton jButton) {
         for (int i = 0; i < chessBoardButtons.length; i++) {
@@ -168,27 +155,55 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     }
 
     public void displayPreviewAtk(boolean[][] caseAtk) {
-        // TODO Auto-generated method stub
-
+        System.out.println("Affichage preview atk");
+        // go around each jButton and put the basic color again
+        for (int i = 0; i < chessBoardButtons.length; i++) {
+            for (int j = 0; j < chessBoardButtons[i].length; j++) {
+                if (caseAtk[i][j]){
+                    chessBoardButtons[i][j].setBackground(Color.red);
+                }
+            }
+        }
     }
 
-    public void displayPreviewMvt(boolean[][] caseAtk) {
-        // TODO Auto-generated method stub
+    public void displayPreviewMvt(boolean[][] caseMvt) {
+        
+        System.out.println("Affichage preview mvt");
+        for (int i = 0; i < chessBoardButtons.length; i++) {
+            for (int j = 0; j < chessBoardButtons[i].length; j++) {
+                if (caseMvt[i][j]){
+                    chessBoardButtons[i][j].setBackground(Color.green);
+                }
+            }
+        }
 
     }
 
     public void erasePreviews() {
-        // TODO Auto-generated method stub
-
+        for (int i = 0; i < chessBoardButtons.length; i++) {
+            for (int j = 0; j < chessBoardButtons[i].length; j++) {
+                if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
+                    chessBoardButtons[i][j].setBackground(Color.WHITE);
+                } else {
+                    chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
+                }
+            }
+        }
     }
 
     public void displayGame() {
+        System.out.println("Reaffichage des piece");
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Piece newPiece = board.getPiece(i, j);
                 if (newPiece != null) {
                     URL temp = Main.class.getResource("/resources/" + newPiece.getImageLink() + ".png");
                     chessBoardButtons[i][j].setIcon(new ImageIcon(temp));
+                }
+                else{
+                    ImageIcon icon = new ImageIcon(
+                        new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
+                        chessBoardButtons[i][j].setIcon(icon);
                 }
 
             }

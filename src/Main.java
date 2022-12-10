@@ -17,7 +17,6 @@ public class Main {
         mover.addObs(display);
 
         board.initBoard();
-        display.resetChessBoardColor();
 
         supervisor.addBoardMover(board, mover);
 
