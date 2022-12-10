@@ -211,7 +211,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     }
 
     public void displayPieceTaken(Piece piece) {
-
+        
     }
 
     public void displayPromotion(int posX, int posY) {
