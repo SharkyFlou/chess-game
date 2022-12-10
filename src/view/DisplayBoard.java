@@ -13,7 +13,7 @@ import model.BoardObserver;
 
 import java.net.URL;
 
-public class DisplayGame extends JFrame implements PreviewObserver, BoardObserver {
+public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserver {
 
     private GameFacade gameFacade;
     private Board board;
@@ -26,7 +26,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     private JButton[][] chessBoardButtons = new JButton[8][8];
     private static final String COLS = "ABCDEFGH";
 
-    public DisplayGame(GameFacade XgameFacade, Board xBoard) {
+    public DisplayBoard(GameFacade XgameFacade, Board xBoard) {
         gameFacade = XgameFacade;
         board = xBoard;
         setTitle("Best chess game");
@@ -159,7 +159,6 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
 
     public void displayPreviewAtk(boolean[][] caseAtk) {
         System.out.println("Affichage preview atk");
-        // go around each jButton and put the basic color again
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (caseAtk[i][j]) {
@@ -173,7 +172,6 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     }
 
     public void displayPreviewMvt(boolean[][] caseMvt) {
-
         System.out.println("Affichage preview mvt");
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {

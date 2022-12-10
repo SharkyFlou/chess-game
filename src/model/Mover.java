@@ -22,6 +22,7 @@ public class Mover {
     }
 
     public boolean isCasePreviewAtk(int posY, int posX) {
+
         return casesPreviewAtk[posY][posX];
     }
 
@@ -104,7 +105,6 @@ public class Mover {
     // roi et reine)
     // donc je le fais
     private boolean[][] calculateMvtAtkPawn(int posY, int posX, boolean mvtAtk, Piece piece) {
-        System.out.println("la");
         Pawn pawn = (Pawn) piece;
 
         boolean realMvtAtkPawn[][] = initializePreviews();
@@ -135,20 +135,6 @@ public class Mover {
 
             }
         }
-
-        /*
-         * for (int i = 0; i < 8; i++) {
-         * for (int j = 0; j < 8; j++) {
-         * if (realMvtAtkPawn[i][j]) {
-         * System.out.print("x");
-         * } else {
-         * System.out.print(".");
-         * }
-         * }
-         * System.out.print("\n");
-         * }
-         */
-
         return realMvtAtkPawn;
     }
 

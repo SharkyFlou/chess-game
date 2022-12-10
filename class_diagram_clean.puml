@@ -57,53 +57,53 @@
             +erasePreview()
         }
 
-        class Piece{
+        abstract class Piece{
             - pieceName : String
             - value : Integer
             - team : Boolean
             - imageLink : String
 
-            + Piece(team : Boolean) : Piece 
+            + Piece(team : Boolean) 
             + getTeam() : Boolean
             + getValue() : Integer
             + getPieceName() : String
         }
 
-        class Pawn implements Piece{
-            - HasMadeFirstMove : Boolean
+        class Pawn implements FirstMovement{
             + Pawn(team : Boolean)
-            + getHasMoved() : Boolean
-            + PawnMovement()
-            + PawnAttack()
+            + pawnMovement()
+            + pawnAttack()
         }
 
-        class King implements Piece{
-            - HasMadeFirstMove : Boolean
-            + King(team : Boolean)
+        abstract class FirstMovement implements Piece{
+            - hasMadeFirstMove : Boolean
             + getHasMoved() : Boolean
-            + KingMovement()
+            + moove()
+        }
+
+        class King implements FirstMovement{
+            + King(team : Boolean)
+            + kingMovement()
         }
 
         class Queen implements Piece{
             + Queen(team : Boolean)
-            + QueenMovement()
+            + queenMovement()
         }
 
         class Bishop implements Piece{
             + Bishop(team : Boolean) 
-            + BishopMouvement()
+            + bishopMouvement()
         }
 
-        class Rook implements Piece{
-            - HasMadeFirstMove : Boolean
+        class Rook implements FirstMovement{
             + Rook(team : Boolean)
-            + getHasMoved() : Boolean
-            + RookMouvement()
+            + rookMouvement()
         }
 
         class Knight implements Piece{
             + Knight(team : Boolean)
-            + KnightMovement()
+            + knightMovement()
         }
 
         interface BoardObserver{
@@ -137,9 +137,9 @@
             - lastClickedPiecePosx : Integer
             - lastClickedPiecePosy : Integer 
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
-            + setBoard()
+            + Supervisor()
             + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean) : Boolean
-            
+            + addBoardMover(gaveBoard : Board , gaveMover : Mover)
             + addObs(obs : InteractionsObserver)
             - notifyPrev()
             - notifyEndPrev()
@@ -193,6 +193,7 @@
     Main ..> Terminal : "instantiate >"
     Main ..> Supervisor : "instantiate >"
     Main ..> Manager : "instantiate >"
+    Main ..> Mover : "instantiate >"
     
     'view
     'DisplayBoard o-d-> PanelBoard : "use >"
@@ -220,15 +221,14 @@
     Board -> "-pieces\n*" Piece : " contains >"
 
     'controller
-    GameFacade o--> Supervisor : "instantiates >"
-    Supervisor --> GameFacade : "return"
+    GameFacade o--> "1\n-supervisor " Supervisor : "own >"
    
 
 
     'relation view - controller
     'cette relation envoie la position de la case cliquee a controller
-    DisplayBoard -right-> GameFacade : "calls >"  
-    GameFacade -> DisplayGame : "display >"
+    DisplayBoard -right-> GameFacade : > calls  
+    GameFacade -> DisplayGame : > display
     
     'relation view - model
     DisplayGame ..|> ManagerObserver : ""
@@ -237,8 +237,8 @@
     DisplayBoard ..|> PreviewObserver : ""
 
     'relation controller - model
-    Supervisor --> Board : "uses >"
-    Supervisor -r-> Mover : "uses >"
+    Supervisor o--> "1\n board" Board : > own 
+    Supervisor -r-> "1\n mover" Mover : > own 
 
 
     'layout

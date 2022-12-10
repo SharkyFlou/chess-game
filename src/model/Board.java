@@ -5,7 +5,12 @@ import java.util.List;
 
 public class Board {
     private Piece board[][] = new Piece[8][8];
+    private Manager manager;
     List<BoardObserver> listObs = new ArrayList<BoardObserver>();
+
+    public Board(Manager gaveManager){
+        manager=gaveManager;
+    }
 
     public void initBoard() {
 
