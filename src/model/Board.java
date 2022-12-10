@@ -9,7 +9,7 @@ public class Board {
 
     public void initBoard() {
 
-        for (int i = 0; i < 8; i++) { // not pretty, but works pretty well ¯\_(ツ)_/¯
+        for (int i = 0; i < 8; i++) { // pas beau mais ça marche¯\_(ツ)_/¯
             for (int j = 0; j < 8; j++) {
                 if (i > 1 && i < 6) { // toutes les cases vides au centre
                     board[i][j] = null;

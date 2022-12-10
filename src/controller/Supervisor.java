@@ -41,14 +41,22 @@ public class Supervisor {
             mover.emptyPreviews();
             board.destroyPiece(posX, posY);
             board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX);
+            return true;
         }
-        else if(mover.isCasePreviewMvt(posX, posY)){
+
+        if(mover.isCasePreviewMvt(posX, posY)){
             mover.emptyPreviews();
             board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX);
+            return true;
+        }
+
+        mover.emptyPreviews();
+
+        if(board.doesCaseContainPiece(posX, posY) && board.doesCaseContainPieceOfTeam(posX, posY, team)){
+            mover.calculateRealAtk(posX, posY);
+            mover.calculateRealMvt(posX, posY);
         }
         
-
-
 
         return false;
     }

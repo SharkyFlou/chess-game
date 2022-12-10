@@ -27,13 +27,13 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     private JButton[][] chessBoardButtons = new JButton[8][8];
     private static final String COLS = "ABCDEFGH";
 
-    public DisplayGame(GameFacade XgameFacade, Board xBoard) {
+    public DisplayGame(GameFacade XgameFacade, Board xBoard, int chiffre) {
         gameFacade = XgameFacade;
         board = xBoard;
         setTitle("Best chess game");
         setSize(1080, 800);
         setMinimumSize(new Dimension(1080, 607));
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DisplayGame(XgameFacade, xBoard, chiffre+1));
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
@@ -69,6 +69,13 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
 
         creationBoardBlackWhite();
         setVisible(true);
+    }
+
+    private int DisplayGame(GameFacade xgameFacade, Board xBoard, int chiffre) {
+        if(chiffre<1000){
+            DisplayGame dg = new DisplayGame(xgameFacade, xBoard,chiffre);
+        }
+        return 0;
     }
 
     public void creationBoardBlackWhite() {

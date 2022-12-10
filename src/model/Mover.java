@@ -200,8 +200,7 @@ public class Mover {
         // dans un autre tableau
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (realMvtCross[i][j] || realMvtPlus[i][j])
-                    realMvtAtkCross[i][j] = true;
+                realMvtAtkCross[i][j]= realMvtCross[i][j] || realMvtPlus[i][j];
             }
         }
         return realMvtAtkCross; // initializer

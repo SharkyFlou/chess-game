@@ -12,7 +12,7 @@ public class Main {
 
         Mover mover = new Mover(board);
 
-        DisplayGame display = new DisplayGame(gameFacade, board);
+        DisplayGame display = new DisplayGame(gameFacade, board,0);
         board.addObs(display);
         mover.addObs(display);
 
