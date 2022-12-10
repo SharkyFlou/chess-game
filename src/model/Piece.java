@@ -36,7 +36,7 @@ public abstract class Piece {
         return imageLink;
     }
 
-    public abstract boolean[][] getTheoricalMvt(int posX, int posY);
+    public abstract boolean[][] getTheoricalMvt(int posY, int posX);
 
     protected boolean[][] initTabFalse() {
         boolean[][] tab = new boolean[8][8];

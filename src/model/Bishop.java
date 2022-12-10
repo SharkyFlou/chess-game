@@ -20,7 +20,7 @@ public class Bishop extends Piece {
     //
 
     // <-----pos Y------->
-    public boolean[][] getTheoricalMvt(int posX, int posY) {
+    public boolean[][] getTheoricalMvt(int posY, int posX) {
         boolean[][] canGoTo = super.initTabFalse();
         // int nw = 1, ne = 1, sw = 1, se = 1;
 
