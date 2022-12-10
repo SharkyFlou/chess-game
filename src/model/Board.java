@@ -9,9 +9,9 @@ public class Board {
 
     public void initBoard() {
 
-        for (int i = 0; i < 8; i++) { // not pretty, but works pretty well ¯\_(ツ)_/¯
+        for (int i = 0; i < 8; i++) { // pas beau mais ça marche¯\_(ツ)_/¯
             for (int j = 0; j < 8; j++) {
-                if (i > 1 && i < 6) { // all the empy cases in the middle
+                if (i > 1 && i < 6) { // toute les cases vide au millieu
                     board[i][j] = null;
                 } else if (i == 1) {                        // pion noir
                     board[i][j] = new Pawn(false);
