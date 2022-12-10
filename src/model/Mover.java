@@ -422,11 +422,11 @@ public class Mover {
                 }
                 // on va vers la droite (est)
                 while (e < 8) {
-                    if (board.doesCaseContainPieceOfTeam(posY, w, !rook.getTeam())) {
+                    if (board.doesCaseContainPieceOfTeam(posY, e, !rook.getTeam())) {
                         realMvtAtkPlus[posY][e] = true;
                         break;
                     }
-                    e--;
+                    e++;
                 }
             }
 
