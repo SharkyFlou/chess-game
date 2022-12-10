@@ -17,11 +17,11 @@ public class Mover {
         emptyPreviews();
     }
 
-    public boolean isCasePreviewMvt(int posX, int posY) {
+    public boolean isCasePreviewMvt(int posY, int posX) {
         return casesPreviewMvt[posY][posX];
     }
 
-    public boolean isCasePreviewAtk(int posX, int posY) {
+    public boolean isCasePreviewAtk(int posY, int posX) {
         return casesPreviewAtk[posY][posX];
     }
 
@@ -29,6 +29,7 @@ public class Mover {
     public void emptyPreviews() {
         casesPreviewAtk = initializePreviews();
         casesPreviewMvt = initializePreviews();
+        notifyEraseDisplays();
     }
 
     // initialise les tableaux de retour a 0
@@ -43,53 +44,53 @@ public class Mover {
         return initializer;
     }
 
-    public void calculateRealMvt(int posX, int posY) {
-        Piece currentPieceMvt = board.getPiece(posX, posY);
+    public void calculateRealMvt(int posY, int posX) {
+        Piece currentPieceMvt = board.getPiece(posY, posX);
 
         if (currentPieceMvt.getChessName() == "pawn")
-            casesPreviewMvt = calculateMvtAtkPawn(posX, posY, true, currentPieceMvt);
+            casesPreviewMvt = calculateMvtAtkPawn(posY, posX, true, currentPieceMvt);
         // true correspond a mvt
         // si reach != 1, alors reach == 0
         else if (currentPieceMvt.getChessName() == "knight")
-            casesPreviewMvt = calculateMvtAtkKnight(posX, posY, true, currentPieceMvt);
+            casesPreviewMvt = calculateMvtAtkKnight(posY, posX, true, currentPieceMvt);
 
         else if (currentPieceMvt.getChessName() == "bishop")
-            casesPreviewMvt = calculateMvtAtkCross(posX, posY, 0, true, currentPieceMvt);
+            casesPreviewMvt = calculateMvtAtkCross(posY, posX, 0, true, currentPieceMvt);
 
         else if (currentPieceMvt.getChessName() == "rook")
-            casesPreviewMvt = calculateMvtAtkPlus(posX, posY, 0, true, currentPieceMvt);
+            casesPreviewMvt = calculateMvtAtkPlus(posY, posX, 0, true, currentPieceMvt);
 
         // entre ces deux pieces suivantes, seulement le reach change
         else if (currentPieceMvt.getChessName() == "king")
-            casesPreviewMvt = calculateMvtAtkPlusCross(posX, posY, 1, true, currentPieceMvt);
+            casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 1, true, currentPieceMvt);
 
         else if (currentPieceMvt.getChessName() == "queen")
-            casesPreviewMvt = calculateMvtAtkPlusCross(posX, posY, 0, true, currentPieceMvt);
+            casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 0, true, currentPieceMvt);
 
         notifyDisplayMvt();
 
     }
 
-    public void calculateRealAtk(int posX, int posY) {
-        Piece currentPieceAtk = board.getPiece(posX, posY);
+    public void calculateRealAtk(int posY, int posX) {
+        Piece currentPieceAtk = board.getPiece(posY, posX);
         if (currentPieceAtk.getChessName() == "pawn")
-            casesPreviewAtk = calculateMvtAtkPawn(posX, posY, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkPawn(posY, posX, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "knight")
-            casesPreviewMvt = calculateMvtAtkKnight(posX, posY, false, currentPieceAtk);
+            casesPreviewMvt = calculateMvtAtkKnight(posY, posX, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "bishop")
-            casesPreviewMvt = calculateMvtAtkCross(posX, posY, 0, false, currentPieceAtk);
+            casesPreviewMvt = calculateMvtAtkCross(posY, posX, 0, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "rook")
-            casesPreviewMvt = calculateMvtAtkPlus(posX, posY, 0, false, currentPieceAtk);
+            casesPreviewMvt = calculateMvtAtkPlus(posY, posX, 0, false, currentPieceAtk);
 
         // entre ces deux pieces suivantes, seulement le reach change
         else if (currentPieceAtk.getChessName() == "king")
-            casesPreviewMvt = calculateMvtAtkPlusCross(posX, posY, 1, false, currentPieceAtk);
+            casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 1, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "queen")
-            casesPreviewMvt = calculateMvtAtkPlusCross(posX, posY, 0, false, currentPieceAtk);
+            casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 0, false, currentPieceAtk);
 
         notifyDisplayAtk();
     }
@@ -103,7 +104,7 @@ public class Mover {
     // honestly on peut melanger calculateMvtPawn et calculateAtkPawn (comme pour
     // roi et reine)
     // donc je le fais
-    private boolean[][] calculateMvtAtkPawn(int posX, int posY, boolean mvtAtk, Piece piece) {
+    private boolean[][] calculateMvtAtkPawn(int posY, int posX, boolean mvtAtk, Piece piece) {
 
         Pawn pawn = (Pawn) piece;
 
@@ -114,7 +115,7 @@ public class Mover {
                 // SI ON CHERCHE LE BOOLEAN[][] MVT
                 if (mvtAtk) {
                     // le fait d'avoir bouge est deja verifie dans le mouvement theorique
-                    if (pawn.getTheoricalMvt(posX, posY)[i][j]) {
+                    if (pawn.getTheoricalMvt(posY, posX)[i][j]) {
                         // s'il y a pas de piece sur la position theorique mvt
                         if (!board.doesCaseContainPiece(i, j)) {
                             realMvtAtkPawn[i][j] = true;
@@ -123,9 +124,9 @@ public class Mover {
                 }
                 // SI ON CHERCHE LE BOOLEAN[][] ATK
                 else {
-                    if (pawn.getTheoreticalAttack(posX, posY)[i][j]) {
+                    if (pawn.getTheoreticalAttack(posY, posX)[i][j]) {
                         // s'il y a une piece de l'autre team (!team)
-                        if (board.doesCaseContainPieceOfTeam(posX, posY, !pawn.getTeam())) {
+                        if (board.doesCaseContainPieceOfTeam(posY, posX, !pawn.getTeam())) {
                             realMvtAtkPawn[i][j] = true;
                         }
                     }
@@ -137,7 +138,7 @@ public class Mover {
     }
 
     // chevalier
-    private boolean[][] calculateMvtAtkKnight(int posX, int posY, boolean mvtAtk, Piece piece) {
+    private boolean[][] calculateMvtAtkKnight(int posY, int posX, boolean mvtAtk, Piece piece) {
         Knight knight = (Knight) piece;
         // initialise a false
         boolean realMvtAtkKnight[][] = initializePreviews();
@@ -145,7 +146,7 @@ public class Mover {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // regarde chaque position vraie theoriquement (bool=true)
-                if (knight.getTheoricalMvt(posX, posY)[i][j]) {
+                if (knight.getTheoricalMvt(posY, posX)[i][j]) {
 
                     // SI ON CHERCHE LE BOOLEAN[][] MVT
                     if (mvtAtk) {
@@ -156,7 +157,7 @@ public class Mover {
                     }
                     // SI ON CHERCHE LE BOOLEAN[][] ATK
                     else {
-                        if (board.doesCaseContainPieceOfTeam(posX, posY, !knight.getTeam())) {
+                        if (board.doesCaseContainPieceOfTeam(posY, posX, !knight.getTeam())) {
                             realMvtAtkKnight[i][j] = true;
                         }
                     }
@@ -168,60 +169,60 @@ public class Mover {
     }
 
     // bishop, reine, roi
-    private boolean[][] calculateMvtAtkCross(int posX, int posY, int reach, boolean mvtAtk, Piece piece) {
+    private boolean[][] calculateMvtAtkCross(int posY, int posX, int reach, boolean mvtAtk, Piece piece) {
         Bishop bishop = (Bishop) piece;
         boolean realMvtAtkCross[][] = initializePreviews();
         return realMvtAtkCross; // initializer
     }
 
     // tour, reine, roi
-    private boolean[][] calculateMvtAtkPlus(int posX, int posY, int reach, boolean mvtAtk, Piece piece) {
+    private boolean[][] calculateMvtAtkPlus(int posY, int posX, int reach, boolean mvtAtk, Piece piece) {
         Rook rook = (Rook) piece;
 
         boolean realMvtAtkPlus[][] = initializePreviews();
-        int n = posX - 1, s = posX + 1, w = posY - 1, e = posY + 1;
+        int n = posY - 1, s = posY + 1, w = posX - 1, e = posX + 1;
 
         // si on cherche le mouvement
         if (mvtAtk) {
             // si on cherche le roi
             if (reach == 1) {
-                realMvtAtkPlus[n][posY] = !board.doesCaseContainPiece(n, posY);
-                realMvtAtkPlus[s][posY] = !board.doesCaseContainPiece(s, posY);
-                realMvtAtkPlus[posX][w] = !board.doesCaseContainPiece(posX, w);
-                realMvtAtkPlus[posX][e] = !board.doesCaseContainPiece(posX, e);
+                realMvtAtkPlus[n][posX] = !board.doesCaseContainPiece(n, posX);
+                realMvtAtkPlus[s][posX] = !board.doesCaseContainPiece(s, posX);
+                realMvtAtkPlus[posY][w] = !board.doesCaseContainPiece(posY, w);
+                realMvtAtkPlus[posY][e] = !board.doesCaseContainPiece(posY, e);
             }
             // si on cherche la reine
             else {
                 // on va vers le HAUT (NORD)
                 while (n >= 0) {
-                    if (board.doesCaseContainPiece(n, posY)) {
+                    if (board.doesCaseContainPiece(n, posX)) {
                         break;
                     }
-                    realMvtAtkPlus[n][posY] = true;
+                    realMvtAtkPlus[n][posX] = true;
                     n--;
                 }
                 // on va vers le BAS (SUD)
                 while (s < 8) {
-                    if (board.doesCaseContainPiece(s, posY)) {
+                    if (board.doesCaseContainPiece(s, posX)) {
                         break;
                     }
-                    realMvtAtkPlus[s][posY] = true;
+                    realMvtAtkPlus[s][posX] = true;
                     s++;
                 }
                 // on va vers la GAUCHE (WEST)
                 while (w >= 0) {
-                    if (board.doesCaseContainPiece(posX, w)) {
+                    if (board.doesCaseContainPiece(posY, w)) {
                         break;
                     }
-                    realMvtAtkPlus[posX][w] = true;
+                    realMvtAtkPlus[posY][w] = true;
                     w--;
                 }
                 // on va vers la droite (est)
                 while (e < 8) {
-                    if (board.doesCaseContainPiece(posX, e)) {
+                    if (board.doesCaseContainPiece(posY, e)) {
                         break;
                     }
-                    realMvtAtkPlus[posX][e] = true;
+                    realMvtAtkPlus[posY][e] = true;
                     e++;
                 }
             }
@@ -231,10 +232,10 @@ public class Mover {
         else {
             // on cherche le roi
             if (reach == 1) {
-                realMvtAtkPlus[n][posY] = board.doesCaseContainPieceOfTeam(n, posY, !rook.getTeam());
-                realMvtAtkPlus[s][posY] = board.doesCaseContainPieceOfTeam(s, posY, !rook.getTeam());
-                realMvtAtkPlus[posX][w] = board.doesCaseContainPieceOfTeam(posX, w, !rook.getTeam());
-                realMvtAtkPlus[posX][e] = board.doesCaseContainPieceOfTeam(posX, e, !rook.getTeam());
+                realMvtAtkPlus[n][posX] = board.doesCaseContainPieceOfTeam(n, posX, !rook.getTeam());
+                realMvtAtkPlus[s][posX] = board.doesCaseContainPieceOfTeam(s, posX, !rook.getTeam());
+                realMvtAtkPlus[posY][w] = board.doesCaseContainPieceOfTeam(posY, w, !rook.getTeam());
+                realMvtAtkPlus[posY][e] = board.doesCaseContainPieceOfTeam(posY, e, !rook.getTeam());
             }
             // si on cherche la reine
             else {
@@ -242,32 +243,32 @@ public class Mover {
                 while (n >= 0) {
                     // si la case contient une piece de l'autre team, case preview = true + on casse
                     // la boucle
-                    if (board.doesCaseContainPieceOfTeam(n, posY, !rook.getTeam())) {
-                        realMvtAtkPlus[n][posY] = true;
+                    if (board.doesCaseContainPieceOfTeam(n, posX, !rook.getTeam())) {
+                        realMvtAtkPlus[n][posX] = true;
                         break;
                     }
                     n--;
                 }
                 // on va vers le BAS (SUD)
                 while (s < 8) {
-                    if (board.doesCaseContainPieceOfTeam(s, posY, !rook.getTeam())) {
-                        realMvtAtkPlus[s][posY] = true;
+                    if (board.doesCaseContainPieceOfTeam(s, posX, !rook.getTeam())) {
+                        realMvtAtkPlus[s][posX] = true;
                         break;
                     }
                     s++;
                 }
                 // on va vers la GAUCHE (WEST)
                 while (w >= 0) {
-                    if (board.doesCaseContainPieceOfTeam(posX, w, !rook.getTeam())) {
-                        realMvtAtkPlus[posX][w] = true;
+                    if (board.doesCaseContainPieceOfTeam(posY, w, !rook.getTeam())) {
+                        realMvtAtkPlus[posY][w] = true;
                         break;
                     }
                     w--;
                 }
                 // on va vers la droite (est)
                 while (e < 8) {
-                    if (board.doesCaseContainPieceOfTeam(posX, w, !rook.getTeam())) {
-                        realMvtAtkPlus[posX][e] = true;
+                    if (board.doesCaseContainPieceOfTeam(posY, w, !rook.getTeam())) {
+                        realMvtAtkPlus[posY][e] = true;
                         break;
                     }
                     e--;
@@ -281,7 +282,7 @@ public class Mover {
 
     // reine, roi
     // ceci appelle les resultats de plus + cross
-    private boolean[][] calculateMvtAtkPlusCross(int posX, int posY, int reach, boolean mvtAtk, Piece piece) {
+    private boolean[][] calculateMvtAtkPlusCross(int posY, int posX, int reach, boolean mvtAtk, Piece piece) {
         boolean[][] realMvtCross = initializePreviews();
         boolean[][] realMvtPlus = initializePreviews();
 
@@ -291,14 +292,14 @@ public class Mover {
         if (piece.getChessName() == "king") {
             King king = (King) piece;
 
-            realMvtCross = calculateMvtAtkCross(posX, posY, reach, mvtAtk, piece);
-            realMvtPlus = calculateMvtAtkCross(posX, posY, reach, mvtAtk, piece);
+            realMvtCross = calculateMvtAtkCross(posY, posX, reach, mvtAtk, piece);
+            realMvtPlus = calculateMvtAtkCross(posY, posX, reach, mvtAtk, piece);
         }
         if (piece.getChessName() == "queen") {
             Queen queen = (Queen) piece;
 
-            realMvtCross = calculateMvtAtkCross(posX, posY, reach, mvtAtk, piece);
-            realMvtPlus = calculateMvtAtkCross(posX, posY, reach, mvtAtk, piece);
+            realMvtCross = calculateMvtAtkCross(posY, posX, reach, mvtAtk, piece);
+            realMvtPlus = calculateMvtAtkCross(posY, posX, reach, mvtAtk, piece);
         }
 
         // si les tableaux de booleens de plus et cross sont true, on les melange

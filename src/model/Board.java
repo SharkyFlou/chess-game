@@ -53,22 +53,22 @@ public class Board {
         return board[posY][posX];
     }
 
-    public boolean doesCaseContainPiece(int posX, int posY) {
-        return this.getPiece(posX, posY) != null;
+    public boolean doesCaseContainPiece(int posY, int posX) {
+        return this.getPiece(posY, posX) != null;
     }
 
-    public boolean doesCaseContainPieceOfTeam(int posX, int posY, boolean team) {
-        if (doesCaseContainPiece(posX, posY)) { // pour ne pas planter
+    public boolean doesCaseContainPieceOfTeam(int posY, int posX, boolean team) {
+        if (!doesCaseContainPiece(posY, posX)) { // pour ne pas planter
             return false;
         }
-        return this.getPiece(posX, posY).getTeam() == team;
+        return this.getPiece(posY, posX).getTeam() == team;
     }
 
     public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX) {
-        if (doesCaseContainPiece(oldPosX, oldPosY)) {
-            Piece pieceBougee = getPiece(oldPosX, oldPosY);
-            destroyPiece(oldPosX, oldPosY);
-            board[newPosX][newPosY] = pieceBougee;
+        if (doesCaseContainPiece(oldPosY, oldPosX)) {
+            Piece pieceBougee = getPiece(oldPosY, oldPosX);
+            destroyPiece(oldPosY, oldPosX);
+            board[newPosY][newPosX] = pieceBougee;
             // gere le premier mouvement
             if (pieceBougee.getChessName() == "pawn" ||
                     pieceBougee.getChessName() == "rook" ||
@@ -79,16 +79,19 @@ public class Board {
                  */
             }
         }
+        // destroyPiece(oldPosY, oldPosX);
+        notifyMov();
     }
 
-    public void destroyPiece(int posX, int posY) {
-        if (board[posX][posY] != null) {
-            notifyPieceTaken(board[posX][posY]);
+    public void destroyPiece(int posY, int posX) {
+        if (getPiece(posY, posX) != null) {
+            notifyPieceTaken(getPiece(posY, posX));
         } else {
-            System.out.println("Trying to delete a non existent piece : " + posX + ";" + posY);
+            System.out.println("Trying to delete a non existent piece : " + posY + ";" + posX);
         }
 
-        board[posX][posY] = null;
+        board[posY][posX] = null;
+        notifyMov();
     }
 
     public void addObs(BoardObserver obs) {
