@@ -92,8 +92,12 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
                 b.setIcon(icon);
                 if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
                     b.setBackground(Color.WHITE);
+                    b.setOpaque(true);
+                    b.setBorderPainted(false);
                 } else {
                     b.setBackground(Color.DARK_GRAY);
+                    b.setOpaque(true);
+                    b.setBorderPainted(false);
                 }
 
                 b.addActionListener(actionEvent -> {
@@ -143,7 +147,6 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         }
     }
 
-
     public void clickedOnSomeCase(JButton jButton) {
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
@@ -159,20 +162,25 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         // go around each jButton and put the basic color again
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
-                if (caseAtk[i][j]){
+                if (caseAtk[i][j]) {
                     chessBoardButtons[i][j].setBackground(Color.red);
+                    chessBoardButtons[i][j].setOpaque(true);
+                    chessBoardButtons[i][j].setBorderPainted(false);
+
                 }
             }
         }
     }
 
     public void displayPreviewMvt(boolean[][] caseMvt) {
-        
+
         System.out.println("Affichage preview mvt");
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
-                if (caseMvt[i][j]){
+                if (caseMvt[i][j]) {
                     chessBoardButtons[i][j].setBackground(Color.green);
+                    chessBoardButtons[i][j].setOpaque(true);
+                    chessBoardButtons[i][j].setBorderPainted(false);
                 }
             }
         }
@@ -184,8 +192,14 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
                     chessBoardButtons[i][j].setBackground(Color.WHITE);
+                    chessBoardButtons[i][j].setOpaque(true);
+                    chessBoardButtons[i][j].setBorderPainted(false);
+
                 } else {
                     chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
+                    chessBoardButtons[i][j].setOpaque(true);
+                    chessBoardButtons[i][j].setBorderPainted(false);
+
                 }
             }
         }
@@ -199,11 +213,10 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
                 if (newPiece != null) {
                     URL temp = Main.class.getResource("/resources/" + newPiece.getImageLink() + ".png");
                     chessBoardButtons[i][j].setIcon(new ImageIcon(temp));
-                }
-                else{
+                } else {
                     ImageIcon icon = new ImageIcon(
-                        new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
-                        chessBoardButtons[i][j].setIcon(icon);
+                            new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
+                    chessBoardButtons[i][j].setIcon(icon);
                 }
 
             }
@@ -214,7 +227,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
 
     }
 
-    public void displayPromotion(int posX, int posY) {
+    public void displayPromotion(int posY, int posX) {
         // TODO Auto-generated method stub
 
     }

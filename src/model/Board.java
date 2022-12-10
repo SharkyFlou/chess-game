@@ -47,6 +47,7 @@ public class Board {
                 }
             }
         }
+        board[5][7] = new Pawn(false);
         notifyMov();
     }
 
@@ -74,17 +75,15 @@ public class Board {
             Piece pieceBougee = getPiece(oldPosY, oldPosX);
             destroyPiece(oldPosY, oldPosX);
             board[newPosY][newPosX] = pieceBougee;
+
             // gere le premier mouvement
             if (pieceBougee.getChessName() == "pawn" ||
                     pieceBougee.getChessName() == "rook" ||
                     pieceBougee.getChessName() == "king") {
-                /*
-                 * if (!pieceBougee.hasItMoved())
-                 * (FirstMovement)pieceBougee.hasMoved = true;
-                 */
+                FirstMovement pieceFirstMovement = (FirstMovement) pieceBougee;
+                pieceFirstMovement.mooveIt();
             }
         }
-        // destroyPiece(oldPosY, oldPosX);
         notifyMov();
     }
 

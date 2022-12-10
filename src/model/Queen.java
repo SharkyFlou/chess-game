@@ -9,7 +9,7 @@ public class Queen extends Piece {
                 "queen");
     }
 
-    public boolean[][] getTheoricalMvt(int posX, int posY) {
+    public boolean[][] getTheoricalMvt(int posY, int posX) {
         boolean[][] canGoTo = super.initTabFalse();
         return canGoTo;
     }

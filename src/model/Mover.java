@@ -109,49 +109,42 @@ public class Mover {
 
         boolean realMvtAtkPawn[][] = initializePreviews();
 
+        boolean theoreticalMvt[][] = pawn.getTheoricalMvt(posY, posX);
+        boolean theoreticalAttack[][] = pawn.getTheoreticalAttack(posY, posX);
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // SI ON CHERCHE LE BOOLEAN[][] MVT
                 if (mvtAtk) {
                     // le fait d'avoir bouge est deja verifie dans le mouvement theorique
-                    if (pawn.getTheoricalMvt(posY, posX)[i][j]) {
+                    if (theoreticalMvt[i][j]) {
                         // s'il y a pas de piece sur la position theorique mvt
-                        if (!board.doesCaseContainPiece(i, j)) {
-                            realMvtAtkPawn[i][j] = true;
-                        }
+                        realMvtAtkPawn[i][j] = !board.doesCaseContainPiece(i, j);
                     }
                 }
                 // SI ON CHERCHE LE BOOLEAN[][] ATK
                 else {
-                    if (pawn.getTheoreticalAttack(posY, posX)[i][j]) {
+                    if (theoreticalAttack[i][j]) {
                         // s'il y a une piece de l'autre team (!team)
-                        if (board.doesCaseContainPieceOfTeam(posY, posX, !pawn.getTeam())) {
-                            realMvtAtkPawn[i][j] = true;
-                        }
+                        realMvtAtkPawn[i][j] = board.doesCaseContainPieceOfTeam(i, j, !pawn.getTeam());
+
                     }
                 }
 
             }
         }
 
-        for(int i = 0; i<8; i++){
-            for(int j = 0; j<8; j++){
-               if(realMvtAtkPawn[i][j]){
-                  System.out.print("x");
-               }
-                else{
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (realMvtAtkPawn[i][j]) {
+                    System.out.print("x");
+                } else {
                     System.out.print(".");
                 }
             }
             System.out.print("\n");
         }
-        if(mvtAtk){
-            realMvtAtkPawn[0][1]=true;
-        }
-        else{
-            realMvtAtkPawn[0][2]=true;
-        }
-        
+
         return realMvtAtkPawn;
     }
 
@@ -160,24 +153,20 @@ public class Mover {
         Knight knight = (Knight) piece;
         // initialise a false
         boolean realMvtAtkKnight[][] = initializePreviews();
+        boolean[][] theoreticalMvtAtk = knight.getTheoricalMvt(posY, posX);
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // regarde chaque position vraie theoriquement (bool=true)
-                if (knight.getTheoricalMvt(posY, posX)[i][j]) {
-
+                if (theoreticalMvtAtk[i][j]) {
                     // SI ON CHERCHE LE BOOLEAN[][] MVT
                     if (mvtAtk) {
                         // si aucune piece existe a cette position
-                        if (!board.doesCaseContainPiece(i, j)) {
-                            realMvtAtkKnight[i][j] = true;
-                        }
+                        realMvtAtkKnight[i][j] = !board.doesCaseContainPiece(i, j);
                     }
                     // SI ON CHERCHE LE BOOLEAN[][] ATK
                     else {
-                        if (board.doesCaseContainPieceOfTeam(posY, posX, !knight.getTeam())) {
-                            realMvtAtkKnight[i][j] = true;
-                        }
+                        realMvtAtkKnight[i][j] = board.doesCaseContainPieceOfTeam(i, j, !knight.getTeam());
                     }
                 }
             }
@@ -198,7 +187,16 @@ public class Mover {
         Rook rook = (Rook) piece;
 
         boolean realMvtAtkPlus[][] = initializePreviews();
-        int n = posY - 1, s = posY + 1, w = posX - 1, e = posX + 1;
+
+        int n = 0, s = 0, w = 0, e = 0;
+        if (posY - 1 >= 0)
+            n = posY - 1;
+        if (posY + 1 >= 0)
+            s = posY + 1;
+        if (posX - 1 >= 0)
+            w = posX - 1;
+        if (posX + 1 >= 0)
+            e = posX + 1;
 
         // si on cherche le mouvement
         if (mvtAtk) {
