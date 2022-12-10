@@ -42,7 +42,10 @@ public class Board {
                 }
             }
         }
+        // test
         board[5][7] = new Pawn(false);
+        board[6][0] = null;
+        board[4][4] = new Rook(true);
         notifyMov();
     }
 
