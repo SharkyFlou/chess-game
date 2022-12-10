@@ -76,20 +76,20 @@ public class Mover {
             casesPreviewAtk = calculateMvtAtkPawn(posY, posX, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "knight")
-            casesPreviewMvt = calculateMvtAtkKnight(posY, posX, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkKnight(posY, posX, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "bishop")
-            casesPreviewMvt = calculateMvtAtkCross(posY, posX, 0, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkCross(posY, posX, 0, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "rook")
-            casesPreviewMvt = calculateMvtAtkPlus(posY, posX, 0, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkPlus(posY, posX, 0, false, currentPieceAtk);
 
         // entre ces deux pieces suivantes, seulement le reach change
         else if (currentPieceAtk.getChessName() == "king")
-            casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 1, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkPlusCross(posY, posX, 1, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "queen")
-            casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 0, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkPlusCross(posY, posX, 0, false, currentPieceAtk);
 
         notifyDisplayAtk();
     }
@@ -111,6 +111,8 @@ public class Mover {
 
         boolean theoreticalMvt[][] = pawn.getTheoricalMvt(posY, posX);
         boolean theoreticalAttack[][] = pawn.getTheoreticalAttack(posY, posX);
+
+        int way = pawn.getTeam() ? -1 : 1;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -183,23 +185,146 @@ public class Mover {
 
         boolean realMvtAtkCross[][] = initializePreviews();
 
+        // MOUVEMENT
         if (mvtAtk) {
+            // roi
             if (reach == 1) {
                 if (posY - 1 >= 0 && posX - 1 >= 0)
-                    realMvtAtkCross[posY - 1][posX - 1] = true;
+                    realMvtAtkCross[posY - 1][posX - 1] = !board.doesCaseContainPiece(posY - 1, posX - 1);
                 if (posY - 1 >= 0 && posX + 1 < 8)
-                    realMvtAtkCross[posY - 1][posX + 1] = true;
-                if (posY - 1 >= 0 && posX - 1 >= 0)
-                    realMvtAtkCross[posY - 1][posX - 1] = true;
-                if (posY - 1 >= 0 && posX + 1 < 8)
-                    realMvtAtkCross[posY - 1][posX + 1] = true;
+                    realMvtAtkCross[posY - 1][posX + 1] = !board.doesCaseContainPiece(posY - 1, posX + 1);
+                if (posY + 1 < 8 && posX - 1 >= 0)
+                    realMvtAtkCross[posY + 1][posX - 1] = !board.doesCaseContainPiece(posY + 1, posX - 1);
+                if (posY + 1 < 8 && posX + 1 < 8)
+                    realMvtAtkCross[posY + 1][posX + 1] = !board.doesCaseContainPiece(posY + 1, posX + 1);
             } else {
+                // on declare des variables temporelles, qui gerent NW, NE, SW, SE
+                int posXVariableNW = posX - 1, posYVariableNW = posY - 1;
+                // NW
+                while (posYVariableNW >= 0 && posXVariableNW >= 0) {
+                    if (board.doesCaseContainPiece(posYVariableNW, posXVariableNW)) {
+                        break;
+                    }
+                    realMvtAtkCross[posYVariableNW][posXVariableNW] = true;
+                    posYVariableNW--;
+                    posXVariableNW--;
+                }
 
+                int posXVariableNE = posX + 1, posYVariableNE = posY - 1;
+
+                // NE
+                while (posYVariableNE >= 0 && posXVariableNE < 8) {
+                    if (board.doesCaseContainPiece(posYVariableNE, posXVariableNE)) {
+                        break;
+                    }
+                    realMvtAtkCross[posYVariableNE][posXVariableNE] = true;
+                    posYVariableNE--;
+                    posXVariableNE++;
+                }
+
+                int posXVariableSW = posX - 1, posYVariableSW = posY + 1;
+
+                // SW
+                while (posYVariableSW < 8 && posXVariableSW >= 0) {
+                    if (board.doesCaseContainPiece(posYVariableSW, posXVariableSW)) {
+                        break;
+                    }
+                    realMvtAtkCross[posYVariableSW][posXVariableSW] = true;
+                    posYVariableSW++;
+                    posXVariableSW--;
+                }
+
+                int posXVariableSE = posX + 1, posYVariableSE = posY + 1;
+
+                // SE
+                while (posYVariableSE < 8 && posXVariableSE < 8) {
+                    if (board.doesCaseContainPiece(posYVariableSE, posXVariableSE)) {
+                        break;
+                    }
+                    realMvtAtkCross[posYVariableSE][posXVariableSE] = true;
+                    posYVariableSE++;
+                    posXVariableSE++;
+                }
+            }
+        }
+        // ATAK
+        else {
+            // roi
+            if (reach == 1) {
+                if (posY - 1 >= 0 && posX - 1 >= 0)
+                    realMvtAtkCross[posY - 1][posX - 1] = board.doesCaseContainPieceOfTeam(posY - 1, posX - 1,
+                            !bishop.getTeam());
+                if (posY - 1 >= 0 && posX + 1 < 8)
+                    realMvtAtkCross[posY - 1][posX + 1] = board.doesCaseContainPieceOfTeam(posY - 1, posX + 1,
+                            !bishop.getTeam());
+                if (posY + 1 < 8 && posX - 1 >= 0)
+                    realMvtAtkCross[posY + 1][posX - 1] = board.doesCaseContainPieceOfTeam(posY + 1, posX - 1,
+                            !bishop.getTeam());
+                if (posY + 1 < 8 && posX + 1 < 8)
+                    realMvtAtkCross[posY + 1][posX + 1] = board.doesCaseContainPieceOfTeam(posY + 1, posX + 1,
+                            !bishop.getTeam());
+            }
+            // reine, bishop
+            else {
+                // on declare des variables temporelles, qui gerent NW, NE, SW, SE
+                int posXVariableNW = posX - 1, posYVariableNW = posY - 1;
+                // NW
+                while (posYVariableNW >= 0 && posXVariableNW >= 0) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableNW, posXVariableNW, !bishop.getTeam())
+                    // && !board.doesCaseContainPiece(posYVariableNW, posXVariableNW)
+                    ) {
+                        realMvtAtkCross[posYVariableNW][posXVariableNW] = true;
+                        break;
+                    }
+                    posYVariableNW--;
+                    posXVariableNW--;
+                }
+
+                int posXVariableNE = posX + 1, posYVariableNE = posY - 1;
+
+                // NE
+                while (posYVariableNE >= 0 && posXVariableNE < 8) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableNE, posXVariableNE, !bishop.getTeam())
+                    // && !board.doesCaseContainPiece(posYVariableNW, posXVariableNW)
+                    ) {
+                        realMvtAtkCross[posYVariableNE][posXVariableNE] = true;
+                        break;
+                    }
+                    posYVariableNE--;
+                    posXVariableNE++;
+                }
+
+                int posXVariableSW = posX - 1, posYVariableSW = posY + 1;
+
+                // SW
+                while (posYVariableSW < 8 && posXVariableSW >= 0) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableSW, posXVariableSW, !bishop.getTeam())
+                    // && !board.doesCaseContainPiece(posYVariableSW, posXVariableSW)
+                    ) {
+                        realMvtAtkCross[posYVariableSW][posXVariableSW] = true;
+                        break;
+                    }
+                    posYVariableSW++;
+                    posXVariableSW--;
+                }
+
+                int posXVariableSE = posX + 1, posYVariableSE = posY + 1;
+
+                // SE
+                while (posYVariableSE < 8 && posXVariableSE < 8) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableSE, posXVariableSE, !bishop.getTeam())
+                    // && !board.doesCaseContainPiece(posYVariableSE, posXVariableSE)
+                    ) {
+                        realMvtAtkCross[posYVariableSE][posXVariableSE] = true;
+                        break;
+                    }
+                    posYVariableSE++;
+                    posXVariableSE++;
+                }
             }
         }
 
-        return realMvtAtkCross; // initializer
-
+        return realMvtAtkCross;
     }
 
     // tour, reine, roi
