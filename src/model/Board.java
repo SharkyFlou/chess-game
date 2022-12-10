@@ -13,31 +13,31 @@ public class Board {
             for (int j = 0; j < 8; j++) {
                 if (i > 1 && i < 6) { // all the empy cases in the middle
                     board[i][j] = null;
-                } else if (i == 1) { // black pawns
-                    board[i][j] = new Pawn(true);
-                } else if (i == 6) { // white pawns
+                } else if (i == 1) {                        // pion noir
                     board[i][j] = new Pawn(false);
-                } else if (i == 0 && (j == 0 || j == 7)) { // black rooks
-                    board[i][j] = new Rook(true);
-                } else if (i == 7 && (j == 0 || j == 7)) { // white rooks
+                } else if (i == 6) {                        // pion blanc
+                    board[i][j] = new Pawn(true);
+                } else if (i == 0 && (j == 0 || j == 7)) {  // tour noire
                     board[i][j] = new Rook(false);
-                } else if (i == 0 && (j == 1 || j == 6)) { // black knights
-                    board[i][j] = new Knight(true);
-                } else if (i == 7 && (j == 1 || j == 6)) { // white knights
+                } else if (i == 7 && (j == 0 || j == 7)) {  // tour blanche
+                    board[i][j] = new Rook(true);
+                } else if (i == 0 && (j == 1 || j == 6)) {  // chevalier noir
                     board[i][j] = new Knight(false);
-                } else if (i == 0 && (j == 2 || j == 5)) { // black bishops
-                    board[i][j] = new Bishop(true);
-                } else if (i == 7 && (j == 2 || j == 5)) { // white bishops
+                } else if (i == 7 && (j == 1 || j == 6)) {  // chevalier blanc
+                    board[i][j] = new Knight(true);
+                } else if (i == 0 && (j == 2 || j == 5)) {  // fou noir
                     board[i][j] = new Bishop(false);
-                } else if (i == 0 && j == 3) { // black queen
-                    board[i][j] = new Queen(true);
-                } else if (i == 7 && j == 3) { // white queen
+                } else if (i == 7 && (j == 2 || j == 5)) {  // fou blanc
+                    board[i][j] = new Bishop(true);
+                } else if (i == 0 && j == 3) {              // rien noir
                     board[i][j] = new Queen(false);
-                } else if (i == 0 && j == 4) { // black king
-                    board[i][j] = new King(true);
-                } else if (i == 7 && j == 4) { // white king
+                } else if (i == 7 && j == 3) {              // rien blanche
+                    board[i][j] = new Queen(true);
+                } else if (i == 0 && j == 4) {              // roi noir
                     board[i][j] = new King(false);
-                } else { // dont go in it
+                } else if (i == 7 && j == 4) {              // roi blanc
+                    board[i][j] = new King(true);
+                } else {                                    // ne va pas là, pas forcement utile
                     board[i][j] = null;
                 }
             }
@@ -54,19 +54,17 @@ public class Board {
     }
 
     public boolean doesCaseContainPiece(int posX, int posY) {
-        if (this.getPiece(posX, posY) != null)
-            return true;
-        return false;
+        return this.getPiece(posX, posY) != null;
     }
 
     public boolean doesCaseContainPieceOfTeam(int posX, int posY, boolean team) {
-        if (this.getPiece(posX, posY).getTeam() == team) {
-            return true;
+        if(doesCaseContainPiece(posX, posY)){ //pour ne pas planter
+            return false;
         }
-        return false;
+        return this.getPiece(posX, posY).getTeam() == team;
     }
 
-    public void movePiece(int oldPosX, int oldPosY, int newPosX, int newPosY) {
+    public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX) {
         if (doesCaseContainPiece(oldPosX, oldPosY)) {
             Piece pieceBougee = getPiece(oldPosX, oldPosY);
             destroyPiece(oldPosX, oldPosY);

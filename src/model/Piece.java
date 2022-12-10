@@ -17,7 +17,7 @@ public abstract class Piece {
         team = newTeam;
         chessName = givenName;
         value = pieceValue;
-        imageLink = (newTeam ? "b" : "w") + image;
+        imageLink = (newTeam ? "w" : "b") + image;
     }
 
     public boolean getTeam() {

@@ -14,24 +14,21 @@ public class Mover {
 
     public Mover(Board gaveBoard) {
         board = gaveBoard;
+        emptyPreviews();
     }
 
     public boolean isCasePreviewMvt(int posX, int posY) {
-        return true;
+        return casesPreviewMvt[posY][posX];
     }
 
     public boolean isCasePreviewAtk(int posX, int posY) {
-        return true;
+        return casesPreviewAtk[posY][posX];
     }
 
     // reset les tableaux de retour
     public void emptyPreviews() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                casesPreviewMvt[i][j] = false;
-                casesPreviewAtk[i][j] = false;
-            }
-        }
+        casesPreviewAtk=initializePreviews();
+        casesPreviewMvt=initializePreviews();
     }
 
     // initialise les tableaux de retour a 0
@@ -68,6 +65,8 @@ public class Mover {
         else if (currentPieceMvt.getChessName() == "queen")
             casesPreviewMvt = calculateMvtAtkPlusCross(posX, posY, 0, true);
 
+        notifyDisplayMvt();
+
     }
 
     public void calculateRealAtk(int posX, int posY) {
@@ -90,6 +89,8 @@ public class Mover {
 
         else if (currentPieceAtk.getChessName() == "queen")
             casesPreviewMvt = calculateMvtAtkPlusCross(posX, posY, 0, false);
+        
+        notifyDisplayAtk();
     }
 
     // GERE LES MOUVEMENTS
@@ -214,13 +215,13 @@ public class Mover {
         }
     }
 
-    public void notifyDisplayAtk(Piece piece) {
+    public void notifyDisplayAtk() {
         for (PreviewObserver obs : listObs) {
             obs.displayPreviewAtk(casesPreviewAtk);
         }
     }
 
-    public void notifyDisplayMvt(Piece piece) {
+    public void notifyDisplayMvt() {
         for (PreviewObserver obs : listObs) {
             obs.displayPreviewMvt(casesPreviewMvt);
         }

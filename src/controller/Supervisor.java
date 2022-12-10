@@ -6,6 +6,8 @@ import model.Mover;
 public class Supervisor {
     private Board board;
     private Mover mover;
+    private int lastClickedPiecePosY;
+    private int lastClickedPiecePosX;
 
     public Supervisor() {
 
@@ -17,6 +19,37 @@ public class Supervisor {
     }
 
     public boolean clickedOnSomeCase(int posX, int posY, boolean team) {
+        if(board.getPiece(posY, posX)==null){
+            System.out.println("The team "+
+                (team ? "white" : "black")+
+                " clicked on nothing in "+
+                posX+";"+posY);
+
+        }
+        else{
+            System.out.println("The team "+
+                (team ? "white" : "black")+
+                " clicked on the "+
+                (board.getPiece(posY, posX).getTeam() ? "white " : "black ")+
+                board.getPiece(posY, posX).getChessName()+
+                " in "+
+                posX+";"+posY);
+        }
+
+
+        if(mover.isCasePreviewAtk(posX, posY)){
+            mover.emptyPreviews();
+            board.destroyPiece(posX, posY);
+            board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX);
+        }
+        else if(mover.isCasePreviewMvt(posX, posY)){
+            mover.emptyPreviews();
+            board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX);
+        }
+        
+
+
+
         return false;
     }
 }

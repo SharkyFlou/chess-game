@@ -1,10 +1,8 @@
 package view;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.text.AttributeSet.ColorAttribute;
 import java.awt.image.BufferedImage;
 
 import controller.GameFacade;
@@ -15,11 +13,9 @@ import model.PreviewObserver;
 import model.BoardObserver;
 
 import java.net.URL;
-import java.net.http.HttpResponse.BodyHandler;
 
 public class DisplayGame extends JFrame implements PreviewObserver, BoardObserver {
 
-    private Supervisor supervisor;
     private GameFacade gameFacade;
     private Board board;
 
@@ -31,8 +27,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
     private JButton[][] chessBoardButtons = new JButton[8][8];
     private static final String COLS = "ABCDEFGH";
 
-    public DisplayGame(Supervisor Xsupervisor, GameFacade XgameFacade, Board xBoard) {
-        supervisor = Xsupervisor;
+    public DisplayGame(GameFacade XgameFacade, Board xBoard) {
         gameFacade = XgameFacade;
         board = xBoard;
         setTitle("Best chess game");
@@ -166,7 +161,7 @@ public class DisplayGame extends JFrame implements PreviewObserver, BoardObserve
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (chessBoardButtons[i][j] == jButton) {
-                    gameFacade.clickedOnSomeCase(i, j);
+                    gameFacade.clickedOnSomeCase(j, i);
                 }
             }
         }
