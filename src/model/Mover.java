@@ -22,6 +22,7 @@ public class Mover {
     }
 
     public boolean isCasePreviewAtk(int posY, int posX) {
+
         return casesPreviewAtk[posY][posX];
     }
 
@@ -76,20 +77,20 @@ public class Mover {
             casesPreviewAtk = calculateMvtAtkPawn(posY, posX, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "knight")
-            casesPreviewMvt = calculateMvtAtkKnight(posY, posX, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkKnight(posY, posX, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "bishop")
-            casesPreviewMvt = calculateMvtAtkCross(posY, posX, 0, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkCross(posY, posX, 0, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "rook")
-            casesPreviewMvt = calculateMvtAtkPlus(posY, posX, 0, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkPlus(posY, posX, 0, false, currentPieceAtk);
 
         // entre ces deux pieces suivantes, seulement le reach change
         else if (currentPieceAtk.getChessName() == "king")
-            casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 1, false, currentPieceAtk);
+            casesPreviewAtk= calculateMvtAtkPlusCross(posY, posX, 1, false, currentPieceAtk);
 
         else if (currentPieceAtk.getChessName() == "queen")
-            casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 0, false, currentPieceAtk);
+            casesPreviewAtk = calculateMvtAtkPlusCross(posY, posX, 0, false, currentPieceAtk);
 
         notifyDisplayAtk();
     }
@@ -104,7 +105,6 @@ public class Mover {
     // roi et reine)
     // donc je le fais
     private boolean[][] calculateMvtAtkPawn(int posY, int posX, boolean mvtAtk, Piece piece) {
-        System.out.println("la");
         Pawn pawn = (Pawn) piece;
 
         boolean realMvtAtkPawn[][] = initializePreviews();
@@ -133,18 +133,6 @@ public class Mover {
 
             }
         }
-
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (realMvtAtkPawn[i][j]) {
-                    System.out.print("x");
-                } else {
-                    System.out.print(".");
-                }
-            }
-            System.out.print("\n");
-        }
-
         return realMvtAtkPawn;
     }
 

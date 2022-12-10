@@ -159,7 +159,6 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
 
     public void displayPreviewAtk(boolean[][] caseAtk) {
         System.out.println("Affichage preview atk");
-        // go around each jButton and put the basic color again
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (caseAtk[i][j]) {
@@ -173,7 +172,6 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     }
 
     public void displayPreviewMvt(boolean[][] caseMvt) {
-
         System.out.println("Affichage preview mvt");
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
