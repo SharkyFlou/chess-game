@@ -175,13 +175,6 @@
             + displayScore(team : Boolean)
         }
 
-        class Terminal{
-            + setBoard()
-            + clickedOnCase(posx : Integer, posy : Integer)
-            + displayPreview(previews : Boolean[], typeMvt : Boolean)
-            + displayPromotion(posX : Integer, posY : Integer)
-            + hidePreview()
-        }
 
         class PanelScore extends JPanel{
             - team : Boolean
@@ -199,7 +192,6 @@
     Main ..> Board : > instantiate 
     Main ...> GameFacade : > instantiate 
     Main ..> DisplayBoard : > instantiate 
-    Main ..> Terminal : > instantiate 
     Main ..> Supervisor : > instantiate 
     Main ..> Manager : > instantiate 
     Main ..> Mover : > instantiate 
@@ -243,7 +235,6 @@
     GameFacade -> DisplayGame : > display
     
     'relation view - model
-    Terminal ..|> ScoreObserver : ""
     DisplayBoard .down.|> BoardObserver : ""
     DisplayBoard .down.|> PreviewObserver : ""
     DisplayBoard o-down-> "1\n-board" Board : > watch

@@ -15,14 +15,14 @@ Début d'un diagramme, résumant les intéractions entre les classes:
 - Utilisation de Factory Method pour pouvoir créer des pièces depuis Board plus facilement.
 - Rajout de l'observeur `BoardObserver`, qui observe `Board`, et `DisplayBoard` l'implémente pour se mettre à jour automatiquement lors de deplacement de pièces.
 
-## 3e séance :
+## 3ème séance :
 
 - La classe `Board` doit être divisée en plusieurs sub-classes. L'idée est de dépourvoir le `Board` d'autant de responsabilités, car Board gère aussi les mouvement des pièces, et stock les prévisualisations des pièces en plus des pièces elles même.
 - Pièce n'est pas censée gérer ses mouvements, c'est une des subclasses de `Board`.
 - Les relations entre classes ont été modifiées, le PUML a été nettoyé.
 - Définition de toutes les classes par Model, View et Controller.
 
-## 4e séance :
+## 4ème séance :
 
 - Création de `Board`, `Interactions` (qui gère les mouvements, ce n'est plus Board (vu a la [3e séance](#3e-séance))) et `Manager` (qui gère les victoires, les pats et le "backend" du chess).
 - On enlève le Factory Method, vu que chaque pièce peut être créée avec les attributs propres à chacune (pas de problème auquel répondre).
@@ -31,21 +31,22 @@ Début d'un diagramme, résumant les intéractions entre les classes:
 - Inititalisaton du `Board`, création des pièces aux bon endroits.
 - Début calcul mouvement des pièces.
 
-## 5e séance :
+## 5ème séance :
 
 - Ajout de la classe `Mover` qui remplace `Interactions` (vu a la [4e séance](#4e-séance)), responsable de calculer les déplacements et attaques réelement possible, et de renvoyer un tableau de tableau de booléan correspondant (permet de respecter le modèle MVC).
 - Calcul des mouvements théorique des pièces défini dans chaque pièce.
 - Ajout de l''interface `FirstMovement` dont hérite `Pawn`, `Rook` et `King`, qui permet de savoir si les pièces ont déjà bougé, afin de calculer les mouvements possibles.
 
-## 6e séance :
+## 6ème séance :
 
 - Ajout `ScoreObserver` qui observe `Manager` (vu a la [4e séance](#4e-séance)).
 - Début codage de `Mover`, passe des mouvement théorique des pièces aux mouvement réelement possible sur le plateau.
 - Choix : tout les commentaires seront desormai en français.
 
-## 7e séance :
+## 7ème séance :
 
 - ``Rapport.md`` plus beau 😎.
 - Ajout de `PanelScore` qui implémente `ScoreObserver` et étends JPanel; `DisplayBoard` possède deux `PanelScore`, un pour chaque équipe.
 - Calcul de chaque type de movement fini, tout mouvement (de théorique à pratique) est fait dans `Mover` (ex: calcul de la trajectoire d'un Bishop).
 - Nettoyage du code + commentaires.
+- Suppression de la vue `Terminal` inutile créé lors de la [2ème séance](#2ème-séance)).
