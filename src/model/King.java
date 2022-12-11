@@ -9,15 +9,6 @@ public class King extends FirstMovement {
                 "king");
     }
 
-    //
-    //
-    //
-    // pos x
-    //
-    //
-    //
-
-    // <-----pos Y------->
     public boolean[][] getTheoricalMvt(int posY, int posX) {
         boolean[][] canGoTo = super.initTabFalse();
         // 8 positions possibles
@@ -26,7 +17,7 @@ public class King extends FirstMovement {
         // bishop et du rook
         // on le calcule dans mover
 
-        // both sides
+        // chaque côté
         if (posY - 1 >= 0)
             canGoTo[posX][posY - 1] = true;
         if (posY + 1 < 8)

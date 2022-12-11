@@ -10,15 +10,8 @@ public class Pawn extends FirstMovement {
 
     }
 
-    //
-    // -
-    //
-    // pos Y
-    //
-    // +
-    //
 
-    // <-----pos X------->
+    
     public boolean[][] getTheoricalMvt(int posY, int posX) { // very short and easy for the class
 
         // la position theorique ne sera pas utilisee par deux raisons:

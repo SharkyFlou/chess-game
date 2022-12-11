@@ -11,15 +11,7 @@ public class Rook extends FirstMovement {
                 "rook");
 
     }
-    //
-    //
-    //
-    // pos x
-    //
-    //
-    //
 
-    // <-----pos Y------->
     public boolean[][] getTheoricalMvt(int posY, int posX) {
         boolean[][] canGoTo = super.initTabFalse();
 

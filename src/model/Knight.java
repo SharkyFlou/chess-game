@@ -9,15 +9,7 @@ public class Knight extends Piece {
                 "knight");
     }
 
-    //
-    //
-    //
-    // pos x
-    //
-    //
-    //
-
-    // <-----pos Y------->
+    
     public boolean[][] getTheoricalMvt(int posY, int posX) {
         boolean[][] canGoTo = super.initTabFalse();
 

@@ -13,12 +13,16 @@ public class Supervisor {
 
     }
 
+    //on donne au supervisor le Mover et le Board
     public void addBoardMover(Board gaveBoard, Mover gaveMover) {
         board = gaveBoard;
         mover = gaveMover;
     }
 
+    //est appelé par GameFacade, fait les test pour savoir comment réagit
     public boolean clickedOnSomeCase(int posY, int posX, boolean team) {
+
+        //les prints ci dessous sont ici pour le debug : temporaire
         if(board.getPiece(posY, posX)==null){
             System.out.println("The team "+
                 (team ? "white" : "black")+
@@ -36,8 +40,8 @@ public class Supervisor {
                 posY+";"+posX);
         }
 
-
-        if(mover.isCasePreviewAtk(posY, posX)){
+        //si le joueur veut manger une piece adverse
+        if(mover.isCasePreviewAtk(posY, posX)){ 
             mover.emptyPreviews();
             System.out.println("Deplacement de : "+lastClickedPiecePosY+";"+lastClickedPiecePosX+" vers "+posY+";"+posX);
             board.destroyPiece(posY, posX);
@@ -45,7 +49,8 @@ public class Supervisor {
             return true;
         }
 
-        if(mover.isCasePreviewMvt(posY, posX)){
+        //si le joueur veut deplacer sa piece 
+        if(mover.isCasePreviewMvt(posY, posX)){ 
             mover.emptyPreviews();
             System.out.println("Deplacement de : "+lastClickedPiecePosY+";"+lastClickedPiecePosX+" vers "+posY+";"+posX);
             board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX);
@@ -54,10 +59,12 @@ public class Supervisor {
 
         mover.emptyPreviews();
 
+        //si le joueur clique sur une de ses pièces
         if(board.doesCaseContainPiece(posY, posX) && board.doesCaseContainPieceOfTeam(posY, posX, team)){
             mover.calculateRealMvt(posY, posX);
             mover.calculateRealAtk(posY, posX);
             System.out.println("Enregistrement dernière piece : "+posY+";"+posX);
+            //enregistre la position de la pièce
             lastClickedPiecePosX= posX;
             lastClickedPiecePosY = posY;
         }
