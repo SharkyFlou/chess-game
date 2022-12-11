@@ -9,6 +9,7 @@ public abstract class FirstMovement extends Piece {
         hasMoved = false;
     }
 
+    //permet de savoir si un pion, roi, ou tour a déjà bougé
     public boolean hasItMoved() {
         return hasMoved;
     }

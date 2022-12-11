@@ -10,7 +10,7 @@ public class GameFacade {
     }
 
     public void clickedOnSomeCase(int posY, int posX){
-        if(supervisor.clickedOnSomeCase(posY, posX, nextToPlay)){ //si qlq chose c'est passé : deplacement / attaque
+        if(supervisor.clickedOnSomeCase(posY, posX, nextToPlay)){ //si qlq chose s'est passé : deplacement / attaque
             nextToPlay=!nextToPlay; //au prochain de jouer
         }
     }

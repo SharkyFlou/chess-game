@@ -3,6 +3,7 @@ package view;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+
 import java.awt.image.BufferedImage;
 
 import controller.GameFacade;
@@ -29,82 +30,90 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     public DisplayBoard(GameFacade XgameFacade, Board xBoard) {
         gameFacade = XgameFacade;
         board = xBoard;
-        setTitle("Best chess game");
-        setSize(1080, 800);
-        setMinimumSize(new Dimension(1080, 607));
+        setTitle("Awfull chessgame");
+        setSize(980, 800);
+        setMinimumSize(new Dimension(980, 607));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
+        //ajout panel du haut
         panelTitle = new JPanel();
         panelTitle.setBackground(Color.darkGray);
-        panelTitle.setSize(new Dimension(1080, 200));
+        panelTitle.setSize(new Dimension(1080, 100));
         panelTitle.setMinimumSize(new Dimension(1080, 100));
         add(panelTitle);
 
+        //ajout panel du bas contenant les trois sous panel donc l'échequier
         panelLow = new JPanel();
         panelLow.setLayout(new BoxLayout(panelLow, BoxLayout.X_AXIS));
         panelLow.setSize(new Dimension(1080, 507));
         panelLow.setMinimumSize(new Dimension(1080, 507));
         add(panelLow);
 
+        //panel qui contiendra les pièces conquises par le joueur blanc
         panelLowLeft = new JPanel();
         panelLowLeft.setBackground(Color.lightGray);
         panelLowLeft.setSize(new Dimension(180, 507));
         panelLowLeft.setMinimumSize(new Dimension(180, 507));
         panelLow.add(panelLowLeft);
 
+        //panel qui contiendra l'échequier
         panelLowMid = new JPanel(new GridLayout(0, 10));
         panelLowMid.setBackground(Color.gray);
-        panelLowMid.setSize(new Dimension(720, 507));
+        panelLowMid.setSize(new Dimension(620, 507));
         panelLowMid.setMinimumSize(new Dimension(720, 507));
         panelLow.add(panelLowMid);
 
+        //panel qui contiendra les pièces conquises par le joueur noir
         panelLowRight = new JPanel();
         panelLowRight.setBackground(Color.lightGray);
         panelLowRight.setSize(new Dimension(720, 507));
         panelLowRight.setMinimumSize(new Dimension(720, 507));
         panelLow.add(panelLowRight);
 
-        creationBoardBlackWhite();
+
+        //Ajout JLabel du titre
+        JLabel title = new JLabel();
+        title.setText("Awfull chessgame");
+        title.setFont(new Font("Verdana", Font.PLAIN, 24));
+        title.setForeground(Color.WHITE);
+        panelTitle.add(title);
+
+
+        creationBoardBlackWhite(); //creation des cases
         setVisible(true);
     }
 
     public void creationBoardBlackWhite() {
 
-        // panelLowMid.add(new JLabel("?"), BorderLayout.LINE_START);
+        //ajout de border entre les cases, ne fonctionne pas pour l'instant
+        panelLowMid.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        panelLowMid.setBorder(new LineBorder(Color.BLACK));
+        // creation des bouttons
+       
 
-        // create the chess board squares
-        Insets buttonMargin = new Insets(0, 0, 0, 0);
-
-        // Create the chess board
+        // creer le chess board
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
-                JButton b = new JButton();
-                b.setMargin(buttonMargin);
-                // our chess pieces are 64x64 px in size, so we'll
-                // 'fill this in' using a transparent icon..
-                ImageIcon icon = new ImageIcon(
-                        new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
-                // ImageIcon icon = new ImageIcon("/resources/bbishop.png");
-                b.setIcon(icon);
-                if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
-                    b.setBackground(Color.WHITE);
-                    b.setOpaque(true);
-                    b.setBorderPainted(false);
+                JButton bt = new JButton();
+                
+                
+                if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) { //blanc
+                    bt.setBackground(Color.WHITE);
+                    bt.setOpaque(true);
+                    bt.setBorderPainted(false);
                 } else {
-                    b.setBackground(Color.DARK_GRAY);
-                    b.setOpaque(true);
-                    b.setBorderPainted(false);
+                    bt.setBackground(Color.DARK_GRAY); //gris foncé
+                    bt.setOpaque(true);
+                    bt.setBorderPainted(false);
                 }
 
-                b.addActionListener(actionEvent -> {
-                    clickedOnSomeCase(b);
+                bt.addActionListener(actionEvent -> {
+                    clickedOnSomeCase(bt);
                 });
 
-                chessBoardButtons[j][i] = b;
+                chessBoardButtons[j][i] = bt;
             }
         }
 
@@ -112,9 +121,8 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         panelLowMid.add(new JLabel(""));
         // fill the top row
         for (int i = 0; i < 8; i++) {
-            panelLowMid.add(
-                    new JLabel(COLS.substring(i, i + 1),
-                            SwingConstants.CENTER));
+            final JLabel label = new JLabel(COLS.substring(i, i + 1),SwingConstants.CENTER);
+            panelLowMid.add(label);
         }
 
         panelLowMid.add(new JLabel(""));
@@ -147,7 +155,9 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         }
     }
 
+    //redirige vers facade, avec le position X et Y de la case cliquée
     public void clickedOnSomeCase(JButton jButton) {
+        //parcours les cases pour savoir la quelle a été cliquée
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (chessBoardButtons[i][j] == jButton) {
@@ -157,35 +167,51 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         }
     }
 
-    public void displayPreviewAtk(boolean[][] caseAtk) {
-        System.out.println("Affichage preview atk");
+    //affichage du preview attaque
+    public void displayPreviewAtk(boolean[][] caseAtk) { 
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (caseAtk[i][j]) {
-                    chessBoardButtons[i][j].setBackground(Color.red);
+                    if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
+                    chessBoardButtons[i][j].setBackground(Color.decode("#B30000")); //rouge clair
                     chessBoardButtons[i][j].setOpaque(true);
                     chessBoardButtons[i][j].setBorderPainted(false);
+                    } else {
+                    chessBoardButtons[i][j].setBackground(Color.decode("#9B0000")); //rouge plus foncé
+                    chessBoardButtons[i][j].setOpaque(true);
+                    chessBoardButtons[i][j].setBorderPainted(false);
+    
+                    }
 
                 }
             }
         }
     }
 
-    public void displayPreviewMvt(boolean[][] caseMvt) {
-        System.out.println("Affichage preview mvt");
+    //affichage du preview mouvement
+    public void displayPreviewMvt(boolean[][] caseMvt) { 
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (caseMvt[i][j]) {
-                    chessBoardButtons[i][j].setBackground(Color.green);
+                    if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
+                        chessBoardButtons[i][j].setBackground(Color.decode("#009B18")); //vert clair
                     chessBoardButtons[i][j].setOpaque(true);
                     chessBoardButtons[i][j].setBorderPainted(false);
+    
+                    } else {
+                    chessBoardButtons[i][j].setBackground(Color.decode("#008A1A")); //vert plus foncé
+                    chessBoardButtons[i][j].setOpaque(true);
+                    chessBoardButtons[i][j].setBorderPainted(false);
+    
+                    }
                 }
             }
         }
 
     }
 
-    public void erasePreviews() {
+    //vide les preview, remet les couleurs de l'échiquier à defaut
+    public void erasePreviews() { 
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
@@ -203,7 +229,8 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         }
     }
 
-    public void displayGame() {
+    //parcours le board pour re-afficher les pièces
+    public void displayGame() { 
         System.out.println("Reaffichage des piece");
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -221,12 +248,14 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         }
     }
 
+    //affichera les pieces prises
     public void displayPieceTaken(Piece piece) {
 
     }
 
+    //affichera les promotions lorsqu'un pion atteint le bout de l'échiquier
     public void displayPromotion(int posY, int posX) {
-        // TODO Auto-generated method stub
+        
 
     }
 

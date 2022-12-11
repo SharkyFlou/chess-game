@@ -5,7 +5,7 @@ import java.util.*;
 public class Manager {
     private int whitePts;
     private int blackPts;
-    private List<ManagerObserver> observers;
+    private List<ScoreObserver> observers;
 
     public Manager(){
         whitePts=0;
@@ -30,7 +30,7 @@ public class Manager {
         }
     }
 
-    public void addObsersver(ManagerObserver obs){
+    public void addObsersver(ScoreObserver obs){
         observers.add(obs);
     }
 
