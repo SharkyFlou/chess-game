@@ -108,6 +108,7 @@ public class Mover {
 
         boolean realMvtAtkPawn[][] = initializePreviews();
 
+        //plus utilisé
         boolean theoreticalMvt[][] = pawn.getTheoricalMvt(posY, posX);
         boolean theoreticalAttack[][] = pawn.getTheoreticalAttack(posY, posX);
 
