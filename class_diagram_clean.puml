@@ -118,7 +118,8 @@
             - notifyDraw()
             + addPoints(team : Boolean, pts : Integer)
             + getPoints(team : Boolean)
-            + addObs(obs : InteractionsObserver)
+            + addObs(obs : ScoreObserver)
+            + notifyObsPtsChanged(team : Boolean, pts : Integer)
         }
 
         interface ScoreObserver{
