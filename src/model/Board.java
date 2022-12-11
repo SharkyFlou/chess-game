@@ -8,8 +8,8 @@ public class Board {
     private Manager manager;
     List<BoardObserver> listObs = new ArrayList<BoardObserver>();
 
-    public Board(Manager gaveManager){
-        manager=gaveManager;
+    public Board(Manager gaveManager) {
+        manager = gaveManager;
     }
 
     public void initBoard() {
@@ -48,9 +48,11 @@ public class Board {
             }
         }
         // test
-        board[5][7] = new Pawn(false);
-        board[6][0] = null;
-        board[4][4] = new Rook(true);
+        /*
+         * board[5][7] = new Pawn(false);
+         * board[6][0] = null;
+         * board[4][4] = new Rook(true);
+         */
         notifyMov();
     }
 

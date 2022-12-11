@@ -23,6 +23,10 @@ public class Rook extends FirstMovement {
     public boolean[][] getTheoricalMvt(int posY, int posX) {
         boolean[][] canGoTo = super.initTabFalse();
 
+        // on utilise pas le mvt theorique vu qu'il faut calculer l'interception
+        // progressive de pieces entre le rook et les pieces du board
+        // on le fait dans mover
+
         // KING
         if (reach == 1) {
             if (posY - 1 >= 0)

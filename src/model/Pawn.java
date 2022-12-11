@@ -21,6 +21,9 @@ public class Pawn extends FirstMovement {
     // <-----pos X------->
     public boolean[][] getTheoricalMvt(int posY, int posX) { // very short and easy for the class
 
+        // la position theorique ne sera pas utilisee par deux raisons:
+        // pour le mvt, on a besoin de voir ce qui se trouve sur le board
+        // un pawn ne peut pas bouger de deux cases s'il a une piece en face de lui
         boolean[][] canGoTo = super.initTabFalse();
 
         int way = super.getTeam() ? -1 : 1;

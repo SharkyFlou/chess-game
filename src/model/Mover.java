@@ -103,7 +103,6 @@ public class Mover {
 
     // honestly on peut melanger calculateMvtPawn et calculateAtkPawn (comme pour
     // roi et reine)
-    // donc je le fais
     private boolean[][] calculateMvtAtkPawn(int posY, int posX, boolean mvtAtk, Piece piece) {
         Pawn pawn = (Pawn) piece;
 
@@ -114,27 +113,56 @@ public class Mover {
 
         int way = pawn.getTeam() ? -1 : 1;
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                // SI ON CHERCHE LE BOOLEAN[][] MVT
-                if (mvtAtk) {
-                    // le fait d'avoir bouge est deja verifie dans le mouvement theorique
-                    if (theoreticalMvt[i][j]) {
-                        // s'il y a pas de piece sur la position theorique mvt
-                        realMvtAtkPawn[i][j] = !board.doesCaseContainPiece(i, j);
-                    }
-                }
-                // SI ON CHERCHE LE BOOLEAN[][] ATK
-                else {
-                    if (theoreticalAttack[i][j]) {
-                        // s'il y a une piece de l'autre team (!team)
-                        realMvtAtkPawn[i][j] = board.doesCaseContainPieceOfTeam(i, j, !pawn.getTeam());
+        // MVT
+        if (mvtAtk) {
+            if ((posY + (1 * way) < 8 && posY + (1 * way) >= 0)
+                    && !board.doesCaseContainPiece(posY + (1 * way), posX)) {
+                realMvtAtkPawn[posY + (1 * way)][posX] = true;
+            }
 
-                    }
-                }
-
+            if (!pawn.hasItMoved() && (posY + (2 * way) < 8 && posY + (2 * way) >= 0)
+                    && !board.doesCaseContainPiece(posY + (1 * way), posX)) {
+                realMvtAtkPawn[posY + (2 * way)][posX] = true;
             }
         }
+        // ATK
+        else {
+            if (posY + (1 * way) < 8 && posY + (1 * way) >= 0) {
+                if (posX - 1 >= 0 && board.doesCaseContainPieceOfTeam(posY + (1 * way), posX - 1, !pawn.getTeam()))
+                    realMvtAtkPawn[posY + (1 * way)][posX - 1] = true;
+                if (posX + 1 < 8 && board.doesCaseContainPieceOfTeam(posY + (1 * way), posX + 1, !pawn.getTeam()))
+                    realMvtAtkPawn[posY + (1 * way)][posX + 1] = true;
+            }
+        }
+
+        // la position theorique ne sera pas utilisee par deux raisons:
+        // pour le mvt, on a besoin de voir ce qui se trouve sur le board
+        // un pawn ne peut pas bouger de deux cases s'il a une piece en face de lui
+        // pour l'atk, il est pas optimisé de parcourir tout le boolean[][]
+
+        /*
+         * for (int i = 0; i < 8; i++) {
+         * for (int j = 0; j < 8; j++) {
+         * // SI ON CHERCHE LE BOOLEAN[][] MVT
+         * if (mvtAtk) {
+         * // le fait d'avoir bouge est deja verifie dans le mouvement theorique
+         * if (theoreticalMvt[i][j]) {
+         * // s'il y a pas de piece sur la position theorique mvt
+         * realMvtAtkPawn[i][j] = !board.doesCaseContainPiece(i, j);
+         * }
+         * }
+         * // SI ON CHERCHE LE BOOLEAN[][] ATK
+         * else {
+         * if (theoreticalAttack[i][j]) {
+         * // s'il y a une piece de l'autre team (!team)
+         * realMvtAtkPawn[i][j] = board.doesCaseContainPieceOfTeam(i, j,
+         * !pawn.getTeam());
+         * }
+         * }
+         * }
+         * }
+         */
+
         return realMvtAtkPawn;
     }
 
@@ -183,7 +211,8 @@ public class Mover {
                     realMvtAtkCross[posY + 1][posX - 1] = !board.doesCaseContainPiece(posY + 1, posX - 1);
                 if (posY + 1 < 8 && posX + 1 < 8)
                     realMvtAtkCross[posY + 1][posX + 1] = !board.doesCaseContainPiece(posY + 1, posX + 1);
-            } else {
+            } // bishop, reine
+            else {
                 // on declare des variables temporelles, qui gerent NW, NE, SW, SE
                 int posXVariableNW = posX - 1, posYVariableNW = posY - 1;
                 // NW
@@ -254,11 +283,13 @@ public class Mover {
             else {
                 // on declare des variables temporelles, qui gerent NW, NE, SW, SE
                 int posXVariableNW = posX - 1, posYVariableNW = posY - 1;
+
                 // NW
                 while (posYVariableNW >= 0 && posXVariableNW >= 0) {
-                    if (board.doesCaseContainPieceOfTeam(posYVariableNW, posXVariableNW, !bishop.getTeam())
-                    // && !board.doesCaseContainPiece(posYVariableNW, posXVariableNW)
-                    ) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableNW, posXVariableNW, bishop.getTeam())) {
+                        break;
+                    }
+                    if (board.doesCaseContainPieceOfTeam(posYVariableNW, posXVariableNW, !bishop.getTeam())) {
                         realMvtAtkCross[posYVariableNW][posXVariableNW] = true;
                         break;
                     }
@@ -266,13 +297,15 @@ public class Mover {
                     posXVariableNW--;
                 }
 
+                // on declare des variables temporelles, qui gerent NW, NE, SW, SE
                 int posXVariableNE = posX + 1, posYVariableNE = posY - 1;
 
                 // NE
                 while (posYVariableNE >= 0 && posXVariableNE < 8) {
-                    if (board.doesCaseContainPieceOfTeam(posYVariableNE, posXVariableNE, !bishop.getTeam())
-                    // && !board.doesCaseContainPiece(posYVariableNW, posXVariableNW)
-                    ) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableNE, posXVariableNE, bishop.getTeam())) {
+                        break;
+                    }
+                    if (board.doesCaseContainPieceOfTeam(posYVariableNE, posXVariableNE, !bishop.getTeam())) {
                         realMvtAtkCross[posYVariableNE][posXVariableNE] = true;
                         break;
                     }
@@ -280,27 +313,30 @@ public class Mover {
                     posXVariableNE++;
                 }
 
+                // on declare des variables temporelles, qui gerent NW, NE, SW, SE
                 int posXVariableSW = posX - 1, posYVariableSW = posY + 1;
 
                 // SW
                 while (posYVariableSW < 8 && posXVariableSW >= 0) {
-                    if (board.doesCaseContainPieceOfTeam(posYVariableSW, posXVariableSW, !bishop.getTeam())
-                    // && !board.doesCaseContainPiece(posYVariableSW, posXVariableSW)
-                    ) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableSW, posYVariableSW, bishop.getTeam())) {
+                        break;
+                    }
+                    if (board.doesCaseContainPieceOfTeam(posYVariableSW, posXVariableSW, !bishop.getTeam())) {
                         realMvtAtkCross[posYVariableSW][posXVariableSW] = true;
                         break;
                     }
                     posYVariableSW++;
                     posXVariableSW--;
                 }
-
+                // on declare des variables temporelles, qui gerent NW, NE, SW, SE
                 int posXVariableSE = posX + 1, posYVariableSE = posY + 1;
 
                 // SE
                 while (posYVariableSE < 8 && posXVariableSE < 8) {
-                    if (board.doesCaseContainPieceOfTeam(posYVariableSE, posXVariableSE, !bishop.getTeam())
-                    // && !board.doesCaseContainPiece(posYVariableSE, posXVariableSE)
-                    ) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableSE, posXVariableSE, bishop.getTeam())) {
+                        break;
+                    }
+                    if (board.doesCaseContainPieceOfTeam(posYVariableSE, posXVariableSE, !bishop.getTeam())) {
                         realMvtAtkCross[posYVariableSE][posXVariableSE] = true;
                         break;
                     }
@@ -342,7 +378,7 @@ public class Mover {
                 if (posX + 1 < 8)
                     realMvtAtkPlus[posY][posX + 1] = !board.doesCaseContainPiece(posY, posX + 1);
             }
-            // si on cherche la reine
+            // si on cherche la reine, tour
             else {
                 // on va vers le HAUT (NORD)
                 while (n >= 0) {
@@ -392,10 +428,14 @@ public class Mover {
                 if (posX + 1 < 8)
                     realMvtAtkPlus[posY][posX + 1] = board.doesCaseContainPieceOfTeam(posY, posX + 1, !rook.getTeam());
             }
-            // si on cherche la reine
+            // si on cherche la reine, tour
             else {
                 // on va vers le HAUT (nord)
                 while (n >= 0) {
+                    // s'il y a une piece de notre team, la boucle est cassee
+                    if (board.doesCaseContainPieceOfTeam(n, posX, rook.getTeam())) {
+                        break;
+                    }
                     // si la case contient une piece de l'autre team, case preview = true + on casse
                     // la boucle
                     if (board.doesCaseContainPieceOfTeam(n, posX, !rook.getTeam())) {
@@ -406,6 +446,9 @@ public class Mover {
                 }
                 // on va vers le BAS (SUD)
                 while (s < 8) {
+                    if (board.doesCaseContainPieceOfTeam(s, posX, rook.getTeam())) {
+                        break;
+                    }
                     if (board.doesCaseContainPieceOfTeam(s, posX, !rook.getTeam())) {
                         realMvtAtkPlus[s][posX] = true;
                         break;
@@ -414,6 +457,9 @@ public class Mover {
                 }
                 // on va vers la GAUCHE (WEST)
                 while (w >= 0) {
+                    if (board.doesCaseContainPieceOfTeam(posY, w, rook.getTeam())) {
+                        break;
+                    }
                     if (board.doesCaseContainPieceOfTeam(posY, w, !rook.getTeam())) {
                         realMvtAtkPlus[posY][w] = true;
                         break;
@@ -422,6 +468,9 @@ public class Mover {
                 }
                 // on va vers la droite (est)
                 while (e < 8) {
+                    if (board.doesCaseContainPieceOfTeam(posY, e, rook.getTeam())) {
+                        break;
+                    }
                     if (board.doesCaseContainPieceOfTeam(posY, e, !rook.getTeam())) {
                         realMvtAtkPlus[posY][e] = true;
                         break;
@@ -443,24 +492,13 @@ public class Mover {
 
         boolean realMvtAtkCross[][] = initializePreviews();
 
-        // King king = (King) piece;
-
         // pour king et queen (le reach est specifique a chacun de toute facon, et passé
         // en param)
         Bishop bishop = new Bishop(piece.getTeam());
         Rook rook = new Rook(piece.getTeam());
 
         realMvtCross = calculateMvtAtkCross(posY, posX, reach, mvtAtk, bishop);
-        realMvtPlus = calculateMvtAtkCross(posY, posX, reach, mvtAtk, rook);
-
-        /*
-         * if (piece.getChessName() == "queen") {
-         * Queen queen = (Queen) piece;
-         * 
-         * realMvtCross = calculateMvtAtkCross(posY, posX, reach, mvtAtk, piece);
-         * realMvtPlus = calculateMvtAtkCross(posY, posX, reach, mvtAtk, piece);
-         * }
-         */
+        realMvtPlus = calculateMvtAtkPlus(posY, posX, reach, mvtAtk, rook);
 
         // si les tableaux de booleens de plus et cross sont true, on les melange
         // dans un autre tableau

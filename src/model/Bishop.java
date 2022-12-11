@@ -24,6 +24,10 @@ public class Bishop extends Piece {
         boolean[][] canGoTo = super.initTabFalse();
         // int nw = 1, ne = 1, sw = 1, se = 1;
 
+        // onn utilise pas le mvt theorique vu qu'il faut calculer l'interception
+        // progressive de pieces entre le bishop et les pieces du board
+        // on le fait dans mover
+
         // 8 positions possibles = KING
         // vers le haut
         if (reach == 1) {
