@@ -52,9 +52,9 @@
         }
 
         interface PreviewObserver{
-            + {abstract} displayPreviewAtk(atkCases : Boolean[])
-            + {abstract} displayPreviewMvt(mvtCases : Boolean[])
-            + {abstract} erasePreview()
+            +displayPreviewAtk(atkCases : Boolean[])
+            +displayPreviewMvt(mvtCases : Boolean[])
+            +erasePreview()
         }
 
         abstract class Piece{
@@ -63,52 +63,52 @@
             - team : Boolean
             - imageLink : String
 
-            + Piece(team : Boolean) : Piece 
+            + Piece(team : Boolean) 
             + getTeam() : Boolean
             + getValue() : Integer
             + getPieceName() : String
         }
 
-        class Pawn implements Piece{
-            - HasMadeFirstMove : Boolean
+        class Pawn implements FirstMovement{
             + Pawn(team : Boolean)
-            + getHasMoved() : Boolean
-            + PawnMovement()
-            + PawnAttack()
+            + pawnMovement()
+            + pawnAttack()
         }
 
-        class King implements Piece{
-            - HasMadeFirstMove : Boolean
-            + King(team : Boolean)
+        abstract class FirstMovement implements Piece{
+            - hasMadeFirstMove : Boolean
             + getHasMoved() : Boolean
-            + KingMovement()
+            + moove()
+        }
+
+        class King implements FirstMovement{
+            + King(team : Boolean)
+            + kingMovement()
         }
 
         class Queen implements Piece{
             + Queen(team : Boolean)
-            + QueenMovement()
+            + queenMovement()
         }
 
         class Bishop implements Piece{
             + Bishop(team : Boolean) 
-            + BishopMouvement()
+            + bishopMouvement()
         }
 
-        class Rook implements Piece{
-            - HasMadeFirstMove : Boolean
+        class Rook implements FirstMovement{
             + Rook(team : Boolean)
-            + getHasMoved() : Boolean
-            + RookMouvement()
+            + rookMouvement()
         }
 
         class Knight implements Piece{
             + Knight(team : Boolean)
-            + KnightMovement()
+            + knightMovement()
         }
 
         interface BoardObserver{
-            + {abstract} DisplayGame()
-            + {abstract} displayPromotion(posX : Integer, posY : Integer)
+            + DisplayGame()
+            + displayPromotion(posX : Integer, posY : Integer)
         }
 
         class Manager{
@@ -121,8 +121,8 @@
             + addObs(obs : InteractionsObserver)
         }
 
-        interface ScoreObserver{
-            + {abstract} DisplayScore(team : Boolean, points : Integer)
+        interface ManagerObserver{
+            + {abstract} DisplayScore(team : Boolean)
         }
 
 
@@ -137,11 +137,9 @@
             - lastClickedPiecePosx : Integer
             - lastClickedPiecePosy : Integer 
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
-            + setBoard()
-            + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean)
-            - casePreviewMvmt(posX : Integer, posY : Integer) : Boolean
-            - casePreviewAtk(posX : Integer, posY : Integer) : Boolean
-            
+            + Supervisor()
+            + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean) : Boolean
+            + addBoardMover(gaveBoard : Board , gaveMover : Mover)
             + addObs(obs : InteractionsObserver)
             - notifyPrev()
             - notifyEndPrev()
@@ -162,7 +160,7 @@
         class DisplayBoard{
             + setBoard()
             + clickedOnCase(posx : Integer, posy : Integer)
-            + displayPreview(previews : Boolean[], typeMvmt : Boolean)
+            + displayPreview(previews : Boolean[], typeMvt : Boolean)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
         }
@@ -177,15 +175,9 @@
         class Terminal{
             + setBoard()
             + clickedOnCase(posx : Integer, posy : Integer)
-            + displayPreview(previews : Boolean[], typeMvmt : Boolean)
+            + displayPreview(previews : Boolean[], typeMvt : Boolean)
             + displayPromotion(posX : Integer, posY : Integer)
             + hidePreview()
-        }
-
-        class PanelScore extends JPanel{
-            - team : Boolean
-            + PanelScore(team : Boolean)
-            + DisplayScore(team : Boolean, points : Integer)
         }
 
         
@@ -195,21 +187,21 @@
 'class PanelPlayer{}
 
     'main
-    Main ..> Board : > instantiate 
-    Main ...> GameFacade : > instantiate 
-    Main ..> DisplayBoard : > instantiate 
-    Main ..> Terminal : > instantiate 
-    Main ..> Supervisor : > instantiate 
-    Main ..> Manager : > instantiate 
-    Main ..> Mover : > instantiate 
+    Main ..> Board : "instantiate >"
+    Main ...> GameFacade : "instantiate >"
+    Main ..> DisplayBoard : "instantiate >"
+    Main ..> Terminal : "instantiate >"
+    Main ..> Supervisor : "instantiate >"
+    Main ..> Manager : "instantiate >"
+    Main ..> Mover : "instantiate >"
     
     'view
     'DisplayBoard o-d-> PanelBoard : "use >"
     'DisplayBoard o--> PanelPlayer : "use >"
 
     'model
-    Board  o--> "*\n -observers" BoardObserver : > is observed by
-    Manager  o--> "*\n -observers" ScoreObserver : > is observed by
+    Board  o--> "*\n -observers" BoardObserver : "is observed by >"
+    Manager  o--> "*\n -observers" ManagerObserver : "is observed by >"
     Mover  o--> "*\n -observers" PreviewObserver : > is observed by
    
     ' Piece <|.down.. Knight 
@@ -219,50 +211,47 @@
     ' Piece <|.down.. King 
     ' Piece <|.down.. Queen 
 
-    Board ..> Pawn : > instantiate 
-    Board ..> Knight : > instantiate 
-    Board ..> Bishop : > instantiate 
-    Board ..> Rook : > instantiate 
-    Board ..> King : > instantiate 
-    Board ..> Queen : > instantiate 
+    Board ..> Pawn : "instantiate >"
+    Board ..> Knight : "instantiate >"
+    Board ..> Bishop : "instantiate >"
+    Board ..> Rook : "instantiate >"
+    Board ..> King : "instantiate >"
+    Board ..> Queen : "instantiate >"
 
-    Board *-> "*\n-pieces" Piece : > contains
+    Board -> "-pieces\n*" Piece : " contains >"
 
     'controller
-    GameFacade o--> "1\n-supervisor " Supervisor : > own
+    GameFacade o--> "1\n-supervisor " Supervisor : > own 
    
 
-    'view
-    DisplayBoard *-> "1\npanelScoreWht" PanelScore : > own
-    DisplayBoard *-> "1\npanelScoreBlk" PanelScore : > own
 
     'relation view - controller
     'cette relation envoie la position de la case cliquee a controller
-    DisplayBoard o-right-> "1\n gameFacade" GameFacade : > own 
-    GameFacade -> DisplayGame : "affiche"
+    DisplayBoard o-right-> "1\n-gameFacade" GameFacade : > calls  
+    GameFacade -> DisplayGame : > display
     
     'relation view - model
-    Terminal ..|> ScoreObserver : ""
-    DisplayBoard .down.|> BoardObserver : ""
-    DisplayBoard .down.|> PreviewObserver : ""
-    PanelScore ..|> ScoreObserver
+    DisplayGame ..|> ManagerObserver : ""
+    Terminal ..|> ManagerObserver : ""
+    DisplayBoard ..|> BoardObserver : ""
+    DisplayBoard ..|> PreviewObserver : ""
 
     'relation controller - model
-    Supervisor o--> "1\n -board" Board : > watch 
-    Supervisor o-r-> "1\n -mover" Mover : > own 
+    Supervisor o--> "1\n board" Board : > own 
+    Supervisor -r-> "1\n mover" Mover : > own 
 
 
     'layout
-    Supervisor o-> "1\n -manager" Manager : > contains 
+    Board o-> "1\n -manager" Manager : > contains 
     
     'DisplayBoard -[hidden]> Supervisor : "consults >"
 
-    Mover  o-> "1\n -board" Board : > watch
-    Mover .u.> Rook : > uses
-    Mover .u.> Pawn : > uses
-    Mover .u.> King : > uses
-    Mover .u.> Bishop : > uses
-    Mover .u.> Queen : > uses
-
+    Mover  o-> "1\n-board" Board : "own >"
+    Mover .u.> Rook : "uses >"
+    Mover .u.> Pawn : "uses >"
+    Mover .u.> King : "uses >"
+    Mover .u.> Bishop : "uses >"
+    Mover .u.> Queen : "uses >"
+    Mover .u.> King : "uses >"
 
     @enduml
