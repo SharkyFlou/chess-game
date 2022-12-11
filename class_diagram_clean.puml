@@ -36,17 +36,17 @@
             + Mover()
             + setBoard(gaveBoard : Board)
             + isCasePreviewMvt(posX : Integer, posY : Integer) : Boolean
-            + isCasePreviewAtk(posX : Integer, posY : Integer) : Boolean
+            + isCasePreviewAtk(posX : Inteer, posY : Integer) : Boolean
             + emptyPreviews()
+            + initializePreviews() : Boolean[]
             + calculateRealMvt(posY : Integer, posX : Integer)
             + calculateRealAtk(posY : Integer, posX : Integer)
-            - calculateMvtPawn(posY : Integer, posX : Integer) : Boolean[]
-            - calculateAtkPawn(posY : Integer, posX : Integer) : Boolean[]
+            - calculateMvtAtkPawn(posY : Integer, posX : Integer, mvtAtk : Boolean, piece : Piece) : Boolean[]
             ' the Boolean mvts, when true calcul the mvt, when false calcul the atk
-            - calculateMvtAtkPlus(posY : Integer, posX : Integer, mvt : Boolean, reach : Integer) : Boolean[]
-            - calculateMvtAtkCross(posY : Integer, posX : Integer, mvt : Boolean, reach : Integer) : Boolean[]
-            - calculateMvtAtkKnight(posY : Integer, posX : Integer, mvt : Boolean) : Boolean[]
-            - calculateMvtAtkPlusCross(posY : Integer, posX : Integer, mvt : Boolean, reach : Integer) : Boolean[]
+            - calculateMvtAtkPlus(posY : Integer, posX : Integer, mvtAtk : Boolean, reach : Integer, piece : Piece) : Boolean[]
+            - calculateMvtAtkCross(posY : Integer, posX : Integer, mvtAtk : Boolean, reach : Integer, piece : Piece) : Boolean[]
+            - calculateMvtAtkKnight(posY : Integer, posX : Integer, mvtAtk : Boolean, piece : Piece) : Boolean[]
+            - calculateMvtAtkPlusCross(posY : Integer, posX : Integer, mvtAtk : Boolean, reach : Integer, piece : Piece) : Boolean[]
             + addObserver(obs : PreviewObserver)
             - notifyObsDisplayAtk(cases : Boolean[])
             - notifyObsDisplayMvt(cases : Boolean[])
