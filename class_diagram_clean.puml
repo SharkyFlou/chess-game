@@ -238,7 +238,7 @@
 
     'relation view - controller
     'cette relation envoie la position de la case cliquee a controller
-    DisplayBoard -right-> GameFacade : "calls >"  
+    DisplayBoard o-right-> "1\n gameFacade" GameFacade : > own 
     GameFacade -> DisplayGame : "affiche"
     
     'relation view - model
