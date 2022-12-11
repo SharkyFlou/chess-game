@@ -1,0 +1,196 @@
+[33mcommit 7aba16732e31fdeef63f906a3dabf9d5bfbcda32[m[33m ([m[1;36mHEAD -> [m[1;32mdvp[m[33m)[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Fri Dec 2 10:24:16 2022 +0100
+
+    Remplissage squelettes classes
+
+[33mcommit 0f962b420271f783be8663eb8c7f264e94a0ed18[m[33m ([m[1;31morigin/dvp[m[33m)[m
+Merge: b7481bb ddfed91
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Thu Dec 1 21:22:51 2022 +0100
+
+    Merge branch 'master' into dvp
+
+[33mcommit b7481bb0db6a0478622567653e5365cc15c2d353[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Thu Dec 1 21:12:29 2022 +0100
+
+    Suppr des classes mauvais fichier
+
+[33mcommit 309cdbfefa5c336f47563132323cbf9feae9a70c[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Thu Dec 1 21:10:10 2022 +0100
+
+    Debut squelette classes
+
+[33mcommit ddfed91790fd6fd02ff810ce228f009ffd3b3bcc[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: phoogland <paolo.hoogland@etu.unistra.fr>
+Date:   Thu Dec 1 17:04:13 2022 +0100
+
+    puml + deuxieme version
+
+[33mcommit 549680c47d81bcf7c6e2cd61d1f5f3132b7751aa[m
+Author: phoogland <paolo.hoogland@etu.unistra.fr>
+Date:   Thu Dec 1 15:05:14 2022 +0100
+
+    ajout classes
+
+[33mcommit 8a80499bab6340313915c190974a0b168e329a15[m
+Merge: 6655eb2 dbaa090
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Thu Dec 1 14:56:08 2022 +0100
+
+    Merge branch 'master' of git.unistra.fr:flu-hoogland/a31-chessgame
+
+[33mcommit 6655eb2a89b3eed25d391fe8ceefb3c2aadecef9[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Thu Dec 1 14:55:37 2022 +0100
+
+    Maj PUML
+
+[33mcommit dbaa0900197bfe1a80503ac67905f45e59831ac0[m
+Author: HOOGLAND-MENJIVAR PAOLO <paolo.hoogland@etu.unistra.fr>
+Date:   Thu Dec 1 13:25:05 2022 +0000
+
+    Update rapport.md
+
+[33mcommit cd5e8e81c07a412d32c192a903ea732a1eadf396[m
+Merge: 14deaef 394ae07
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Wed Nov 30 17:14:10 2022 +0100
+
+    Merge branch 'master' of git.unistra.fr:flu-hoogland/a31-chessgame
+
+[33mcommit 14deaef0b73af4dab44a76b557816ccf89c7d29d[m
+Merge: 88eeea8 75aa6da
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Wed Nov 30 17:13:47 2022 +0100
+
+    Merge branch 'diagram'
+
+[33mcommit 394ae07076911aca4cc1ef34e6459404b93b6224[m
+Merge: 88eeea8 75aa6da
+Author: FLU CHARLY <charly.flu@etu.unistra.fr>
+Date:   Wed Nov 30 16:12:52 2022 +0000
+
+    Merge branch 'diagram' into 'master'
+    
+    Diagram
+    
+    See merge request flu-hoogland/a31-chessgame!2
+
+[33mcommit 75aa6da4e503d65ebcd6406c51194865b3303acd[m[33m ([m[1;31morigin/diagram[m[33m, [m[1;32mdiagram[m[33m)[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Wed Nov 30 17:11:39 2022 +0100
+
+    Fin Puml
+
+[33mcommit b91dd23c940d996f146eac1b3e9c92e56827badb[m
+Merge: 17446e3 964aab4
+Author: phoogland <paolo.hoogland@etu.unistra.fr>
+Date:   Wed Nov 30 16:34:55 2022 +0100
+
+     melange des deux puml
+
+[33mcommit 17446e34d6d6190ea12ed36bc53b9b6780455eb1[m
+Author: phoogland <paolo.hoogland@etu.unistra.fr>
+Date:   Wed Nov 30 16:30:00 2022 +0100
+
+    melange de puml
+
+[33mcommit 964aab44a11dcaf59fe6be9cbb0fb82c46ecfaf6[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Wed Nov 30 16:28:01 2022 +0100
+
+    Reglement prbl du pumll
+
+[33mcommit e9ea212a0007a4f905632ff2d0c48181b567d275[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Wed Nov 30 16:05:32 2022 +0100
+
+    Avancement PUMLL
+
+[33mcommit 88eeea8b018837a7000459e7a23e65adb851beef[m
+Merge: ef9eb5c d2cbbb3
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Sat Nov 26 17:56:47 2022 +0100
+
+    Merge branch 'diagram'
+
+[33mcommit d2cbbb30bdee080a5cad2b11a7e6d09cb1c77431[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Sat Nov 26 17:56:27 2022 +0100
+
+    Nettoyage du diagramme
+
+[33mcommit ef9eb5cde873181c5765262c7a46d67ed54b28f3[m
+Merge: 9f1d2bf 578a50d
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Sat Nov 26 16:14:18 2022 +0100
+
+    Merge branch 'master' of git.unistra.fr:flu-hoogland/a31-chessgame
+
+[33mcommit 9f1d2bf2b36461e2b1847fb8c60a433f69e17212[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Sat Nov 26 16:14:13 2022 +0100
+
+    Suppr du .idea
+
+[33mcommit e407ec5e96feb302f291b5680a51e06358b4529d[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Sat Nov 26 16:13:04 2022 +0100
+
+    Ajout de la pieceFactory, laisons entre chaque classes ajouté, fonction sur Board ajoutés
+
+[33mcommit 578a50dbe5b9d84fcd7b492f0ddc45eff5c6907c[m
+Merge: 6e216f6 3db0b29
+Author: FLU CHARLY <charly.flu@etu.unistra.fr>
+Date:   Thu Nov 24 12:36:53 2022 +0000
+
+    Merge branch 'cflu-master-patch-64860' into 'master'
+    
+    Update rapport.md
+    
+    See merge request flu-hoogland/a31-chessgame!1
+
+[33mcommit 3db0b29467fc3866fc027df70709da47970d82cf[m
+Author: FLU CHARLY <charly.flu@etu.unistra.fr>
+Date:   Thu Nov 24 11:31:08 2022 +0000
+
+    Update rapport.md
+
+[33mcommit 6e216f6109eb4bd2770ea4b6be881f9f34ba5860[m
+Author: FLU CHARLY <charly.flu@etu.unistra.fr>
+Date:   Thu Nov 24 10:08:04 2022 +0000
+
+    Ajout du rapport
+
+[33mcommit cc6c261a3b835aac8046346ac08f28ed563805d0[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Mon Nov 21 15:18:59 2022 +0100
+
+    modif diagram
+
+[33mcommit afd79f89a7b2a90b80187cf7dc031c2eba9f72de[m
+Author: Charly <charly.flu.67@gmail.com>
+Date:   Mon Nov 21 15:11:27 2022 +0100
+
+    Ajout diagram
+
+[33mcommit e53b267e4f43dd7849d61c760b43495b34beacc4[m
+Author: akrah <krahenbuhl@unistra.fr>
+Date:   Mon Nov 21 12:28:21 2022 +0100
+
+    Mise à jour du sujet
+
+[33mcommit 74e30fb4dad15430a784c3f44978529c59cea9cc[m
+Author: akrah <krahenbuhl@unistra.fr>
+Date:   Mon Nov 21 11:56:03 2022 +0100
+
+    Mise à jour du sujet
+
+[33mcommit a638363a22b91d17eb6f81a979c16aded27216e7[m
+Author: Etienne Le Quentrec <elequentrec@unistra.fr>
+Date:   Mon Nov 21 10:16:08 2022 +0100
+
+    ajout du README.md contenant les consignes du projet
