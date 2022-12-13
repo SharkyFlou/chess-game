@@ -108,7 +108,7 @@ public class Mover {
 
         boolean realMvtAtkPawn[][] = initializePreviews();
 
-        //plus utilisé
+        // plus utilisé
         boolean theoreticalMvt[][] = pawn.getTheoricalMvt(posY, posX);
         boolean theoreticalAttack[][] = pawn.getTheoreticalAttack(posY, posX);
 
@@ -122,7 +122,8 @@ public class Mover {
             }
 
             if (!pawn.hasItMoved() && (posY + (2 * way) < 8 && posY + (2 * way) >= 0)
-                    && !board.doesCaseContainPiece(posY + (1 * way), posX)) {
+                    && !board.doesCaseContainPiece(posY + (1 * way), posX)
+                    && !board.doesCaseContainPiece(posY + (2 * way), posX)) {
                 realMvtAtkPawn[posY + (2 * way)][posX] = true;
             }
         }

@@ -16,11 +16,11 @@ public class Main {
 
         LabelScore lblWht = new LabelScore(true);
         LabelScore lblBlk = new LabelScore(false);
-        DisplayBoard display = new DisplayBoard(gameFacade, board,lblWht,lblBlk);
+        DisplayBoard display = new DisplayBoard(gameFacade, board, lblWht, lblBlk);
         board.addObs(display);
         mover.addObs(display);
 
-        supervisor.addBoardMover(board, mover,manager);
+        supervisor.addBoardMover(board, mover, manager);
 
         manager.addObsersver(lblWht);
         manager.addObsersver(lblBlk);
