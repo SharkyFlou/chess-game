@@ -5,11 +5,9 @@ import java.util.List;
 
 public class Board {
     private Piece board[][] = new Piece[8][8];
-    private Manager manager;
     List<BoardObserver> listObs = new ArrayList<BoardObserver>();
 
-    public Board(Manager gaveManager) {
-        manager = gaveManager;
+    public Board() {
     }
 
     //initialise le baord avec les pièces aux bon endroits
@@ -78,7 +76,7 @@ public class Board {
     public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX) {
         if (doesCaseContainPiece(oldPosY, oldPosX)) {
             Piece pieceBougee = getPiece(oldPosY, oldPosX);
-            destroyPiece(oldPosY, oldPosX);
+            destroyPiece(oldPosY, oldPosX, true);
             board[newPosY][newPosX] = pieceBougee;
 
             // gere le premier mouvement
@@ -93,9 +91,16 @@ public class Board {
     }
 
     //supprime la pièce aux coordonnées envoyées
-    public void destroyPiece(int posY, int posX) {
-        if (getPiece(posY, posX) != null) {
-            notifyPieceTaken(getPiece(posY, posX));
+    //le boolean toMoveIt, permet de savoir si c'est pour "prendre" une piece, ou seulement en deplacer une autre
+    public void destroyPiece(int posY, int posX, boolean toMoveIt) {
+        if (doesCaseContainPiece(posY, posX)) {
+            boolean teamPiece = getPiece(posY, posX).getTeam();
+            if(toMoveIt){ //si c'est pour deplacer, on appelle la notif changement d'équipe
+                notifyChangeTeam(!teamPiece);
+            }
+            else{
+                notifyPieceTaken(getPiece(posY, posX));
+            }
         } else {
             System.out.println("Trying to delete a non existent piece : " + posY + ";" + posX);
         }
@@ -120,6 +125,12 @@ public class Board {
     public void notifyPieceTaken(Piece piece) {
         for (BoardObserver obs : listObs) {
             obs.displayPieceTaken(piece);
+        }
+    }
+
+    public void notifyChangeTeam(boolean newTeam){
+        for (BoardObserver obs : listObs) {
+            obs.displayTeamToPlay(newTeam);
         }
     }
 

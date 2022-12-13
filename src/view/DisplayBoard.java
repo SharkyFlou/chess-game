@@ -2,7 +2,6 @@ package view;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
 
 import java.awt.image.BufferedImage;
 
@@ -24,15 +23,35 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     private JPanel panelLowLeft;
     private JPanel panelLowMid;
     private JPanel panelLowRight;
-    private JButton[][] chessBoardButtons = new JButton[8][8];
+    private JPanel pnlWhitePieces;
+    private JPanel pnlBlkPieces;
+    private JButton[][] chessBoardButtons;
     private static final String COLS = "ABCDEFGH";
+    private JLabel subtitle;
+    private JLabel[] takenBlkPieces;
+    private int nbrBlkPieceTaken;
+    private JLabel[] takenWhtPieces;
+    private int nbrWhtPieceTaken;
 
-    public DisplayBoard(GameFacade XgameFacade, Board xBoard) {
+    final int WIDTH = 800;
+    final int HEIGHT = 500;
+    final int TITLEHEIGHT = 120;
+    final int CHESSWIDTH = 400;
+    final int SIDESWIDTH = (WIDTH - CHESSWIDTH) /2;
+    final int LOWHEIGHT = HEIGHT-TITLEHEIGHT;
+    final int SCOREHEIGHT = 60;
+    final int PIECETAKENHEIGHT = LOWHEIGHT- SCOREHEIGHT;
+
+    public DisplayBoard(GameFacade XgameFacade, Board xBoard, LabelScore lblWht, LabelScore lblBlk) {
+        chessBoardButtons = new JButton[8][8];
+        takenBlkPieces = new JLabel[15];
+        takenWhtPieces = new JLabel[15];
+
         gameFacade = XgameFacade;
         board = xBoard;
-        setTitle("Awfull chessgame");
-        setSize(980, 800);
-        setMinimumSize(new Dimension(980, 607));
+        setTitle("Awful chessgame");
+        setSize(WIDTH, HEIGHT);
+        setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -40,55 +59,90 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         //ajout panel du haut
         panelTitle = new JPanel();
         panelTitle.setBackground(Color.darkGray);
-        panelTitle.setSize(new Dimension(1080, 100));
-        panelTitle.setMinimumSize(new Dimension(1080, 100));
+        panelTitle.setSize(new Dimension(WIDTH, TITLEHEIGHT));
+        panelTitle.setMinimumSize(new Dimension(WIDTH, TITLEHEIGHT));
+        panelTitle.setLayout(new GridLayout(2, 0));
         add(panelTitle);
 
         //ajout panel du bas contenant les trois sous panel donc l'échequier
         panelLow = new JPanel();
         panelLow.setLayout(new BoxLayout(panelLow, BoxLayout.X_AXIS));
-        panelLow.setSize(new Dimension(1080, 507));
-        panelLow.setMinimumSize(new Dimension(1080, 507));
+        panelLow.setSize(new Dimension(WIDTH, LOWHEIGHT));
+        panelLow.setMinimumSize(new Dimension(WIDTH, LOWHEIGHT));
         add(panelLow);
 
         //panel qui contiendra les pièces conquises par le joueur blanc
         panelLowLeft = new JPanel();
         panelLowLeft.setBackground(Color.lightGray);
-        panelLowLeft.setSize(new Dimension(180, 507));
-        panelLowLeft.setMinimumSize(new Dimension(180, 507));
+        panelLowLeft.setSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
+        panelLowLeft.setMinimumSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
+        panelLowLeft.setLayout(new BoxLayout(panelLowLeft, BoxLayout.Y_AXIS));
         panelLow.add(panelLowLeft);
 
         //panel qui contiendra l'échequier
         panelLowMid = new JPanel(new GridLayout(0, 10));
         panelLowMid.setBackground(Color.gray);
-        panelLowMid.setSize(new Dimension(620, 507));
-        panelLowMid.setMinimumSize(new Dimension(720, 507));
+        panelLowMid.setSize(new Dimension(CHESSWIDTH, LOWHEIGHT+1000));
+        panelLowMid.setMinimumSize(new Dimension(CHESSWIDTH, LOWHEIGHT+1000));
         panelLow.add(panelLowMid);
 
         //panel qui contiendra les pièces conquises par le joueur noir
         panelLowRight = new JPanel();
         panelLowRight.setBackground(Color.lightGray);
-        panelLowRight.setSize(new Dimension(720, 507));
-        panelLowRight.setMinimumSize(new Dimension(720, 507));
+        panelLowRight.setSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
+        panelLowRight.setMinimumSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
+        panelLowRight.setLayout(new BoxLayout(panelLowRight, BoxLayout.Y_AXIS));
         panelLow.add(panelLowRight);
 
 
         //Ajout JLabel du titre
-        JLabel title = new JLabel();
-        title.setText("Awfull chessgame");
+        JLabel title = new JLabel("Awful chessgame",SwingConstants.CENTER);
         title.setFont(new Font("Verdana", Font.PLAIN, 24));
         title.setForeground(Color.WHITE);
-        panelTitle.add(title);
+        panelTitle.add(title, BorderLayout.NORTH);
 
+        //Ajout JLabel tour
+        subtitle = new JLabel("Tour des blancs",SwingConstants.CENTER);
+        subtitle.setFont(new Font("Verdana", Font.PLAIN, 20));
+        subtitle.setForeground(Color.WHITE);
+        panelTitle.add(subtitle, BorderLayout.SOUTH);
+
+        //ajout compteur points des blancs
+        lblWht.setSize(new Dimension(SIDESWIDTH, SCOREHEIGHT));
+        lblWht.setMinimumSize(new Dimension(SIDESWIDTH, SCOREHEIGHT));
+        panelLowLeft.add(lblWht);
+        lblWht.changeScore(0, true);
+
+        //ajout compteur points des noirs
+        lblBlk.setSize(new Dimension(SIDESWIDTH, SCOREHEIGHT));
+        lblBlk.setMinimumSize(new Dimension(SIDESWIDTH, SCOREHEIGHT));
+        panelLowRight.add(lblBlk);
+        lblBlk.changeScore(0, false);
+
+        //ajout panel piece noires
+        pnlBlkPieces= new JPanel();
+        pnlBlkPieces.setLayout(new GridLayout(0,2));
+        pnlBlkPieces.setSize(new Dimension(SIDESWIDTH, PIECETAKENHEIGHT));
+        pnlBlkPieces.setMinimumSize(new Dimension(SIDESWIDTH, PIECETAKENHEIGHT));
+        panelLowLeft.add(pnlBlkPieces);
+        nbrBlkPieceTaken=0;
+
+        //ajout panel piece blanches
+        pnlWhitePieces= new JPanel();
+        pnlWhitePieces.setLayout(new GridLayout(0,2));
+        pnlWhitePieces.setSize(new Dimension(SIDESWIDTH, PIECETAKENHEIGHT));
+        pnlWhitePieces.setMinimumSize(new Dimension(SIDESWIDTH, PIECETAKENHEIGHT));
+        panelLowRight.add(pnlWhitePieces);
+        nbrWhtPieceTaken=0;
 
         creationBoardBlackWhite(); //creation des cases
+        createSidesBoards();
         setVisible(true);
     }
 
     public void creationBoardBlackWhite() {
-
         //ajout de border entre les cases, ne fonctionne pas pour l'instant
-        panelLowMid.setBorder(new EmptyBorder(5, 5, 5, 5));
+        //panelLowMid.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         // creation des bouttons
        
@@ -152,6 +206,24 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
             panelLowMid.add(
                     new JLabel(COLS.substring(i, i + 1),
                             SwingConstants.CENTER));
+        }
+    }
+
+    public void createSidesBoards(){
+        for (int i = 0; i < 15; i++) {
+            takenWhtPieces[i] = new JLabel("",SwingConstants.CENTER);
+            ImageIcon icon = new ImageIcon(
+                            new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB));
+            takenWhtPieces[i].setIcon(icon);
+            pnlWhitePieces.add(takenWhtPieces[i]);
+        }
+
+        for (int i = 0; i < 15; i++) {
+            takenBlkPieces[i] = new JLabel("",SwingConstants.CENTER);
+            ImageIcon icon = new ImageIcon(
+                            new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB));
+            takenBlkPieces[i].setIcon(icon);
+            pnlBlkPieces.add(takenBlkPieces[i]);
         }
     }
 
@@ -236,11 +308,11 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
             for (int j = 0; j < 8; j++) {
                 Piece newPiece = board.getPiece(i, j);
                 if (newPiece != null) {
-                    URL temp = Main.class.getResource("/resources/" + newPiece.getImageLink() + ".png");
+                    URL temp = DisplayBoard.class.getResource("/resources/" + newPiece.getImageLink() + ".png");
                     chessBoardButtons[i][j].setIcon(new ImageIcon(temp));
                 } else {
                     ImageIcon icon = new ImageIcon(
-                            new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
+                            new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB));
                     chessBoardButtons[i][j].setIcon(icon);
                 }
 
@@ -250,13 +322,26 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
 
     //affichera les pieces prises
     public void displayPieceTaken(Piece piece) {
-
+        boolean team = piece.getTeam();
+        URL icon = DisplayBoard.class.getResource("/resources/" + piece.getImageLink() + ".png");
+        if(team){
+            takenWhtPieces[nbrWhtPieceTaken].setIcon(new ImageIcon(icon));
+            nbrWhtPieceTaken++;
+        }
+        else{
+            takenBlkPieces[nbrBlkPieceTaken].setIcon(new ImageIcon(icon));
+            nbrBlkPieceTaken++;
+        }
     }
 
     //affichera les promotions lorsqu'un pion atteint le bout de l'échiquier
     public void displayPromotion(int posY, int posX) {
         
 
+    }
+
+    public void displayTeamToPlay(boolean team){
+        subtitle.setText("Tour des "+(team ? "blancs" : "noirs"));
     }
 
 }

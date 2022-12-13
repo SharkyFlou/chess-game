@@ -10,15 +10,20 @@ public class Main {
         Supervisor supervisor = new Supervisor();
         GameFacade gameFacade = new GameFacade(supervisor);
         Manager manager = new Manager();
-        Board board = new Board(manager);
+        Board board = new Board();
 
         Mover mover = new Mover(board);
 
-        DisplayBoard display = new DisplayBoard(gameFacade, board);
+        LabelScore lblWht = new LabelScore(true);
+        LabelScore lblBlk = new LabelScore(false);
+        DisplayBoard display = new DisplayBoard(gameFacade, board,lblWht,lblBlk);
         board.addObs(display);
         mover.addObs(display);
 
-        supervisor.addBoardMover(board, mover);
+        supervisor.addBoardMover(board, mover,manager);
+
+        manager.addObsersver(lblWht);
+        manager.addObsersver(lblBlk);
 
         board.initBoard();
     }

@@ -1,5 +1,5 @@
 package model;
 
 public interface ScoreObserver{
-    //pas encore implémenté    
+    public void changeScore(int pts, boolean xTeam); 
 }

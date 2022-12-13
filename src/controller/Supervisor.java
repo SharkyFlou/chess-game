@@ -2,10 +2,12 @@ package controller;
 
 import model.Board;
 import model.Mover;
+import model.Manager;
 
 public class Supervisor {
     private Board board;
     private Mover mover;
+    private Manager manager;
     private int lastClickedPiecePosY=0;
     private int lastClickedPiecePosX=0;
 
@@ -14,9 +16,10 @@ public class Supervisor {
     }
 
     //on donne au supervisor le Mover et le Board
-    public void addBoardMover(Board gaveBoard, Mover gaveMover) {
+    public void addBoardMover(Board gaveBoard, Mover gaveMover, Manager gaveManager) {
         board = gaveBoard;
         mover = gaveMover;
+        manager=gaveManager;
     }
 
     //est appelé par GameFacade, fait les test pour savoir comment réagit
@@ -44,7 +47,8 @@ public class Supervisor {
         if(mover.isCasePreviewAtk(posY, posX)){ 
             mover.emptyPreviews();
             System.out.println("Deplacement de : "+lastClickedPiecePosY+";"+lastClickedPiecePosX+" vers "+posY+";"+posX);
-            board.destroyPiece(posY, posX);
+            manager.addPoints(team, board.getPiece(posY, posX).getValue());
+            board.destroyPiece(posY, posX, false);
             board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX);
             return true;
         }

@@ -8,6 +8,7 @@ public class Manager {
     private List<ScoreObserver> observers;
 
     public Manager(){
+        observers = new ArrayList<ScoreObserver>();
         whitePts=0;
         blackPts=0;
     }
@@ -19,6 +20,7 @@ public class Manager {
         else{
             blackPts+=pts;
         }
+        notifyChangeScore((team ? whitePts : blackPts),team);
     }
 
     public int getPoints(boolean team){
@@ -32,6 +34,13 @@ public class Manager {
 
     public void addObsersver(ScoreObserver obs){
         observers.add(obs);
+    }
+
+    public void notifyChangeScore(int pts, boolean team){
+        for (ScoreObserver obs : observers) {
+            System.out.println("Changement de score");
+            obs.changeScore(pts, team);
+        }
     }
 
 }
