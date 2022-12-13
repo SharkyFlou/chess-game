@@ -33,10 +33,10 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     private JLabel[] takenWhtPieces;
     private int nbrWhtPieceTaken;
 
-    final int WIDTH = 800;
-    final int HEIGHT = 500;
-    final int TITLEHEIGHT = 120;
-    final int CHESSWIDTH = 400;
+    final int WIDTH = 950;
+    final int HEIGHT = 650;
+    final int TITLEHEIGHT = 100;
+    final int CHESSWIDTH = 600;
     final int SIDESWIDTH = (WIDTH - CHESSWIDTH) /2;
     final int LOWHEIGHT = HEIGHT-TITLEHEIGHT;
     final int SCOREHEIGHT = 60;
@@ -50,7 +50,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         gameFacade = XgameFacade;
         board = xBoard;
         setTitle("Awful chessgame");
-        setSize(WIDTH, HEIGHT);
+        setSize(new Dimension(WIDTH, HEIGHT));
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
