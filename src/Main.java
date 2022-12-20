@@ -22,6 +22,7 @@ public class Main {
         mover.addObs(display);
 
         CheckChecker checkChecker = new CheckChecker(board);
+        checkChecker.addObsersver(display);
 
         supervisor.addLinks(board, mover, manager, checkChecker);
 

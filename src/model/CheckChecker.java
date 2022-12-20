@@ -1,9 +1,12 @@
 package model;
 
-import javax.swing.border.Border;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckChecker {
     private Board board;
+    private boolean[][] lockedPieces = new boolean[8][8];
+    List<LockedObserver> listObs = new ArrayList<LockedObserver>();
 
     public CheckChecker(Board gaveBoard){
         board=gaveBoard;
@@ -42,11 +45,14 @@ public class CheckChecker {
     }
 
 
-    public boolean isPat(boolean team){
+    public boolean isPat(boolean team, boolean lockPieces){
+        notifyReset();
         Board tempBoard = copyBoard();
         Mover moverTemp = new Mover(tempBoard);
         //int[] coordsKing = findKing(team);
 
+        boolean finalReturn = true;
+        lockedPieces=initializePreviews();
         //parcours le plateau
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -60,30 +66,27 @@ public class CheckChecker {
                     boolean[][] tabAtk = moverTemp.getAtk();
                     //fusionne pour tout les deplacements possible de la piece
                     boolean[][] tabMoves = mergeTab(tabMvt,tabAtk);
-                    System.out.println("Mvmt possible de la piece en "+i+";"+j);
-                    for(int k = 0; k < 8; k ++){
-                        for(int l = 0; l < 8 ; l ++){
-                            if(tabMoves[k][l]){
-                                System.out.print("X");
-                            }
-                            else{
-                                System.out.print("_");
-                            }
-                            
-                        }
-                        System.out.print("\n");
-                    }
 
 
 
                     //si le roi n'est PAS toujours en echec quel que soit le mouvement de la piece
                     if(!browseTabCheckCheck(tabMoves, moverTemp, i, j, team)){
-                        return false;
+                        if(!lockPieces){ //si lockPieces en false, alors que la calcul pour le pate -> pas de lock de pieces on peut sortir plus tôt
+                            return false;
+                        }
+                        finalReturn=false;
+                    }
+                    else if (lockPieces){
+                        lockedPieces[i][j]=true;
                     }
                 }
             }            
         }
-        return true;
+
+        if(lockPieces){
+            notifyChangeLocked();
+        }
+        return finalReturn;
     }
 
     //parcours tout les deplacements possible d'une piece, et regarde si le roi est toujours en echec
@@ -94,7 +97,7 @@ public class CheckChecker {
             for(int l = 0; l < 8 ; l ++){
                 boardToMove = copyBoard();
                 if(tab[k][l]){
-                    boardToMove.movePiece(posY, posX, k, l);
+                    boardToMove.movePiece(posY, posX, k, l, true);
                     if(!isCheck(team,boardToMove)){
                         return false;
                     }
@@ -160,4 +163,43 @@ public class CheckChecker {
 
         return coords;
     }
+
+    public void highlightKing(boolean team){
+        int[] coordsKing = findKing(team,board);
+        notifyKingCheck(coordsKing[0], coordsKing[1]);
+    }
+
+    public void addObsersver(LockedObserver obs){
+        listObs.add(obs);
+    }
+
+    public void notifyChangeLocked(){
+        for (LockedObserver obs : listObs) {
+            obs.displayLocked(lockedPieces);
+        }
+    }
+
+    public void notifyKingCheck(int posY, int posX){
+        for (LockedObserver obs : listObs) {
+            obs.displayKing(posY,posX);
+        }
+    }
+
+    public void notifyReset(){
+        for (LockedObserver obs : listObs) {
+            obs.erasePreviewsLock();
+        }
+    }
+
+    // initialise les tableaux de retour a false
+    public boolean[][] initializePreviews() {
+        boolean[][] initializer = new boolean[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                initializer[i][j] = false;
+            }
+        }
+        return initializer;
+    }
+
 }

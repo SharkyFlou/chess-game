@@ -10,10 +10,11 @@ import model.Board;
 import model.Piece;
 import model.PreviewObserver;
 import model.BoardObserver;
+import model.LockedObserver;
 
 import java.net.URL;
 
-public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserver {
+public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserver, LockedObserver {
 
     private GameFacade gameFacade;
     private Board board;
@@ -40,6 +41,10 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     final int LOWHEIGHT = HEIGHT-TITLEHEIGHT;
     final int SCOREHEIGHT = 60;
     final int PIECETAKENHEIGHT = LOWHEIGHT- SCOREHEIGHT;
+
+    //pas beau mais plus simple et plus opti :
+    private boolean[][] lockedPieces = new boolean[8][8];
+    private int[] coordsKingHigh = new int[2];
 
     public DisplayBoard(GameFacade XgameFacade, Board xBoard, LabelScore lblWht, LabelScore lblBlk) {
         chessBoardButtons = new JButton[8][8];
@@ -236,13 +241,13 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (caseAtk[i][j]) {
                     if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
-                    chessBoardButtons[i][j].setBackground(Color.decode("#B30000")); //rouge clair
-                    chessBoardButtons[i][j].setOpaque(true);
-                    chessBoardButtons[i][j].setBorderPainted(false);
+                        chessBoardButtons[i][j].setBackground(Color.decode("#B30000")); //rouge clair
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
                     } else {
-                    chessBoardButtons[i][j].setBackground(Color.decode("#9B0000")); //rouge plus foncé
-                    chessBoardButtons[i][j].setOpaque(true);
-                    chessBoardButtons[i][j].setBorderPainted(false);
+                        chessBoardButtons[i][j].setBackground(Color.decode("#9B0000")); //rouge plus foncé
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
     
                     }
 
@@ -258,13 +263,13 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
                 if (caseMvt[i][j]) {
                     if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
                         chessBoardButtons[i][j].setBackground(Color.decode("#009B18")); //vert clair
-                    chessBoardButtons[i][j].setOpaque(true);
-                    chessBoardButtons[i][j].setBorderPainted(false);
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
     
                     } else {
-                    chessBoardButtons[i][j].setBackground(Color.decode("#008A1A")); //vert plus foncé
-                    chessBoardButtons[i][j].setOpaque(true);
-                    chessBoardButtons[i][j].setBorderPainted(false);
+                        chessBoardButtons[i][j].setBackground(Color.decode("#008A1A")); //vert plus foncé
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
     
                     }
                 }
@@ -277,12 +282,15 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     public void erasePreviews() { 
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
-                if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
+                if(lockedPieces[i][j] || (i==coordsKingHigh[0] && j==coordsKingHigh[1])){
+                    continue;
+                }
+                if (((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0))) {
                     chessBoardButtons[i][j].setBackground(Color.WHITE);
                     chessBoardButtons[i][j].setOpaque(true);
                     chessBoardButtons[i][j].setBorderPainted(false);
 
-                } else {
+                } else{
                     chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
                     chessBoardButtons[i][j].setOpaque(true);
                     chessBoardButtons[i][j].setBorderPainted(false);
@@ -333,6 +341,48 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
 
     public void displayTeamToPlay(boolean team){
         subtitle.setText("Tour des "+(team ? "blancs" : "noirs"));
+    }
+
+    
+    public void displayLocked(boolean[][] casesLocked) {
+        lockedPieces=casesLocked;
+        for (int i = 0; i < chessBoardButtons.length; i++) {
+            for (int j = 0; j < chessBoardButtons[i].length; j++) {
+                if (casesLocked[i][j]) {
+                    if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
+                        chessBoardButtons[i][j].setBackground(Color.decode("#9C4100")); //orange
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
+    
+                    } else {
+                        chessBoardButtons[i][j].setBackground(Color.decode("#1853700")); //orange foncé
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
+                    }
+                }
+            }
+        }
+    }
+
+    
+    public void displayKing(int posY, int posX) {
+        coordsKingHigh[0]=posY;
+        coordsKingHigh[1]=posX;
+        chessBoardButtons[posY][posX].setBackground(Color.decode("#A600FF")); //rose
+        chessBoardButtons[posY][posX].setOpaque(true);
+        chessBoardButtons[posY][posX].setBorderPainted(false);
+    }
+
+    
+    public void erasePreviewsLock() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                lockedPieces[i][j] = false;
+            }
+        }
+        coordsKingHigh[0]=-1;
+        coordsKingHigh[1]=-1;
+        erasePreviews();
     }
 
 }

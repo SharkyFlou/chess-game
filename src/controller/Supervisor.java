@@ -52,7 +52,10 @@ public class Supervisor {
             System.out.println("Deplacement de : "+lastClickedPiecePosY+";"+lastClickedPiecePosX+" vers "+posY+";"+posX);
             manager.addPoints(team, board.getPiece(posY, posX).getValue());
             board.destroyPiece(posY, posX, false);
-            board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX);
+            board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX, false);
+
+            doTheChecks(!team);
+
             return true;
         }
 
@@ -60,7 +63,10 @@ public class Supervisor {
         if(mover.isCasePreviewMvt(posY, posX)){ 
             mover.emptyPreviews();
             System.out.println("Deplacement de : "+lastClickedPiecePosY+";"+lastClickedPiecePosX+" vers "+posY+";"+posX);
-            board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX);
+            board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX, false);
+
+            doTheChecks(!team);
+            
             return true;
         }
 
@@ -68,26 +74,6 @@ public class Supervisor {
 
         //si le joueur clique sur une de ses pièces
         if(board.doesCaseContainPiece(posY, posX) && board.doesCaseContainPieceOfTeam(posY, posX, team)){
-
-            boolean isCheck = checkChecker.isCheck(team);
-            boolean isPat = checkChecker.isPat(team);
-
-            if(!isCheck){ //si pas d'echec
-                if(isPat){
-                    System.out.println("Pat !");
-                }
-                else{
-                    System.out.println("Rien !");
-                }
-            }
-            else{ //si echec
-                if(isPat){
-                    System.out.println("Echec et mat !");
-                }
-                else{
-                    System.out.println("Echec !");
-                }
-            }
             mover.calculateRealMvt(posY, posX);
             mover.calculateRealAtk(posY, posX);
             
@@ -99,5 +85,26 @@ public class Supervisor {
         
         System.out.println("---------------------------------------------------");
         return false;
+    }
+
+    private void doTheChecks(boolean currentTeam){
+        if(!checkChecker.isCheck(currentTeam)){ //si pas d'echec
+                if(checkChecker.isPat(currentTeam, false)){
+                    System.out.println("Pat !");
+                }
+                else{
+                    System.out.println("Rien !");
+                }
+            }
+            else{ //si echec
+                if(checkChecker.isPat(currentTeam, true)){ //+ lock des pieces
+                    System.out.println("Echec et mat !");
+                }
+                else{
+                    checkChecker.highlightKing(currentTeam);
+                    System.out.println("Echec !");
+                }
+                //met en surbrillance le roi
+            }
     }
 }
