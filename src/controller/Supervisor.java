@@ -1,6 +1,7 @@
 package controller;
 
 import model.Board;
+import model.CheckChecker;
 import model.Mover;
 import model.Manager;
 
@@ -8,6 +9,7 @@ public class Supervisor {
     private Board board;
     private Mover mover;
     private Manager manager;
+    private CheckChecker checkChecker;
     private int lastClickedPiecePosY=0;
     private int lastClickedPiecePosX=0;
 
@@ -16,10 +18,11 @@ public class Supervisor {
     }
 
     //on donne au supervisor le Mover et le Board
-    public void addBoardMover(Board gaveBoard, Mover gaveMover, Manager gaveManager) {
+    public void addLinks(Board gaveBoard, Mover gaveMover, Manager gaveManager, CheckChecker gaveCheckChecker) {
         board = gaveBoard;
         mover = gaveMover;
         manager=gaveManager;
+        checkChecker = gaveCheckChecker;
     }
 
     //est appelé par GameFacade, fait les test pour savoir comment réagit
@@ -65,8 +68,29 @@ public class Supervisor {
 
         //si le joueur clique sur une de ses pièces
         if(board.doesCaseContainPiece(posY, posX) && board.doesCaseContainPieceOfTeam(posY, posX, team)){
+
+            boolean isCheck = checkChecker.isCheck(team);
+            boolean isPat = checkChecker.isPat(team);
+
+            if(!isCheck){ //si pas d'echec
+                if(isPat){
+                    System.out.println("Pat !");
+                }
+                else{
+                    System.out.println("Rien !");
+                }
+            }
+            else{ //si echec
+                if(isPat){
+                    System.out.println("Echec et mat !");
+                }
+                else{
+                    System.out.println("Echec !");
+                }
+            }
             mover.calculateRealMvt(posY, posX);
             mover.calculateRealAtk(posY, posX);
+            
             System.out.println("Enregistrement dernière piece : "+posY+";"+posX);
             //enregistre la position de la pièce
             lastClickedPiecePosX= posX;

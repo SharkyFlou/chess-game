@@ -19,7 +19,6 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     private Board board;
 
     private JPanel panelTitle;
-    private JPanel panelLow;
     private JPanel panelLowLeft;
     private JPanel panelLowMid;
     private JPanel panelLowRight;
@@ -54,7 +53,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout());
 
         //ajout panel du haut
         panelTitle = new JPanel();
@@ -62,37 +61,29 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         panelTitle.setSize(new Dimension(WIDTH, TITLEHEIGHT));
         panelTitle.setMinimumSize(new Dimension(WIDTH, TITLEHEIGHT));
         panelTitle.setLayout(new GridLayout(2, 0));
-        add(panelTitle);
+        add(panelTitle,BorderLayout.NORTH);
 
-        //ajout panel du bas contenant les trois sous panel donc l'échequier
-        panelLow = new JPanel();
-        panelLow.setLayout(new BoxLayout(panelLow, BoxLayout.X_AXIS));
-        panelLow.setSize(new Dimension(WIDTH, LOWHEIGHT));
-        panelLow.setMinimumSize(new Dimension(WIDTH, LOWHEIGHT));
-        add(panelLow);
 
         //panel qui contiendra les pièces conquises par le joueur blanc
         panelLowLeft = new JPanel();
         panelLowLeft.setBackground(Color.lightGray);
-        panelLowLeft.setSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
-        panelLowLeft.setMinimumSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
         panelLowLeft.setLayout(new BoxLayout(panelLowLeft, BoxLayout.Y_AXIS));
-        panelLow.add(panelLowLeft);
+        panelLowLeft.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(panelLowLeft, BorderLayout.WEST);
 
         //panel qui contiendra l'échequier
         panelLowMid = new JPanel(new GridLayout(0, 10));
         panelLowMid.setBackground(Color.gray);
         panelLowMid.setSize(new Dimension(CHESSWIDTH, LOWHEIGHT+1000));
         panelLowMid.setMinimumSize(new Dimension(CHESSWIDTH, LOWHEIGHT+1000));
-        panelLow.add(panelLowMid);
+        add(panelLowMid, BorderLayout.CENTER);
 
         //panel qui contiendra les pièces conquises par le joueur noir
         panelLowRight = new JPanel();
         panelLowRight.setBackground(Color.lightGray);
-        panelLowRight.setSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
-        panelLowRight.setMinimumSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
         panelLowRight.setLayout(new BoxLayout(panelLowRight, BoxLayout.Y_AXIS));
-        panelLow.add(panelLowRight);
+        panelLowRight.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(panelLowRight, BorderLayout.EAST);
 
 
         //Ajout JLabel du titre

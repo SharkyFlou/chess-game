@@ -134,4 +134,9 @@ public class Board {
         }
     }
 
+    //init pour le CheckChecker
+    public void setPiece(Piece piece, int posY, int posX){
+        board[posY][posX]=piece;
+    }
+
 }

@@ -533,4 +533,13 @@ public class Mover {
             obs.displayPreviewMvt(casesPreviewMvt);
         }
     }
+
+
+    public boolean[][] getAtk(){
+        return casesPreviewAtk;
+    }
+
+    public boolean[][] getMvt(){
+        return casesPreviewMvt;
+    }
 }

@@ -1,6 +1,7 @@
 import controller.GameFacade;
 import controller.Supervisor;
 import model.Board;
+import model.CheckChecker;
 import model.Manager;
 import model.Mover;
 import view.*;
@@ -20,7 +21,9 @@ public class Main {
         board.addObs(display);
         mover.addObs(display);
 
-        supervisor.addBoardMover(board, mover, manager);
+        CheckChecker checkChecker = new CheckChecker(board);
+
+        supervisor.addLinks(board, mover, manager, checkChecker);
 
         manager.addObsersver(lblWht);
         manager.addObsersver(lblBlk);
