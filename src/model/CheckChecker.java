@@ -21,7 +21,7 @@ public class CheckChecker {
         Mover moverTemp = new Mover(boardTemp);
 
 
-        int[] coordsKing = findKing(team);
+        int[] coordsKing = findKing(team,gaveBoard);
         //parcours le plateau
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -43,14 +43,15 @@ public class CheckChecker {
 
 
     public boolean isPat(boolean team){
-        Mover moverTemp = new Mover(board);
+        Board tempBoard = copyBoard();
+        Mover moverTemp = new Mover(tempBoard);
         //int[] coordsKing = findKing(team);
 
         //parcours le plateau
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 //si la piece est une piece "allié"
-                if(board.doesCaseContainPiece(i, j) && board.getPiece(i, j).getTeam() == team){
+                if(tempBoard.doesCaseContainPiece(i, j) && tempBoard.getPiece(i, j).getTeam() == team){
                     //calcul de l'attaque de la piece
                     moverTemp.calculateRealMvt(i, j);
                     boolean[][] tabMvt = moverTemp.getMvt();
@@ -59,6 +60,20 @@ public class CheckChecker {
                     boolean[][] tabAtk = moverTemp.getAtk();
                     //fusionne pour tout les deplacements possible de la piece
                     boolean[][] tabMoves = mergeTab(tabMvt,tabAtk);
+                    System.out.println("Mvmt possible de la piece en "+i+";"+j);
+                    for(int k = 0; k < 8; k ++){
+                        for(int l = 0; l < 8 ; l ++){
+                            if(tabMoves[k][l]){
+                                System.out.print("X");
+                            }
+                            else{
+                                System.out.print("_");
+                            }
+                            
+                        }
+                        System.out.print("\n");
+                    }
+
 
 
                     //si le roi n'est PAS toujours en echec quel que soit le mouvement de la piece
@@ -129,14 +144,14 @@ public class CheckChecker {
         return newBoard;
     }
 
-    public int[] findKing(boolean team){
+    public int[] findKing(boolean team, Board gaveBoard){
         int[] coords = new int[2];
         coords[0]=-1;
         coords[1]=-1;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if(board.doesCaseContainPiece(i, j) && board.getPiece(i, j).getChessName()=="king" && board.getPiece(i, j).getTeam() == team){
+                if(gaveBoard.doesCaseContainPiece(i, j) && gaveBoard.getPiece(i, j).getChessName()=="king" && gaveBoard.getPiece(i, j).getTeam() == team){
                     coords[0]=i;
                     coords[1]=j;
                 }
