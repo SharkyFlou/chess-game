@@ -7,13 +7,15 @@ public class Mover {
     private boolean casesPreviewMvt[][];
     private boolean casesPreviewAtk[][];
     private Board board;
+    private CheckChecker checkChecker;
     // private boolean team; // a remplir
     private List<PreviewObserver> listObs = new ArrayList<PreviewObserver>();
 
     //
 
-    public Mover(Board gaveBoard) {
+    public Mover(Board gaveBoard, CheckChecker gaveCheckChecker) {
         board = gaveBoard;
+        checkChecker=gaveCheckChecker;
         emptyPreviews();
     }
 
@@ -45,7 +47,7 @@ public class Mover {
         return initializer;
     }
 
-    public void calculateRealMvt(int posY, int posX) {
+    public void calculateRealMvt(int posY, int posX, boolean filterOutImpos) {
         Piece currentPieceMvt = board.getPiece(posY, posX);
 
         if (currentPieceMvt.getChessName() == "pawn")
@@ -68,10 +70,14 @@ public class Mover {
         else if (currentPieceMvt.getChessName() == "queen")
             casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 0, true, currentPieceMvt);
 
+        //si le filtre est activé, enlève les mvmt ne permetant pas de résoudre un echec
+        if(filterOutImpos){
+            casesPreviewMvt= checkChecker.filterOutImpossibleMoves(posY, posX, casesPreviewMvt);
+        }
         notifyDisplayMvt();
     }
 
-    public void calculateRealAtk(int posY, int posX) {
+    public void calculateRealAtk(int posY, int posX, boolean filterOutImpos) {
         Piece currentPieceAtk = board.getPiece(posY, posX);
         if (currentPieceAtk.getChessName() == "pawn")
             casesPreviewAtk = calculateMvtAtkPawn(posY, posX, false, currentPieceAtk);
@@ -92,6 +98,11 @@ public class Mover {
         else if (currentPieceAtk.getChessName() == "queen")
             casesPreviewAtk = calculateMvtAtkPlusCross(posY, posX, 0, false, currentPieceAtk);
 
+        
+        //si le filtre est activé, enlève les atk ne permetant pas de résoudre un echec
+        if(filterOutImpos){
+            casesPreviewAtk= checkChecker.filterOutImpossibleMoves(posY, posX, casesPreviewAtk);
+        }
         notifyDisplayAtk();
     }
 

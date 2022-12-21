@@ -339,11 +339,12 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
 
     }
 
+    //affiche c'est a quelle équipe de jouer
     public void displayTeamToPlay(boolean team){
         subtitle.setText("Tour des "+(team ? "blancs" : "noirs"));
     }
 
-    
+    //affiche en orange les pieces boquées
     public void displayLocked(boolean[][] casesLocked) {
         lockedPieces=casesLocked;
         for (int i = 0; i < chessBoardButtons.length; i++) {
@@ -366,14 +367,20 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
 
     
     public void displayKing(int posY, int posX) {
+        if(lockedPieces[posY][posX]){ //si le roi est lock, on ne change pas la couleur
+            return;
+        }
+        //enregistrement des positions du roi en echec
         coordsKingHigh[0]=posY;
         coordsKingHigh[1]=posX;
+
+        //changement de couleur
         chessBoardButtons[posY][posX].setBackground(Color.decode("#A600FF")); //rose
         chessBoardButtons[posY][posX].setOpaque(true);
         chessBoardButtons[posY][posX].setBorderPainted(false);
     }
 
-    
+    //reset toutes les previews
     public void erasePreviewsLock() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
