@@ -73,16 +73,17 @@ public class Board {
     }
 
     //deplace la piece à partir de ses anciennes et noubelles positions
-    public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX) {
+    //si calc est true, c'est que movePiece est appellé depuis ChechChecker, et que le first Mvmt ne doit pas être appele
+    public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX, boolean isCalc) {
         if (doesCaseContainPiece(oldPosY, oldPosX)) {
             Piece pieceBougee = getPiece(oldPosY, oldPosX);
             destroyPiece(oldPosY, oldPosX, true);
             board[newPosY][newPosX] = pieceBougee;
 
             // gere le premier mouvement
-            if (pieceBougee.getChessName() == "pawn" ||
+            if (!isCalc && (pieceBougee.getChessName() == "pawn" ||
                     pieceBougee.getChessName() == "rook" ||
-                    pieceBougee.getChessName() == "king") {
+                    pieceBougee.getChessName() == "king")) {
                 FirstMovement pieceFirstMovement = (FirstMovement) pieceBougee;
                 pieceFirstMovement.mooveIt();
             }
@@ -132,6 +133,11 @@ public class Board {
         for (BoardObserver obs : listObs) {
             obs.displayTeamToPlay(newTeam);
         }
+    }
+
+    //init pour le CheckChecker
+    public void setPiece(Piece piece, int posY, int posX){
+        board[posY][posX]=piece;
     }
 
 }

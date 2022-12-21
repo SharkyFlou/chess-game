@@ -10,16 +10,16 @@ import model.Board;
 import model.Piece;
 import model.PreviewObserver;
 import model.BoardObserver;
+import model.LockedObserver;
 
 import java.net.URL;
 
-public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserver {
+public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserver, LockedObserver {
 
     private GameFacade gameFacade;
     private Board board;
 
     private JPanel panelTitle;
-    private JPanel panelLow;
     private JPanel panelLowLeft;
     private JPanel panelLowMid;
     private JPanel panelLowRight;
@@ -42,6 +42,10 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     final int SCOREHEIGHT = 60;
     final int PIECETAKENHEIGHT = LOWHEIGHT- SCOREHEIGHT;
 
+    //pas beau mais plus simple et plus opti :
+    private boolean[][] lockedPieces = new boolean[8][8];
+    private int[] coordsKingHigh = new int[2];
+
     public DisplayBoard(GameFacade XgameFacade, Board xBoard, LabelScore lblWht, LabelScore lblBlk) {
         chessBoardButtons = new JButton[8][8];
         takenBlkPieces = new JLabel[15];
@@ -54,7 +58,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout());
 
         //ajout panel du haut
         panelTitle = new JPanel();
@@ -62,37 +66,29 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         panelTitle.setSize(new Dimension(WIDTH, TITLEHEIGHT));
         panelTitle.setMinimumSize(new Dimension(WIDTH, TITLEHEIGHT));
         panelTitle.setLayout(new GridLayout(2, 0));
-        add(panelTitle);
+        add(panelTitle,BorderLayout.NORTH);
 
-        //ajout panel du bas contenant les trois sous panel donc l'échequier
-        panelLow = new JPanel();
-        panelLow.setLayout(new BoxLayout(panelLow, BoxLayout.X_AXIS));
-        panelLow.setSize(new Dimension(WIDTH, LOWHEIGHT));
-        panelLow.setMinimumSize(new Dimension(WIDTH, LOWHEIGHT));
-        add(panelLow);
 
         //panel qui contiendra les pièces conquises par le joueur blanc
         panelLowLeft = new JPanel();
         panelLowLeft.setBackground(Color.lightGray);
-        panelLowLeft.setSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
-        panelLowLeft.setMinimumSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
         panelLowLeft.setLayout(new BoxLayout(panelLowLeft, BoxLayout.Y_AXIS));
-        panelLow.add(panelLowLeft);
+        panelLowLeft.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(panelLowLeft, BorderLayout.WEST);
 
         //panel qui contiendra l'échequier
         panelLowMid = new JPanel(new GridLayout(0, 10));
         panelLowMid.setBackground(Color.gray);
         panelLowMid.setSize(new Dimension(CHESSWIDTH, LOWHEIGHT+1000));
         panelLowMid.setMinimumSize(new Dimension(CHESSWIDTH, LOWHEIGHT+1000));
-        panelLow.add(panelLowMid);
+        add(panelLowMid, BorderLayout.CENTER);
 
         //panel qui contiendra les pièces conquises par le joueur noir
         panelLowRight = new JPanel();
         panelLowRight.setBackground(Color.lightGray);
-        panelLowRight.setSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
-        panelLowRight.setMinimumSize(new Dimension(SIDESWIDTH, LOWHEIGHT));
         panelLowRight.setLayout(new BoxLayout(panelLowRight, BoxLayout.Y_AXIS));
-        panelLow.add(panelLowRight);
+        panelLowRight.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(panelLowRight, BorderLayout.EAST);
 
 
         //Ajout JLabel du titre
@@ -245,13 +241,13 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
                 if (caseAtk[i][j]) {
                     if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
-                    chessBoardButtons[i][j].setBackground(Color.decode("#B30000")); //rouge clair
-                    chessBoardButtons[i][j].setOpaque(true);
-                    chessBoardButtons[i][j].setBorderPainted(false);
+                        chessBoardButtons[i][j].setBackground(Color.decode("#B30000")); //rouge clair
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
                     } else {
-                    chessBoardButtons[i][j].setBackground(Color.decode("#9B0000")); //rouge plus foncé
-                    chessBoardButtons[i][j].setOpaque(true);
-                    chessBoardButtons[i][j].setBorderPainted(false);
+                        chessBoardButtons[i][j].setBackground(Color.decode("#9B0000")); //rouge plus foncé
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
     
                     }
 
@@ -267,13 +263,13 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
                 if (caseMvt[i][j]) {
                     if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
                         chessBoardButtons[i][j].setBackground(Color.decode("#009B18")); //vert clair
-                    chessBoardButtons[i][j].setOpaque(true);
-                    chessBoardButtons[i][j].setBorderPainted(false);
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
     
                     } else {
-                    chessBoardButtons[i][j].setBackground(Color.decode("#008A1A")); //vert plus foncé
-                    chessBoardButtons[i][j].setOpaque(true);
-                    chessBoardButtons[i][j].setBorderPainted(false);
+                        chessBoardButtons[i][j].setBackground(Color.decode("#008A1A")); //vert plus foncé
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
     
                     }
                 }
@@ -286,12 +282,15 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     public void erasePreviews() { 
         for (int i = 0; i < chessBoardButtons.length; i++) {
             for (int j = 0; j < chessBoardButtons[i].length; j++) {
-                if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
+                if(lockedPieces[i][j] || (i==coordsKingHigh[0] && j==coordsKingHigh[1])){
+                    continue;
+                }
+                if (((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0))) {
                     chessBoardButtons[i][j].setBackground(Color.WHITE);
                     chessBoardButtons[i][j].setOpaque(true);
                     chessBoardButtons[i][j].setBorderPainted(false);
 
-                } else {
+                } else{
                     chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
                     chessBoardButtons[i][j].setOpaque(true);
                     chessBoardButtons[i][j].setBorderPainted(false);
@@ -340,8 +339,57 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
 
     }
 
+    //affiche c'est a quelle équipe de jouer
     public void displayTeamToPlay(boolean team){
         subtitle.setText("Tour des "+(team ? "blancs" : "noirs"));
+    }
+
+    //affiche en orange les pieces boquées
+    public void displayLocked(boolean[][] casesLocked) {
+        lockedPieces=casesLocked;
+        for (int i = 0; i < chessBoardButtons.length; i++) {
+            for (int j = 0; j < chessBoardButtons[i].length; j++) {
+                if (casesLocked[i][j]) {
+                    if ((j % 2 == 1 && i % 2 == 1) || (j % 2 == 0 && i % 2 == 0)) {
+                        chessBoardButtons[i][j].setBackground(Color.decode("#9C4100")); //orange
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
+    
+                    } else {
+                        chessBoardButtons[i][j].setBackground(Color.decode("#1853700")); //orange foncé
+                        chessBoardButtons[i][j].setOpaque(true);
+                        chessBoardButtons[i][j].setBorderPainted(false);
+                    }
+                }
+            }
+        }
+    }
+
+    
+    public void displayKing(int posY, int posX) {
+        if(lockedPieces[posY][posX]){ //si le roi est lock, on ne change pas la couleur
+            return;
+        }
+        //enregistrement des positions du roi en echec
+        coordsKingHigh[0]=posY;
+        coordsKingHigh[1]=posX;
+
+        //changement de couleur
+        chessBoardButtons[posY][posX].setBackground(Color.decode("#A600FF")); //rose
+        chessBoardButtons[posY][posX].setOpaque(true);
+        chessBoardButtons[posY][posX].setBorderPainted(false);
+    }
+
+    //reset toutes les previews
+    public void erasePreviewsLock() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                lockedPieces[i][j] = false;
+            }
+        }
+        coordsKingHigh[0]=-1;
+        coordsKingHigh[1]=-1;
+        erasePreviews();
     }
 
 }
