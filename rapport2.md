@@ -13,3 +13,9 @@ Création de l'interface `LockedObserver` permetant au `DisplayBoard` de pouvoir
 Modification de `DisplayBoard` qui observe le `CheckChecker` afin de pouvoir affiché les pièces qui sont bloqués lorsque le roi est mit en échec.
 
 Modification de `SuperVisor` qui entre chaque tour vérifie grâce au `CheckChecker` si le prochain jour est en échec, en pat, ou en échec et mat.
+
+Modification de `Mover`, ajout d'un lien vers le `CheckChecker` pour filtrer les mouvements ne laissant pas en échec le roi.
+
+Modification de `Board`, la fonction de déplacement prend un booléen supplémentaire afin de savoir si elle est appelé pour faire des calcul depuis `CheckChecker`, ou bien pour réelement déplacer la pièce (afin de ne pas initialiser les premiers mouvements du roi, de la tour ou du pion).
+
+
