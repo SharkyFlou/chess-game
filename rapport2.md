@@ -20,9 +20,22 @@ Modification de `Board`, la fonction de déplacement prend un booléen suppléme
 
 Supression fichier "!".
 
+## Ajout de la possibilité de roquer : 
+
 Modification de `Mover`, ajout du preview de la destination final du roi pour les roques, uniquement si les roques sont possible (sans vérifier les echecs intérimédiaire pour l'instant)
 
 Modification de `Board`, qui lorsque déplace une pièce, vérifie si c'est un roi, si oui, regarde si la distance parcouru en X est supérieur de 1, si oui c'est un roque et alors il déplace la tour convenu par la suite.
 
 Modification de `CheckChecker`, qui vérifie si le roi est en echec avant ou pendant le déplacement du roque, et autorise ou non le déplacement.
+
+## Ajout de la prise en passant :
+
+Modification de `Board` : rajout d'un tableau de 2 int, retenant si la dernière pièce ayant bougé est un pion, et si c'est le cas, ses coordonnées, sinon écrase les anciennes par -1.
+
+Modification de `Mover` qui quand calcul l'attaque d'un pion, regarde dans `Board` si il y est alors possible de faire une prise en passant.
+
+Modification de `SuperVisor` qui vérifie si l'attaque se dirige vers une case oui, si oui c'est une prise en passant ! Dans ce cas il va manger et prendre les points de la case soit celle du dessus soit du dessous.
+
+Pas besoin de mettre le système d'echec à jour !
+
 
