@@ -20,4 +20,9 @@ Modification de `Board`, la fonction de déplacement prend un booléen suppléme
 
 Supression fichier "!".
 
+Modification de `Mover`, ajout du preview de la destination final du roi pour les roques, uniquement si les roques sont possible (sans vérifier les echecs intérimédiaire pour l'instant)
+
+Modification de `Board`, qui lorsque déplace une pièce, vérifie si c'est un roi, si oui, regarde si la distance parcouru en X est supérieur de 1, si oui c'est un roque et alors il déplace la tour convenu par la suite.
+
+Modification de `CheckChecker`, qui vérifie si le roi est en echec avant ou pendant le déplacement du roque, et autorise ou non le déplacement.
 
