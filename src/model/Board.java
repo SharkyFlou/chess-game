@@ -74,6 +74,7 @@ public class Board {
 
     //deplace la piece à partir de ses anciennes et noubelles positions
     //si calc est true, c'est que movePiece est appellé depuis ChechChecker, et que le first Mvmt ne doit pas être appele
+    //s'occupe maintenant aussi du roque
     public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX, boolean isCalc) {
         if (doesCaseContainPiece(oldPosY, oldPosX)) {
             Piece pieceBougee = getPiece(oldPosY, oldPosX);
@@ -89,6 +90,20 @@ public class Board {
             }
         }
         notifyMov();
+
+        
+        
+        //si la piece ayant bougé est un roi s'étant deplacé en X d'au moins 2 cases, c'est un roque !
+        if(getPiece(newPosY, newPosX).getChessName() == "king" && (oldPosX-newPosX>1 || oldPosX-newPosX<-1) ){ 
+            //grand roque
+            if(newPosX==2){
+                movePiece(newPosY, 0, newPosY, 3, isCalc);
+            }
+            //petit roque
+            else{
+                movePiece(newPosY, 7, newPosY, 5, isCalc);
+            }
+        }
     }
 
     //supprime la pièce aux coordonnées envoyées

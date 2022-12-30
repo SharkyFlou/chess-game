@@ -111,22 +111,22 @@ public class Supervisor {
 
     private void doTheChecks(boolean currentTeam){
         if(!checkChecker.isCheck(currentTeam)){ //si pas d'echec
-                if(checkChecker.isPat(currentTeam, false)){ //sans preview des lockedpieces
-                    System.out.println("Pat !");
-                }
-                else{
-                    System.out.println("Rien !");
-                }
+            if(checkChecker.isPat(currentTeam, false)){ //sans preview des lockedpiece
+                System.out.println("Pat !");
             }
-            else{ //si echec
-                if(checkChecker.isPat(currentTeam, true)){ //+ preview des lockedpieces
-                    System.out.println("Echec et mat !");
-                }
-                else{
-                    checkChecker.highlightKing(currentTeam);
-                    System.out.println("Echec !");
-                }
-                //met en surbrillance le roi
+            else{
+                System.out.println("Rien !");
             }
+            }
+        else{ //si echec
+            if(checkChecker.isPat(currentTeam, true)){ //+ preview des lockedpieces
+                System.out.println("Echec et mat !");
+            }
+            else{
+                checkChecker.highlightKing(currentTeam);
+                System.out.println("Echec !");
+            }
+            //met en surbrillance le roi
+        }
     }
 }

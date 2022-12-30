@@ -17,7 +17,7 @@ public class CheckChecker {
 
     //fonction écran du "vrai" isCheck, accès de l'exterieur
     public boolean isCheck(boolean team){
-        Board boardTemp = copyBoard();
+        Board boardTemp = copyBoard(board);
         return isCheck(team, boardTemp);
     }
 
@@ -63,10 +63,8 @@ public class CheckChecker {
     public boolean isPat(boolean team, boolean lockPieces){
         notifyReset();
         resetGiantFilter();
-        Board tempBoard = copyBoard();
+        Board tempBoard = copyBoard(board);
         Mover moverTemp = new Mover(tempBoard, null);
-        //int[] coordsKing = findKing(team);
-
         boolean finalReturn = true;
         lockedPieces=initializePreviews();
         //parcours le plateau
@@ -83,8 +81,6 @@ public class CheckChecker {
                     //fusionne pour tout les deplacements possible de la piece
                     boolean[][] tabMoves = mergeTab(tabMvt,tabAtk);
 
-
-
                     //si le roi n'est PAS toujours en echec quel que soit le mouvement de la piece
                     //ne sort pas directement car il faut pouvoir "lock" les pieces, et leur empecher d'effectuer des mouvement mettant / laissant le roi en echec
                     if(!browseTabCheckCheck(tabMoves, moverTemp, i, j, team)){
@@ -93,6 +89,35 @@ public class CheckChecker {
                     else if (lockPieces){
                         lockedPieces[i][j]=true;
                     }
+
+                    //test approfondi si les rock sont possible
+                    //si c'est le roi et qu'il est en position X 4
+                    if(tempBoard.getPiece(i, j).getChessName()=="king" && j == 4){
+                        //si le roi est deja en echec
+                        if(lockPieces){
+                            disableCastle(i, true, true);
+                            continue;
+                        }
+                        // si grand roque possible
+                        if(tabMoves[i][2]){
+                            //vérification si le mouvement intérmédiaire met en echec le roi
+                            Board testBoard = copyBoard(tempBoard);
+                            testBoard.movePiece(i, j, i, j-1, true);
+                            if(isCheck(team,testBoard)){
+                                disableCastle(i, true, false);
+                            }
+                        }
+                        //si petit roque possible
+                        if(tabMoves[i][6]){
+                            //vérification si le mouvement intérmédiaire met en echec le roi
+                            Board testBoard = copyBoard(tempBoard);
+                            testBoard.movePiece(i, j, i, j+1, true);
+                            if(isCheck(team,testBoard)){
+                                disableCastle(i, false, true);
+                            }
+                        }
+                        
+                    } 
                 }
             }            
         }
@@ -104,14 +129,24 @@ public class CheckChecker {
         return finalReturn;
     }
 
+    public void disableCastle(int posY, boolean queenside, boolean kingsinde){
+        if(queenside){
+            giantFilter[posY][4][posY][2]=false;
+        }
+        if(kingsinde){
+            giantFilter[posY][4][posY][6]=false;
+        }
+    }
+
     //parcours tout les deplacements possible d'une piece, et regarde si le roi est toujours en echec
     private boolean browseTabCheckCheck(boolean[][] tab, Mover mover, int posY, int posX, boolean team){
 
         boolean returnValue = true;
         Board boardToMove;
+        //parcours tout les déplacement possible de la piece
         for(int k = 0; k < 8; k ++){
             for(int l = 0; l < 8 ; l ++){
-                boardToMove = copyBoard();
+                boardToMove = copyBoard(board);
                 if(tab[k][l]){
                     boardToMove.movePiece(posY, posX, k, l, true);
                     if(!isCheck(team,boardToMove)){
@@ -148,12 +183,12 @@ public class CheckChecker {
     }
 
     //permet de copier le board, afin de modifer un autre board temporaire
-    private Board copyBoard(){
+    private Board copyBoard(Board toCopy){
         Board newBoard = new Board();
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                newBoard.setPiece(board.getPiece(i, j), i, j); //copie le board
+                newBoard.setPiece(toCopy.getPiece(i, j), i, j); //copie le board
             }            
         }
 

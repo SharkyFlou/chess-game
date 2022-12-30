@@ -8,10 +8,7 @@ public class Mover {
     private boolean casesPreviewAtk[][];
     private Board board;
     private CheckChecker checkChecker;
-    // private boolean team; // a remplir
     private List<PreviewObserver> listObs = new ArrayList<PreviewObserver>();
-
-    //
 
     public Mover(Board gaveBoard, CheckChecker gaveCheckChecker) {
         board = gaveBoard;
@@ -64,8 +61,10 @@ public class Mover {
             casesPreviewMvt = calculateMvtAtkPlus(posY, posX, 0, true, currentPieceMvt);
 
         // entre ces deux pieces suivantes, seulement le reach change
-        else if (currentPieceMvt.getChessName() == "king")
+        else if (currentPieceMvt.getChessName() == "king"){
             casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 1, true, currentPieceMvt);
+            casesPreviewMvt = mergeTab(casesPreviewMvt, calculateCastlesIfPossible(posY, posX));
+        }
 
         else if (currentPieceMvt.getChessName() == "queen")
             casesPreviewMvt = calculateMvtAtkPlusCross(posY, posX, 0, true, currentPieceMvt);
@@ -523,6 +522,34 @@ public class Mover {
         return realMvtAtkCross; // initializer
     }
 
+    private boolean[][] calculateCastlesIfPossible(int posY, int posX){
+        boolean realMvtCastle[][] = initializePreviews();
+        FirstMovement pieceRoi = (FirstMovement) board.getPiece(posY, posX);
+        if(pieceRoi.hasItMoved()){ //check si le roi a déjà bougé
+            return realMvtCastle;
+        }
+
+        // si la tour de gauche est là et n'a pas bougé
+        if(board.doesCaseContainPiece(posY, 0) && board.getPiece(posY, 0).getChessName()=="rook" && !((FirstMovement)board.getPiece(posY, 0)).hasItMoved()){
+            //si y a pas de pions entre
+            if(!board.doesCaseContainPiece(posY, 1) && !board.doesCaseContainPiece(posY, 2) && !board.doesCaseContainPiece(posY, 3)){
+                realMvtCastle[posY][2]=true;
+            }
+        } 
+
+        // si la tour de droite est là et n'a pas bougé
+        if(board.doesCaseContainPiece(posY, 7) && board.getPiece(posY, 7).getChessName()=="rook" && !((FirstMovement)board.getPiece(posY, 7)).hasItMoved()){
+            //si y a pas de pions entre
+            if(!board.doesCaseContainPiece(posY, 6) && !board.doesCaseContainPiece(posY, 5)){
+                realMvtCastle[posY][6]=true;
+            }
+        }
+
+
+
+        return realMvtCastle;
+    }
+
     public void addObs(PreviewObserver obs) {
         listObs.add(obs);
     }
@@ -553,4 +580,16 @@ public class Mover {
     public boolean[][] getMvt(){
         return casesPreviewMvt;
     }
+
+    private boolean[][] mergeTab(boolean[][] tab1, boolean[][] tab2){
+        boolean[][] newTab = new boolean[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                newTab[i][j]=tab1[i][j] || tab2[i][j];
+            }
+        }
+
+        return newTab;
+    }
+
 }
