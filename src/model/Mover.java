@@ -145,6 +145,19 @@ public class Mover {
                 if (posX + 1 < 8 && board.doesCaseContainPieceOfTeam(posY + (1 * way), posX + 1, !pawn.getTeam()))
                     realMvtAtkPawn[posY + (1 * way)][posX + 1] = true;
             }
+
+            //si un pawn en face a fait un gros saut et est à "côté"
+            int[] coordsBigJump = board.getCoordsPawnBigJump();
+            int ePawnPosY = coordsBigJump[0];
+            int ePawnPosX = coordsBigJump[1];
+            if(ePawnPosY==posY){
+                if(ePawnPosX==posX-1){
+                    realMvtAtkPawn[posY + (1 * way)][posX-1]=true;
+                }
+                if(ePawnPosX==posX+1){
+                    realMvtAtkPawn[posY + (1 * way)][posX+1]=true;
+                }
+            }
         }
 
         // la position theorique ne sera pas utilisee par deux raisons:

@@ -42,7 +42,7 @@ public class Supervisor {
                 posY+";"+posX);
         }
 
-       
+
 
         //si le joueur veut manger une piece adverse
         if(mover.isCasePreviewAtk(posY, posX)){ 
@@ -51,11 +51,25 @@ public class Supervisor {
 
             System.out.println("Deplacement de : "+lastClickedPiecePosY+";"+lastClickedPiecePosX+" vers "+posY+";"+posX);
 
-            //rajoute les points
-            manager.addPoints(team, board.getPiece(posY, posX).getValue());
+            //vérifie si ce n'est pas en prise en passant
+            if(board.doesCaseContainPiece(posY, posX)){
+                System.out.println("Pas prise en passant");
+                //ajout des points normalement
+                manager.addPoints(team, board.getPiece(posY, posX).getValue());
 
-            //mange la piece ennmie
-            board.destroyPiece(posY, posX, false);
+                board.destroyPiece(posY, posX, false);
+            }
+            else{
+                //c'est une prise en passant
+                //si l'équipe est blanche (true) la case tué se situe en dessous, dans le cas contraire au dessus
+                System.out.println("Prise en passant en "+ (posY + (team ? +1 : -1 ))+";"+posX);
+                manager.addPoints(team, board.getPiece(posY + (team ? +1 : -1 ), posX).getValue());
+
+                //mange la piece ennmie
+                //le board doit lui meme faire la vérification de la prise en passant afin que les simulation pour les test d'echec fonctionne
+                board.destroyPiece(posY + (team ? +1 : -1 ), posX, false);
+            }
+              
 
             //deplace la piece
             board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX, false);

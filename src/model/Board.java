@@ -5,9 +5,12 @@ import java.util.List;
 
 public class Board {
     private Piece board[][] = new Piece[8][8];
-    List<BoardObserver> listObs = new ArrayList<BoardObserver>();
+    private List<BoardObserver> listObs = new ArrayList<BoardObserver>();
+    private int[] coordsPawnBigJump = new int[2];
 
     public Board() {
+        coordsPawnBigJump[0]=-1;
+        coordsPawnBigJump[1]=-1;
     }
 
     //initialise le baord avec les pièces aux bon endroits
@@ -104,10 +107,25 @@ public class Board {
                 movePiece(newPosY, 7, newPosY, 5, isCalc);
             }
         }
+
+        //si c'est un gros saut de pawn
+        if(getPiece(newPosY, newPosX).getChessName()=="pawn" && (oldPosY-newPosY>1 || oldPosY-newPosY<-1)){
+            coordsPawnBigJump[0]=newPosY;
+            coordsPawnBigJump[1]=newPosX;
+        }
+        else{
+            coordsPawnBigJump[0]=-1;
+            coordsPawnBigJump[1]=-1;
+        }
+    }
+
+    public int[] getCoordsPawnBigJump(){
+        return coordsPawnBigJump;
     }
 
     //supprime la pièce aux coordonnées envoyées
     //le boolean toMoveIt, permet de savoir si c'est pour "prendre" une piece, ou seulement en deplacer une autre
+    //besoin d'avoir l'équipe afin de réagir correctement à la prise en passant
     public void destroyPiece(int posY, int posX, boolean toMoveIt) {
         if (doesCaseContainPiece(posY, posX)) {
             boolean teamPiece = getPiece(posY, posX).getTeam();
@@ -117,11 +135,12 @@ public class Board {
             else{
                 notifyPieceTaken(getPiece(posY, posX));
             }
+            board[posY][posX] = null;
         } else {
-            System.out.println("Trying to delete a non existent piece : " + posY + ";" + posX);
+            System.out.println("Destruction d'une piece non existante en : " + posY + ";" + posX);
         }
 
-        board[posY][posX] = null;
+        
         notifyMov();
     }
 
