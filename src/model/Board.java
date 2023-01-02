@@ -10,7 +10,7 @@ public class Board {
     public Board() {
     }
 
-    //initialise le baord avec les pièces aux bon endroits
+    // initialise le baord avec les pièces aux bon endroits
     public void initBoard() {
 
         for (int i = 0; i < 8; i++) { // pas beau mais ça marche¯\_(ツ)_/¯
@@ -49,7 +49,7 @@ public class Board {
         notifyMov();
     }
 
-    //retourne la piece du X et Y demandé
+    // retourne la piece du X et Y demandé
     public Piece getPiece(int posY, int posX) {
         if (posX < 0 || posX > 7 || posY < 0 || posY > 7) {
             System.out.println("Trying to access a piece out of the board : " + posX +
@@ -59,12 +59,13 @@ public class Board {
         return board[posY][posX];
     }
 
-    //retourne vrai si la case contient une pièce, faux sinon
+    // retourne vrai si la case contient une pièce, faux sinon
     public boolean doesCaseContainPiece(int posY, int posX) {
         return this.getPiece(posY, posX) != null;
     }
 
-    //retourne vrai si la case contient une pièce de l'équipe, faux sinon et si vide
+    // retourne vrai si la case contient une pièce de l'équipe, faux sinon et si
+    // vide
     public boolean doesCaseContainPieceOfTeam(int posY, int posX, boolean team) {
         if (!doesCaseContainPiece(posY, posX)) { // pour ne pas planter
             return false;
@@ -72,7 +73,7 @@ public class Board {
         return this.getPiece(posY, posX).getTeam() == team;
     }
 
-    //deplace la piece à partir de ses anciennes et noubelles positions
+    // deplace la piece à partir de ses anciennes et noubelles positions
     public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX) {
         if (doesCaseContainPiece(oldPosY, oldPosX)) {
             Piece pieceBougee = getPiece(oldPosY, oldPosX);
@@ -90,15 +91,15 @@ public class Board {
         notifyMov();
     }
 
-    //supprime la pièce aux coordonnées envoyées
-    //le boolean toMoveIt, permet de savoir si c'est pour "prendre" une piece, ou seulement en deplacer une autre
+    // supprime la pièce aux coordonnées envoyées
+    // le boolean toMoveIt, permet de savoir si c'est pour "prendre" une piece, ou
+    // seulement en deplacer une autre
     public void destroyPiece(int posY, int posX, boolean toMoveIt) {
         if (doesCaseContainPiece(posY, posX)) {
             boolean teamPiece = getPiece(posY, posX).getTeam();
-            if(toMoveIt){ //si c'est pour deplacer, on appelle la notif changement d'équipe
+            if (toMoveIt) { // si c'est pour deplacer, on appelle la notif changement d'équipe
                 notifyChangeTeam(!teamPiece);
-            }
-            else{
+            } else {
                 notifyPieceTaken(getPiece(posY, posX));
             }
         } else {
@@ -109,26 +110,41 @@ public class Board {
         notifyMov();
     }
 
-    //ajoute l'observeur
+    public void changePiecePromotion(int posY, int posX, boolean team /* Piece piece */) {
+        // on ecrase la piece
+        Queen queen = new Queen(team);
+        board[posY][posX] = queen;
+        // peut etre donnera des problemes
+    }
+
+    public boolean canGetPromoted(int lastClickedPiecePosY, int lastClickedPiecePosX, int posY, int posX) {
+        if ((getPiece(lastClickedPiecePosY, lastClickedPiecePosX).getTeam() && posY == 0)
+                || (!getPiece(lastClickedPiecePosY, lastClickedPiecePosX).getTeam() && posY == 7)) {
+            return true;
+        }
+        return false;
+    }
+
+    // ajoute l'observeur
     public void addObs(BoardObserver obs) {
         listObs.add(obs);
     }
 
-    //avertit les observeur de mettre à jour l'échiquier
+    // avertit les observeur de mettre à jour l'échiquier
     public void notifyMov() {
         for (BoardObserver obs : listObs) {
             obs.displayGame();
         }
     }
 
-    //avertit les observeur qu'une pièce a été prise
+    // avertit les observeur qu'une pièce a été prise
     public void notifyPieceTaken(Piece piece) {
         for (BoardObserver obs : listObs) {
             obs.displayPieceTaken(piece);
         }
     }
 
-    public void notifyChangeTeam(boolean newTeam){
+    public void notifyChangeTeam(boolean newTeam) {
         for (BoardObserver obs : listObs) {
             obs.displayTeamToPlay(newTeam);
         }

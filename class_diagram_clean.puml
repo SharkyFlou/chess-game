@@ -21,10 +21,11 @@
         class Board{
             + Board()
             + initBoard()
-            + getPiece(posX : Integer, posY : Integer)
+            + getPiece(posY : Integer, posX : Integer)
             + movePiece(oldPosX : Integer, oldPosY : Integer, newPosX : Integer, newPosY : Integer)
-            + doesCaseContainPlayerPiece(posX : Integer, posY : Integer, team Boolean) : Boolean
-            + destroyPiece(posX : Integer, posY : Integer)
+            + doesCaseContainPlayerPiece(posY : Integer, posX : Integer, team Boolean) : Boolean
+            + destroyPiece(posY : Integer, posX : Integer)
+            + changePiecePromotion(posY : Integer, posX : Integer, newPiece : Piece)
             + addObs(obs : InteractionsObserver)
             - notifyPieceTaken(team : Boolean, imageLink : String)
             - notifyMov()
@@ -35,8 +36,8 @@
             - casesPreviewedAtk : Boolean[]
             + Mover()
             + setBoard(gaveBoard : Board)
-            + isCasePreviewMvt(posX : Integer, posY : Integer) : Boolean
-            + isCasePreviewAtk(posX : Inteer, posY : Integer) : Boolean
+            + isCasePreviewMvt(posY : Integer, posX : Integer) : Boolean
+            + isCasePreviewAtk(posY : Integer, posX : Integer) : Boolean
             + emptyPreviews()
             + initializePreviews() : Boolean[]
             + calculateRealMvt(posY : Integer, posX : Integer)
@@ -110,7 +111,7 @@
 
         interface BoardObserver{
             + {abstract} DisplayGame()
-            + {abstract} displayPromotion(posX : Integer, posY : Integer)
+            + {abstract} displayPromotion(posY : Integer, posX : Integer)
         }
 
         class Manager{
@@ -142,7 +143,7 @@
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
             + Supervisor()
             + setMoverAndBoard(gaveMover : Mover, gaveBoard : Board)
-            + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean) : Boolean
+            + clickedOnSomeCase(posY : Integer, posX : Integer, team : Boolean) : Boolean
         }
 
         class GameFacade{
@@ -164,7 +165,7 @@
             + displayGame()
             + displayPreviewMvt(previews : Boolean[])
             + displayPreviewAtk(previews : Boolean[])
-            + displayPromotion(posX : Integer, posY : Integer)
+            + displayPromotion(posY : Integer, posX : Integer)
             + erasePreview()
         }
 
