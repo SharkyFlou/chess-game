@@ -5,9 +5,20 @@ import java.util.List;
 
 public class Board {
     private Piece board[][] = new Piece[8][8];
-    List<BoardObserver> listObs = new ArrayList<BoardObserver>();
+
+    // la raison par laquelle on a deux observers differents (au lieu d'avoir un
+    // seul observer) est car la nouvelle fenetre promotion n'a besoin que d'une
+    // fonction displayOptions et ne doit pas implementer les fonctions du
+    // BoardObserver
+    private List<BoardObserver> listObs = new ArrayList<BoardObserver>();
+    // private List<PromotionObserver> listObsProm = new
+    // ArrayList<PromotionObserver>();
+
+    private int[] coordsPawnBigJump = new int[2];
 
     public Board() {
+        coordsPawnBigJump[0] = -1;
+        coordsPawnBigJump[1] = -1;
     }
 
     // initialise le baord avec les pièces aux bon endroits
@@ -74,26 +85,56 @@ public class Board {
     }
 
     // deplace la piece à partir de ses anciennes et noubelles positions
-    public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX) {
+    // si calc est true, c'est que movePiece est appellé depuis ChechChecker, et que
+    // le first Mvmt ne doit pas être appele
+    // s'occupe maintenant aussi du roque
+    public void movePiece(int oldPosY, int oldPosX, int newPosY, int newPosX, boolean isCalc) {
         if (doesCaseContainPiece(oldPosY, oldPosX)) {
             Piece pieceBougee = getPiece(oldPosY, oldPosX);
             destroyPiece(oldPosY, oldPosX, true);
             board[newPosY][newPosX] = pieceBougee;
 
             // gere le premier mouvement
-            if (pieceBougee.getChessName() == "pawn" ||
+            if (!isCalc && (pieceBougee.getChessName() == "pawn" ||
                     pieceBougee.getChessName() == "rook" ||
-                    pieceBougee.getChessName() == "king") {
+                    pieceBougee.getChessName() == "king")) {
                 FirstMovement pieceFirstMovement = (FirstMovement) pieceBougee;
                 pieceFirstMovement.mooveIt();
             }
         }
         notifyMov();
+
+        // si la piece ayant bougé est un roi s'étant deplacé en X d'au moins 2 cases,
+        // c'est un roque !
+        if (getPiece(newPosY, newPosX).getChessName() == "king" && (oldPosX - newPosX > 1 || oldPosX - newPosX < -1)) {
+            // grand roque
+            if (newPosX == 2) {
+                movePiece(newPosY, 0, newPosY, 3, isCalc);
+            }
+            // petit roque
+            else {
+                movePiece(newPosY, 7, newPosY, 5, isCalc);
+            }
+        }
+
+        // si c'est un gros saut de pawn
+        if (getPiece(newPosY, newPosX).getChessName() == "pawn" && (oldPosY - newPosY > 1 || oldPosY - newPosY < -1)) {
+            coordsPawnBigJump[0] = newPosY;
+            coordsPawnBigJump[1] = newPosX;
+        } else {
+            coordsPawnBigJump[0] = -1;
+            coordsPawnBigJump[1] = -1;
+        }
+    }
+
+    public int[] getCoordsPawnBigJump() {
+        return coordsPawnBigJump;
     }
 
     // supprime la pièce aux coordonnées envoyées
     // le boolean toMoveIt, permet de savoir si c'est pour "prendre" une piece, ou
     // seulement en deplacer une autre
+    // besoin d'avoir l'équipe afin de réagir correctement à la prise en passant
     public void destroyPiece(int posY, int posX, boolean toMoveIt) {
         if (doesCaseContainPiece(posY, posX)) {
             boolean teamPiece = getPiece(posY, posX).getTeam();
@@ -102,19 +143,29 @@ public class Board {
             } else {
                 notifyPieceTaken(getPiece(posY, posX));
             }
+            board[posY][posX] = null;
         } else {
-            System.out.println("Trying to delete a non existent piece : " + posY + ";" + posX);
+            System.out.println("Destruction d'une piece non existante en : " + posY + ";" + posX);
         }
 
-        board[posY][posX] = null;
         notifyMov();
     }
 
-    public void changePiecePromotion(int posY, int posX, boolean team /* Piece piece */) {
+    public void changePiecePromotion(int posY, int posX, boolean team, String pieceACreer) {
         // on ecrase la piece
-        Queen queen = new Queen(team);
-        board[posY][posX] = queen;
-        // peut etre donnera des problemes
+        if (pieceACreer == "queen") {
+            Queen queen = new Queen(team);
+            board[posY][posX] = queen;
+        } else if (pieceACreer == "rook") {
+            Rook rook = new Rook(team);
+            board[posY][posX] = rook;
+        } else if (pieceACreer == "bishop") {
+            Bishop bishop = new Bishop(team);
+            board[posY][posX] = bishop;
+        } else if (pieceACreer == "knight") {
+            Knight knight = new Knight(team);
+            board[posY][posX] = knight;
+        }
     }
 
     public boolean canGetPromoted(int lastClickedPiecePosY, int lastClickedPiecePosX, int posY, int posX) {
@@ -129,6 +180,13 @@ public class Board {
     public void addObs(BoardObserver obs) {
         listObs.add(obs);
     }
+
+    /*
+     * // ajoute l'observeur prom
+     * public void addObsProm(PromotionObserver prom) {
+     * listObsProm.add(prom);
+     * }
+     */
 
     // avertit les observeur de mettre à jour l'échiquier
     public void notifyMov() {
@@ -148,6 +206,11 @@ public class Board {
         for (BoardObserver obs : listObs) {
             obs.displayTeamToPlay(newTeam);
         }
+    }
+
+    // init pour le CheckChecker
+    public void setPiece(Piece piece, int posY, int posX) {
+        board[posY][posX] = piece;
     }
 
 }

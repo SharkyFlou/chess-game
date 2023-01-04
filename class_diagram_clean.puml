@@ -140,10 +140,15 @@
         class Supervisor{
             - lastClickedPiecePosx : Integer
             - lastClickedPiecePosy : Integer 
+            - pieceProm : String
+            - hasClicked : Boolean
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
-            + Supervisor()
+            + addLinks(gaveBoard : Board, gaveMover : Mover, gaveManager : Manager, gaveCheckChecker : CheckChecker)
             + setMoverAndBoard(gaveMover : Mover, gaveBoard : Board)
             + clickedOnSomeCase(posY : Integer, posX : Integer, team : Boolean) : Boolean
+            + sendPromotion(posY : Integer, posX : Integer, team : Boolean)
+            - doTheChecks(currentTeam : boolean)
+            + getBoard() : Board
         }
 
         class GameFacade{
@@ -158,15 +163,19 @@
 
     package view{
         class DisplayBoard{
-            + DisplayBoard()
-            + setBoard()
-            + setGameFacadeAndBoard(gaveGameFacade : GameFacade, gaveBoard : Board)
-            + clickedOnCase(posx : Integer, posy : Integer)
+            + DisplayBoard(XgameFacade : GameFacade, xBoard : Board, lblWht : LabelScore, lblBlk : LabelScore)
+            + creationBoardBlackWhite()
+            + createSidesBoard()
+            + clickedOnCase(jButton : JButton)
             + displayGame()
             + displayPreviewMvt(previews : Boolean[])
             + displayPreviewAtk(previews : Boolean[])
-            + displayPromotion(posY : Integer, posX : Integer)
+            + displayPieceTaken(piece : Piece)
+            + displayTeamToPlay(team : Boolean)
+            + displayLocked(casesLocked : Boolean[])
+            + displayKing(posY : Integer, posX : Integer)
             + erasePreview()
+            + erasePreviewsLock()
         }
 
         class DisplayGame{
@@ -176,11 +185,17 @@
             + displayScore(team : Boolean)
         }
 
-
         class PanelScore extends JPanel{
             - team : Boolean
             + PanelScore(team : Boolean)
             + DisplayScore(team : Boolean, points : Integer)
+        }
+
+        class PromotionWindow {
+            + PromotionWindow(supervisor : Supervisor)
+            - createButtons()
+            + displayPromotion(posX : Integer, posY : Integer, team : Boolean)
+            + actionPerformed() 'Overrides ActionPerformed from ActionListener
         }
 
         
@@ -233,12 +248,14 @@
     'relation view - controller
     'cette relation envoie la position de la case cliquee a controller
     DisplayBoard o-right-> "1\n-gameFacade" GameFacade : > calls  
-    GameFacade -> DisplayGame : > display
+    GameFacade --> DisplayGame : > display
     
     'relation view - model
     DisplayBoard .down.|> BoardObserver : ""
     DisplayBoard .down.|> PreviewObserver : ""
     DisplayBoard o-down-> "1\n-board" Board : > watch
+    PromotionWindow <- Supervisor : "instantiates <"
+    PromotionWindow o-> "1\n-supervisor" Supervisor : "calls >"
     PanelScore ..|> ScoreObserver
 
     'relation controller - model
