@@ -54,6 +54,10 @@ Modification du `Main`, et création de `Initialiser` dans le package `controlle
 Création de `StartScreen` dans le package `view`. Cette classe est une interface swing possédant des champs pour remplir le nom du joueur blanc et noir, et un bouton "Jouer".
 Le boutton lorsque cliqué appelle la fonction `LaunchGame` de la classe `Initialiser` avec en paramètre le nom des joueurs.
 
+Modification de `DisplayBoard`, ajout de deux String en attribut : le nom de chaque joueur pour l'affiche des tours.
+
+Modification de `LabelScore`, ajout d'un String pour l'affichage du score au nom du joueur.
+
 `Initialiser` instancie alors les les autres classe comme faisait précédement le `Main`.
 
 La partie peut commencer !
