@@ -98,7 +98,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         panelTitle.add(title, BorderLayout.NORTH);
 
         //Ajout JLabel tour
-        subtitle = new JLabel("Tour des blancs",SwingConstants.CENTER);
+        subtitle = new JLabel("Tour de Blanc",SwingConstants.CENTER);
         subtitle.setFont(new Font("Verdana", Font.PLAIN, 20));
         subtitle.setForeground(Color.WHITE);
         panelTitle.add(subtitle, BorderLayout.SOUTH);
