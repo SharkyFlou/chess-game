@@ -45,8 +45,15 @@ Début d'un diagramme, résumant les intéractions entre les classes:
 
 ## 7ème séance :
 
-- ``Rapport.md`` plus beau 😎.
+- `Rapport.md` plus beau 😎.
 - Ajout de `PanelScore` qui implémente `ScoreObserver` et étends JPanel; `DisplayBoard` possède deux `PanelScore`, un pour chaque équipe.
 - Calcul de chaque type de movement fini, tout mouvement (de théorique à pratique) est fait dans `Mover` (ex: calcul de la trajectoire d'un Bishop).
 - Nettoyage du code + commentaires.
 - Suppression de la vue `Terminal` inutile créé lors de la [2ème séance](#2ème-séance)).
+
+## 8ème séance :
+
+- Développement de l'interface "Promotion" : création de `PromotionWindow`, qui affiche les pièces possibles en situation de promotion.
+- Utilisation de `PromotionObserver`, qui décompose une fonction de `BoardObserver` dédiée aux promotions.
+- Modification de `Supervisor`: après avoir check si la pièce peut être promoted, elle attend la réponse de `PromotionWindow` pour modifier le pion en question.
+- Modification PUML
