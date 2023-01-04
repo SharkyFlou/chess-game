@@ -197,8 +197,4 @@ public class Supervisor {
             // met en surbrillance le roi
         }
     }
-
-    public Board getBoard() {
-        return board;
-    }
 }

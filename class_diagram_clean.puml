@@ -144,19 +144,20 @@
             - hasClicked : Boolean
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
             + addLinks(gaveBoard : Board, gaveMover : Mover, gaveManager : Manager, gaveCheckChecker : CheckChecker)
-            + setMoverAndBoard(gaveMover : Mover, gaveBoard : Board)
             + clickedOnSomeCase(posY : Integer, posX : Integer, team : Boolean) : Boolean
             + sendPromotion(posY : Integer, posX : Integer, team : Boolean)
             - doTheChecks(currentTeam : boolean)
-            + getBoard() : Board
         }
 
         class GameFacade{
-            - team : Boolean
+            - nextToPlay : Boolean
+            + GameFacade(gaveSupervisor : Supervisor)
             + clickedOnSomeCase(posx : Integer, posy : Intenger)
-            + turnEnd()
-            + draw()
-            + win()
+        }
+
+        class Initialiser{
+            + LaunchStartMenu()
+            + LaunchGame(whiteName : String, blackName : String)
         }
 
     }
@@ -205,12 +206,15 @@
 'class PanelPlayer{}
 
     'main
-    Main ..> Board : > instantiate 
-    Main ...> GameFacade : > instantiate 
-    Main ..> DisplayBoard : > instantiate 
-    Main ..> Supervisor : > instantiate 
-    Main ..> Manager : > instantiate 
-    Main ..> Mover : > instantiate 
+    Main ..> Initialiser : > instantiate 
+
+    'instantiate
+    Initialiser ..> Board : > instantiate 
+    Initialiser ...> GameFacade : > instantiate 
+    Initialiser ..> DisplayBoard : > instantiate 
+    Initialiser ..> Supervisor : > instantiate 
+    Initialiser ..> Manager : > instantiate 
+    Initialiser ..> Mover : > instantiate 
     
     'view
     'DisplayBoard o-d-> PanelBoard : "use >"
@@ -261,6 +265,7 @@
     'relation controller - model
     Supervisor o--> "1\n -board" Board : > watch 
     Supervisor o-r-> "1\n -mover" Mover : > own 
+    Supervisor o-r-> "1\n -checkChecker" CheckChecker : > own 
 
 
     'layout
