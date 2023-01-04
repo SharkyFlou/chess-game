@@ -94,6 +94,9 @@ public class Supervisor {
                 // le board doit lui meme faire la vérification de la prise en passant afin que
                 // les simulation pour les test d'echec fonctionne
                 board.destroyPiece(posY + (team ? +1 : -1), posX, false);
+                // deplace la piece
+                board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX, false);
+
             }
 
             // verifie si le prochain joueur est en echec, en pat, ou en echec et mat
