@@ -191,20 +191,20 @@ public class Board {
      */
 
     // avertit les observeur de mettre à jour l'échiquier
-    public void notifyMov() {
+    private void notifyMov() {
         for (BoardObserver obs : listObs) {
             obs.displayGame();
         }
     }
 
     // avertit les observeur qu'une pièce a été prise
-    public void notifyPieceTaken(Piece piece) {
+    private void notifyPieceTaken(Piece piece) {
         for (BoardObserver obs : listObs) {
             obs.displayPieceTaken(piece);
         }
     }
 
-    public void notifyChangeTeam(boolean newTeam) {
+    private void notifyChangeTeam(boolean newTeam) {
         for (BoardObserver obs : listObs) {
             obs.displayTeamToPlay(newTeam);
         }

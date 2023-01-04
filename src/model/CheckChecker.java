@@ -127,7 +127,7 @@ public class CheckChecker {
         return finalReturn;
     }
 
-    public void disableCastle(int posY, boolean queenside, boolean kingsinde) {
+    private void disableCastle(int posY, boolean queenside, boolean kingsinde) {
         if (queenside) {
             giantFilter[posY][4][posY][2] = false;
         }

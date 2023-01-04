@@ -19,16 +19,21 @@
 
     package model{
         class Board{
+            - coordsPawnBigJump : Integer[]
             + Board()
             + initBoard()
             + getPiece(posY : Integer, posX : Integer)
             + movePiece(oldPosX : Integer, oldPosY : Integer, newPosX : Integer, newPosY : Integer)
             + doesCaseContainPlayerPiece(posY : Integer, posX : Integer, team Boolean) : Boolean
-            + destroyPiece(posY : Integer, posX : Integer)
+            + destroyPiece(posY : Integer, posX : Integer, toMoveIt : Boolean)
             + changePiecePromotion(posY : Integer, posX : Integer, newPiece : Piece)
             + addObs(obs : InteractionsObserver)
-            - notifyPieceTaken(team : Boolean, imageLink : String)
+            - notifyPieceTaken(piece : Piece)
+            - notifyChangeTeam(newTeam : Boolean)
             - notifyMov()
+            + getCoordsPawnBigJump() : Integer[]
+            + canGetPromoted(lastClickedPiecePosY : Integer, lastClickedPiecePosX : Integer , posY Integer, posX : Integer) : Boolean
+            + setPiece(piece : Piece, posY : Integer, posX : Integer)
         }
 
         class Mover{
@@ -111,7 +116,8 @@
 
         interface BoardObserver{
             + {abstract} DisplayGame()
-            + {abstract} displayPromotion(posY : Integer, posX : Integer)
+            + {abstract} displayPieceTaken(piece : Piece)
+            + {abstract} displayTeamToPlay(team : Boolean)
         }
 
         class Manager{
@@ -127,6 +133,32 @@
 
         interface ScoreObserver{
             + {abstract} DisplayScore(team : Boolean, points : Integer)
+        }
+
+
+        class CheckChecker{
+            - lockedPieces : Boolean[]
+            - giantFilter : Boolean[]
+
+            + CheckChecker(gaveBoard : Board)
+            + isCheck(team : Boolean) : Boolean
+            - isCheck(team : boolean, gaveBoard : Board) : Boolean
+            - resetGiantFilter()
+            + isPat(team : Boolean, lockPieces Boolean) : Boolean
+            - disableCastle(posY Integer, queenside : Boolean, kingsinde Boolean)
+            - browseTabCheckCheck(tab : Boolean[], mover : Mover, posY : Integer, posX : int, team : Boolean) : Boolean 
+            - mergeTab(tab1 : boolean[], tab2 : boolean[]) : Boolean[]
+            - isPosInTab(posY : int, posX : int, tab : Boolean[]) : Boolean
+            - copyBoard(toCopy : Board) : Board
+            - findKing(team : Boolean, gaveBoard : Board) : int[]
+            + highlightKing(team : Boolean)
+            + addObsersver(obs : LockedObserver)
+            - notifyChangeLocked()
+            - notifyKingCheck(posY : int, posX : int)
+            - notifyReset()
+            - initializePreviews() : Boolean[]
+            - isLocked(posY : int, posX : int) : Boolean
+            + filterOutImpossibleMoves(posY : int, posX : int, moves : Boolean[]) : Boolean[]
         }
 
 
@@ -224,7 +256,12 @@
     Board  o--> "*\n -observers" BoardObserver : > is observed by
     Manager  o--> "*\n -observers" ScoreObserver : > is observed by
     Mover  o--> "*\n -observers" PreviewObserver : > is observed by
+    CheckChecker  o--> "*\n -listObs" LockedObserver : > is observed by
+    
    
+    CheckChecker o--> "1\n -board" Board : > copy
+    CheckChecker ..> Mover : > instantiate and use
+
     ' Piece <|.down.. Knight 
     ' Piece <|.down.. Pawn 
     ' Piece <|.down.. Bishop 
@@ -262,11 +299,15 @@
     PromotionWindow o-> "1\n-supervisor" Supervisor : "calls >"
     PanelScore ..|> ScoreObserver
 
+
+    BoardObserver ..> Piece : > use
+
     'relation controller - model
     Supervisor o--> "1\n -board" Board : > watch 
     Supervisor o-r-> "1\n -mover" Mover : > own 
     Supervisor o-r-> "1\n -checkChecker" CheckChecker : > own 
 
+    Supervisor ..> PromotionWindow : > instantiate 
 
     'layout
     Supervisor o-> "1\n -manager" Manager : > calls 
