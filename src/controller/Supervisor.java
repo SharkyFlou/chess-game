@@ -78,6 +78,9 @@ public class Supervisor {
                 // sinon on gère normalement la piece qui vient de bouger
                 else {
                     board.destroyPiece(posY, posX, false);
+                    // deplace la piece
+                    board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX, false);
+
                 }
 
             } else {
@@ -92,9 +95,6 @@ public class Supervisor {
                 // les simulation pour les test d'echec fonctionne
                 board.destroyPiece(posY + (team ? +1 : -1), posX, false);
             }
-
-            // deplace la piece
-            board.movePiece(lastClickedPiecePosY, lastClickedPiecePosX, posY, posX, false);
 
             // verifie si le prochain joueur est en echec, en pat, ou en echec et mat
             // selon peut deja lock des pieces, finir la partie, mettre en fluo le roi
