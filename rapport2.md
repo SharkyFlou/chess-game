@@ -6,9 +6,9 @@ Dans `Board`, la fonction destroyPiece, prends un bouléen supplémentaire, pour
 
 Dans `DisplayBoard` BoxLayout principal et PanelLow, en un simple BorderLayout
 
-Création de `CheckChecker` ayant une référence vers le `Board` qui permet de vérifier si il y a un échec, un pat, ou un échec et mat.
+Création de `CheckChecker` dans le package `model` ayant une référence vers le `Board` qui permet de vérifier si il y a un échec, un pat, ou un échec et mat.
 
-Création de l'interface `LockedObserver` permetant au `DisplayBoard` de pouvoir affiché en orange les pièces bloquées, et le roi si il est en échec.
+Création de l'interface `LockedObserver` dans le package `model` permetant au `DisplayBoard` de pouvoir affiché en orange les pièces bloquées, et le roi si il est en échec.
 
 Modification de `DisplayBoard` qui observe le `CheckChecker` afin de pouvoir affiché les pièces qui sont bloqués lorsque le roi est mit en échec.
 
@@ -39,3 +39,21 @@ Modification de `SuperVisor` qui vérifie si l'attaque se dirige vers une case o
 Pas besoin de mettre le système d'echec à jour !
 
 ## Ajout de la promotion :
+
+
+
+
+
+
+
+
+## Ajout écran de début : 
+
+Modification du `Main`, et création de `Initialiser` dans le package `controller`, les instanciation se feront desormai dans cette classe. Le `Main` execute la fonction `LaunchStartMenu` de `Initialiser` pour lancer le jeu.
+
+Création de `StartScreen` dans le package `view`. Cette classe est une interface swing possédant des champs pour remplir le nom du joueur blanc et noir, et un bouton "Jouer".
+Le boutton lorsque cliqué appelle la fonction `LaunchGame` de la classe `Initialiser` avec en paramètre le nom des joueurs.
+
+`Initialiser` instancie alors les les autres classe comme faisait précédement le `Main`.
+
+La partie peut commencer !
