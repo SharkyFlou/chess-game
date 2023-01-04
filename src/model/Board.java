@@ -70,6 +70,8 @@ public class Board {
         return board[posY][posX];
     }
 
+
+
     // retourne vrai si la case contient une pièce, faux sinon
     public boolean doesCaseContainPiece(int posY, int posX) {
         return this.getPiece(posY, posX) != null;

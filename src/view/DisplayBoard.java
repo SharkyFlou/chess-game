@@ -42,6 +42,9 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     final int SCOREHEIGHT = 60;
     final int PIECETAKENHEIGHT = LOWHEIGHT - SCOREHEIGHT;
 
+    private String whiteName = "Blanc";
+    private String blackName = "Noir";
+
     // pas beau mais plus simple et plus opti :
     private boolean[][] lockedPieces = new boolean[8][8];
     private int[] coordsKingHigh = new int[2];
@@ -95,8 +98,8 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         title.setForeground(Color.WHITE);
         panelTitle.add(title, BorderLayout.NORTH);
 
-        // Ajout JLabel tour
-        subtitle = new JLabel("Tour des blancs", SwingConstants.CENTER);
+        //Ajout JLabel tour
+        subtitle = new JLabel("Tour de Blanc",SwingConstants.CENTER);
         subtitle.setFont(new Font("Verdana", Font.PLAIN, 20));
         subtitle.setForeground(Color.WHITE);
         panelTitle.add(subtitle, BorderLayout.SOUTH);
@@ -132,6 +135,12 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         creationBoardBlackWhite(); // creation des cases
         createSidesBoards();
         setVisible(true);
+    }
+
+    public void setNames(String whtName, String blkName){
+        whiteName=whtName;
+        blackName=blkName;
+        displayTeamToPlay(true);
     }
 
     public void creationBoardBlackWhite() {
@@ -329,7 +338,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
 
     // affiche c'est a quelle équipe de jouer
     public void displayTeamToPlay(boolean team) {
-        subtitle.setText("Tour des " + (team ? "blancs" : "noirs"));
+        subtitle.setText("Au tour de " + (team ? whiteName : blackName));
     }
 
     // affiche en orange les pieces boquées
