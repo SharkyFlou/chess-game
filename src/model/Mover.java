@@ -567,19 +567,19 @@ public class Mover {
         listObs.add(obs);
     }
 
-    public void notifyEraseDisplays() {
+    private void notifyEraseDisplays() {
         for (PreviewObserver obs : listObs) {
             obs.erasePreviews();
         }
     }
 
-    public void notifyDisplayAtk() {
+    private void notifyDisplayAtk() {
         for (PreviewObserver obs : listObs) {
             obs.displayPreviewAtk(casesPreviewAtk);
         }
     }
 
-    public void notifyDisplayMvt() {
+    private void notifyDisplayMvt() {
         for (PreviewObserver obs : listObs) {
             obs.displayPreviewMvt(casesPreviewMvt);
         }

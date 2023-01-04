@@ -39,8 +39,7 @@
         class Mover{
             - casesPreviewedMvt : Boolean[]
             - casesPreviewedAtk : Boolean[]
-            + Mover()
-            + setBoard(gaveBoard : Board)
+            + Mover(gaveBoard : Board, gaveCheckChecker : CheckChecker)
             + isCasePreviewMvt(posY : Integer, posX : Integer) : Boolean
             + isCasePreviewAtk(posY : Integer, posX : Integer) : Boolean
             + emptyPreviews()
@@ -54,9 +53,13 @@
             - calculateMvtAtkKnight(posY : Integer, posX : Integer, mvtAtk : Boolean, piece : Piece) : Boolean[]
             - calculateMvtAtkPlusCross(posY : Integer, posX : Integer, mvtAtk : Boolean, reach : Integer, piece : Piece) : Boolean[]
             + addObserver(obs : PreviewObserver)
+            - notifyEraseDisplays()
             - notifyObsDisplayAtk(cases : Boolean[])
             - notifyObsDisplayMvt(cases : Boolean[])
             - notifyObsEraseDisplay()
+            + getAtk() : Boolean[]
+            + getMvt() : Boolean[]
+            + mergeTab(tab1 : boolean[], tab2 : boolean[]) : Boolean[]
         }
 
         interface PreviewObserver{
@@ -120,15 +123,20 @@
             + {abstract} displayTeamToPlay(team : Boolean)
         }
 
-        class Manager{
+        interface LockedObserver{
+            + {abstract} erasePreviewsLock()
+            + {abstract} displayLocked(cases : Boolean[])
+            + {abstract} displayKing(posY : Integer, posX : Integer)
+        }
+
+        class PointsManager{
             - whitePts : Integer
             - blackPts : Integer
-            - notifyWin(team : Boolean)
-            - notifyDraw()
+            + PointsManager()
             + addPoints(team : Boolean, pts : Integer)
             + getPoints(team : Boolean)
             + addObs(obs : ScoreObserver)
-            + notifyObsPtsChanged(team : Boolean, pts : Integer)
+            - notifyChangeScore(team : Boolean, pts : Integer)
         }
 
         interface ScoreObserver{
@@ -162,6 +170,8 @@
         }
 
 
+
+
     }
 ' + caseInfo(posx : Integer, posy : Integer)
 
@@ -175,7 +185,7 @@
             - pieceProm : String
             - hasClicked : Boolean
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
-            + addLinks(gaveBoard : Board, gaveMover : Mover, gaveManager : Manager, gaveCheckChecker : CheckChecker)
+            + addLinks(gaveBoard : Board, gaveMover : Mover, gavePointsManager : PointsManager, gaveCheckChecker : CheckChecker)
             + clickedOnSomeCase(posY : Integer, posX : Integer, team : Boolean) : Boolean
             + sendPromotion(posY : Integer, posX : Integer, team : Boolean)
             - doTheChecks(currentTeam : boolean)
@@ -196,7 +206,11 @@
 
     package view{
         class DisplayBoard{
+            - {static} COLUMNS : String
+            - whiteName : String
+            - blackName : String
             + DisplayBoard(XgameFacade : GameFacade, xBoard : Board, lblWht : LabelScore, lblBlk : LabelScore)
+            + setNames(whtName : String , blkName : String)
             + creationBoardBlackWhite()
             + createSidesBoard()
             + clickedOnCase(jButton : JButton)
@@ -218,17 +232,24 @@
             + displayScore(team : Boolean)
         }
 
-        class PanelScore extends JPanel{
-            - team : Boolean
-            + PanelScore(team : Boolean)
-            + DisplayScore(team : Boolean, points : Integer)
-        }
-
-        class PromotionWindow {
+        class PromotionWindow{
             + PromotionWindow(supervisor : Supervisor)
             - createButtons()
             + displayPromotion(posX : Integer, posY : Integer, team : Boolean)
             + actionPerformed() 'Overrides ActionPerformed from ActionListener
+        }
+
+        class LabelScore extends ScoreObserver{
+            - team : Boolean 
+            - name : String 
+            + LabelScore(gaveTeam : boolean, gaveName : String)
+            + changeScore(pts : Integer, xTeam : Boolean)
+        }
+
+
+        class StartScreen{
+            + StartScreen(gaveInitialiser : Initialiser)
+            - beginGame()
         }
 
         
@@ -245,8 +266,12 @@
     Initialiser ...> GameFacade : > instantiate 
     Initialiser ..> DisplayBoard : > instantiate 
     Initialiser ..> Supervisor : > instantiate 
-    Initialiser ..> Manager : > instantiate 
+    Initialiser ..> PointsManager : > instantiate 
     Initialiser ..> Mover : > instantiate 
+    Initialiser ..> LabelScore : > instantiate 
+    Initialiser ..> CheckChecker : > instantiate 
+
+    Initialiser ..> StartScreen : > instantiate 
     
     'view
     'DisplayBoard o-d-> PanelBoard : "use >"
@@ -254,13 +279,14 @@
 
     'model
     Board  o--> "*\n -observers" BoardObserver : > is observed by
-    Manager  o--> "*\n -observers" ScoreObserver : > is observed by
+    PointsManager  o--> "*\n -observers" ScoreObserver : > is observed by
     Mover  o--> "*\n -observers" PreviewObserver : > is observed by
     CheckChecker  o--> "*\n -listObs" LockedObserver : > is observed by
     
    
     CheckChecker o--> "1\n -board" Board : > copy
     CheckChecker ..> Mover : > instantiate and use
+    CheckChecker ..> Piece : > use
 
     ' Piece <|.down.. Knight 
     ' Piece <|.down.. Pawn 
@@ -283,10 +309,13 @@
    
 
     'view
-    DisplayBoard *-> "1\npanelScoreWht" PanelScore : > own
-    DisplayBoard *-> "1\npanelScoreBlk" PanelScore : > own
+    DisplayBoard *-> "1\-npanelScoreWht" LabelScore : > own
+    DisplayBoard *-> "1\-npanelScoreBlk" LabelScore : > own
 
     'relation view - controller
+
+    StartScreen o--> "1\n -initialiser" Initialiser : > call back
+
     'cette relation envoie la position de la case cliquee a controller
     DisplayBoard o-right-> "1\n-gameFacade" GameFacade : > calls  
     GameFacade --> DisplayGame : > display
@@ -294,10 +323,21 @@
     'relation view - model
     DisplayBoard .down.|> BoardObserver : ""
     DisplayBoard .down.|> PreviewObserver : ""
+    DisplayBoard .down.|> LockedObserver : ""
+    
+
+    LabelScore ..|> ScoreObserver : ""
+    LabelScore --|> JLabel : ""
+
+    DisplayBoard --|> JFrame : ""
+    StartScreen --|> JFrame : ""
+    PromotionWindow --|> JFrame : ""
+
+    PromotionWindow ..|> ActionListener : ""
+
     DisplayBoard o-down-> "1\n-board" Board : > watch
     PromotionWindow <- Supervisor : "instantiates <"
-    PromotionWindow o-> "1\n-supervisor" Supervisor : "calls >"
-    PanelScore ..|> ScoreObserver
+    PromotionWindow o-> "1\n-supervisor" Supervisor : "calls >
 
 
     BoardObserver ..> Piece : > use
@@ -310,16 +350,20 @@
     Supervisor ..> PromotionWindow : > instantiate 
 
     'layout
-    Supervisor o-> "1\n -manager" Manager : > calls 
+    Supervisor o-> "1\n -PointsManager" PointsManager : > calls 
     
     'DisplayBoard -[hidden]> Supervisor : "consults >"
 
     Mover  o-> "1\n -board" Board : > watch
+    Mover .u.> Piece : > uses
     Mover .u.> Rook : > uses
     Mover .u.> Pawn : > uses
     Mover .u.> King : > uses
     Mover .u.> Bishop : > uses
     Mover .u.> Queen : > uses
+
+    Mover o--> "1\n-board " Board : > watch
+    Mover o--> "1\n-checkChecker " CheckChecker : > call to filter mvts
 
 
     @enduml

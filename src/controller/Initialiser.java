@@ -1,7 +1,7 @@
 package controller;
 import model.Board;
 import model.CheckChecker;
-import model.Manager;
+import model.PointsManager;
 import model.Mover;
 import view.*;
 
@@ -14,7 +14,7 @@ public class Initialiser {
         //instantiation des classes
         Supervisor supervisor = new Supervisor();
 
-        Manager manager = new Manager();
+        PointsManager ptsManager = new PointsManager();
 
         Board board = new Board();
         
@@ -32,13 +32,13 @@ public class Initialiser {
         Mover mover = new Mover(board, checkChecker);
         
         //ajout de lien entre les classe à supervisor
-        supervisor.addLinks(board, mover, manager, checkChecker);
+        supervisor.addLinks(board, mover, ptsManager, checkChecker);
 
         //ajout des observeurs
         checkChecker.addObsersver(display);
 
-        manager.addObsersver(lblWht);
-        manager.addObsersver(lblBlk);
+        ptsManager.addObsersver(lblWht);
+        ptsManager.addObsersver(lblBlk);
 
         mover.addObs(display);
         board.addObs(display);

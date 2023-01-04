@@ -2,12 +2,12 @@ package model;
 
 import java.util.*;
 
-public class Manager {
+public class PointsManager {
     private int whitePts;
     private int blackPts;
     private List<ScoreObserver> observers;
 
-    public Manager() {
+    public PointsManager() {
         observers = new ArrayList<ScoreObserver>();
         whitePts = 0;
         blackPts = 0;
@@ -42,7 +42,7 @@ public class Manager {
         observers.add(obs);
     }
 
-    public void notifyChangeScore(int pts, boolean team) {
+    private void notifyChangeScore(int pts, boolean team) {
         for (ScoreObserver obs : observers) {
             System.out.println("Changement de score");
             obs.changeScore(pts, team);

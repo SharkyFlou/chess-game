@@ -105,12 +105,10 @@ public class StartScreen extends JFrame{
         });
         add(btnPlay,BorderLayout.SOUTH);
 
-
-        setBackground(Color.RED);
         setVisible(true);
     }
 
-    public void beginGame(){
+    private void beginGame(){
         System.out.println("blanc :"+whiteName.getText()+"\nnoir : "+blackName.getText());
         initialiser.LaunchGame(whiteName.getText(), blackName.getText());
         dispose();

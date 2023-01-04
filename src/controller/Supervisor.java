@@ -3,13 +3,13 @@ package controller;
 import model.Board;
 import model.CheckChecker;
 import model.Mover;
-import model.Manager;
+import model.PointsManager;
 import view.PromotionWindow;
 
 public class Supervisor {
     private Board board;
     private Mover mover;
-    private Manager manager;
+    private PointsManager manager;
     private CheckChecker checkChecker;
     private int lastClickedPiecePosY = 0;
     private int lastClickedPiecePosX = 0;
@@ -19,7 +19,7 @@ public class Supervisor {
     public boolean hasClicked = false;
 
     // on donne au supervisor le Mover, le Board, le manager, et le checkChecker
-    public void addLinks(Board gaveBoard, Mover gaveMover, Manager gaveManager, CheckChecker gaveCheckChecker) {
+    public void addLinks(Board gaveBoard, Mover gaveMover, PointsManager gaveManager, CheckChecker gaveCheckChecker) {
         board = gaveBoard;
         mover = gaveMover;
         manager = gaveManager;

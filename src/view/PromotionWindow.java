@@ -9,6 +9,7 @@ import model.Knight;
 
 import java.net.URL;
 import javax.swing.*;
+import javax.swing.JOptionPane;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;

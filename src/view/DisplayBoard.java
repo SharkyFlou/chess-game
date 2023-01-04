@@ -26,7 +26,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
     private JPanel pnlWhitePieces;
     private JPanel pnlBlkPieces;
     private JButton[][] chessBoardButtons;
-    private static final String COLS = "ABCDEFGH";
+    private final String COLUMNS = "ABCDEFGH";
     private JLabel subtitle;
     private JLabel[] takenBlkPieces;
     private int nbrBlkPieceTaken;
@@ -176,7 +176,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         panelLowMid.add(new JLabel(""));
         // fill the top row
         for (int i = 0; i < 8; i++) {
-            final JLabel label = new JLabel(COLS.substring(i, i + 1), SwingConstants.CENTER);
+            final JLabel label = new JLabel(COLUMNS.substring(i, i + 1), SwingConstants.CENTER);
             panelLowMid.add(label);
         }
 
@@ -205,7 +205,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         panelLowMid.add(new JLabel(""));
         for (int i = 0; i < 8; i++) {
             panelLowMid.add(
-                    new JLabel(COLS.substring(i, i + 1),
+                    new JLabel(COLUMNS.substring(i, i + 1),
                             SwingConstants.CENTER));
         }
     }

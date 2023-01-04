@@ -17,6 +17,4 @@ public abstract class FirstMovement extends Piece {
     public void mooveIt() {
         hasMoved = true;
     }
-
-    public abstract boolean[][] getTheoricalMvt(int posY, int posX);
 }
