@@ -20,7 +20,7 @@ Modification de `Board`, la fonction de déplacement prend un booléen suppléme
 
 Supression fichier "!".
 
-## Ajout de la possibilité de roquer : 
+## Ajout de la possibilité de roquer :
 
 Modification de `Mover`, ajout du preview de la destination final du roi pour les roques, uniquement si les roques sont possible (sans vérifier les echecs intérimédiaire pour l'instant)
 
@@ -38,4 +38,4 @@ Modification de `SuperVisor` qui vérifie si l'attaque se dirige vers une case o
 
 Pas besoin de mettre le système d'echec à jour !
 
-
+## Ajout de la promotion :
