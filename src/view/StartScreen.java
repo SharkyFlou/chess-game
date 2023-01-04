@@ -5,7 +5,7 @@ import java.net.URL;
 
 import javax.swing.*;
 
-import controller.Supervisor;
+import controller.Initialiser;
 
 
 public class StartScreen extends JFrame{
@@ -21,11 +21,11 @@ public class StartScreen extends JFrame{
     private JTextField blackName;
 
 
-    private Supervisor supervisor;
+    private Initialiser initialiser;
 
 
-    public StartScreen(Supervisor gaveSuperVisor){
-        supervisor=gaveSuperVisor;
+    public StartScreen(Initialiser gaveInitialiser){
+        initialiser=gaveInitialiser;
 
         setTitle("Awful chessgame start menu");
         setSize(new Dimension(WIDTH, HEIGHT));
@@ -112,6 +112,8 @@ public class StartScreen extends JFrame{
 
     public void beginGame(){
         System.out.println("blanc :"+whiteName.getText()+"\nnoir : "+blackName.getText());
+        initialiser.LaunchGame(whiteName.getText(), blackName.getText());
+        dispose();
     }
 
 

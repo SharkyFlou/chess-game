@@ -6,20 +6,26 @@ import model.Mover;
 import view.*;
 
 public class Initialiser {
-    public void LaunchGame(){
+    public void LaunchStartMenu(){
+        StartScreen screen = new StartScreen(this);
+    }
+
+    public void LaunchGame(String whiteName, String blackName){
         //instantiation des classes
         Supervisor supervisor = new Supervisor();
 
         Manager manager = new Manager();
 
         Board board = new Board();
+        
 
         GameFacade gameFacade = new GameFacade(supervisor);
 
-        LabelScore lblWht = new LabelScore(true);
-        LabelScore lblBlk = new LabelScore(false);
+        LabelScore lblWht = new LabelScore(true, whiteName);
+        LabelScore lblBlk = new LabelScore(false, blackName);
 
         DisplayBoard display = new DisplayBoard(gameFacade, board, lblWht, lblBlk);
+        display.setNames(whiteName, blackName);
 
         CheckChecker checkChecker = new CheckChecker(board);
 
@@ -39,7 +45,5 @@ public class Initialiser {
 
         //creation du board
         board.initBoard();
-
-        StartScreen screen = new StartScreen(supervisor	);
     }
 }
