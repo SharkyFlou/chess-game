@@ -17,9 +17,9 @@ public abstract class Piece {
         team = newTeam;
         chessName = givenName;
         value = pieceValue;
-        //selon la team de la piece, le lien vers l'image change, 
-        //exemple pion blanc : 'wpawn', pion noir : 'bpawn'
-        imageLink = (newTeam ? "w" : "b") + image; 
+        // selon la team de la piece, le lien vers l'image change,
+        // exemple pion blanc : 'wpawn', pion noir : 'bpawn'
+        imageLink = (newTeam ? "w" : "b") + image;
     }
 
     public boolean getTeam() {
