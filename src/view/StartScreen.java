@@ -99,6 +99,7 @@ public class StartScreen extends JFrame {
         add(btnPlay, BorderLayout.SOUTH);
 
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private void beginGame() {

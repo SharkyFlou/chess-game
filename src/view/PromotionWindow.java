@@ -22,7 +22,7 @@ public class PromotionWindow extends JFrame implements ActionListener {
     private JPanel panelButtons;
     private JButton[] possiblePromotion;
 
-    final int HEIGHT = 500;
+    final int HEIGHT = 250;
     final int WIDTH = 500;
     final int TITLEHEIGHT = 100;
 
@@ -71,6 +71,7 @@ public class PromotionWindow extends JFrame implements ActionListener {
 
         createButtons();
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private void createButtons() {

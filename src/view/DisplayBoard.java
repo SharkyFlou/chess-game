@@ -61,6 +61,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         setTitle("Awful chessgame");
         setSize(new Dimension(WIDTH, HEIGHT));
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setLayout(new BorderLayout());
@@ -137,6 +138,7 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         creationBoardBlackWhite(); // creation des cases
         createSidesBoards();
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     public void setNames(String whtName, String blkName) {

@@ -105,6 +105,7 @@ public class EndScreen extends JFrame {
 
         // visible
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     public void fillEndScreen(String nameWin, int scoreWin, String nameLose, int scoreLose, boolean teamWin) {
