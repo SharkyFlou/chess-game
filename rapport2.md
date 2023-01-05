@@ -70,6 +70,7 @@ Modification de `Supervisor`, où on ajoute des String qui permettent de stocker
 
 En passant en paramètre les infos sur chaque joueur depuis `Supervisor`, `EndScreen` permet d'afficher les scores et noms de chaque joueur après un checkmate.
 `Supervisor` instancie cette classe au moment ou le Checkmate est vérifié ; le joueur gagnant et perdant sont affichés.
+De même lorsqu'il y a un Pat.
 
 `EndScreen` permet aussi de relancer le jeu.
 L'idée est d'appeler `Initialiser`, la classe qui relancera le jeu.

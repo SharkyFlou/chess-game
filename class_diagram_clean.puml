@@ -31,6 +31,7 @@
             - notifyPieceTaken(piece : Piece)
             - notifyChangeTeam(newTeam : Boolean)
             - notifyMov()
+            + notifyCheckmateOrPat()
             + getCoordsPawnBigJump() : Integer[]
             + canGetPromoted(lastClickedPiecePosY : Integer, lastClickedPiecePosX : Integer , posY Integer, posX : Integer) : Boolean
             + setPiece(piece : Piece, posY : Integer, posX : Integer)
@@ -260,7 +261,7 @@
 
         class EndScreen extends JFrame{
             + EndScreen(gaveInitialiser : Initialiser)
-            + fillEndScreen(nameWin : String, scoreWin : Integer, nameLose : String, scoreLose : Integer, teamWin : Boolean)
+            + fillEndScreen(nameWin : String, scoreWin : Integer, nameLose : String, scoreLose : Integer, teamWin : Boolean, notPat : Boolean)
             - replayGame()
         }
 

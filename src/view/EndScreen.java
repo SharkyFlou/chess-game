@@ -22,13 +22,14 @@ public class EndScreen extends JFrame {
     private JLabel loseScore;
     private JLabel imageW;
     private JLabel imageL;
+    private JLabel lblTitle;
 
     private Initialiser initialiser;
 
     public EndScreen(Initialiser gaveInitialiser) {
         initialiser = gaveInitialiser;
 
-        setTitle("Checkmate");
+        setTitle("EndScreen");
         setSize(new Dimension(WIDTH, HEIGHT));
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setResizable(false);
@@ -40,7 +41,7 @@ public class EndScreen extends JFrame {
         JPanel pnlTitle = new JPanel();
         pnlTitle.setBackground(Color.gray);
         // ceci doit etre determine programatically : "le gagnant est " + gagnant
-        JLabel lblTitle = new JLabel("Echec et Mat !", SwingConstants.CENTER);
+        lblTitle = new JLabel("Title", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Verdana", Font.PLAIN, 26));
         lblTitle.setForeground(Color.BLACK);
         pnlTitle.add(lblTitle);
@@ -108,23 +109,39 @@ public class EndScreen extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    public void fillEndScreen(String nameWin, int scoreWin, String nameLose, int scoreLose, boolean teamWin) {
-        winName.setText("Le gagnant est " + nameWin);
-        winScore.setText("Score : " + scoreWin);
-        loseName.setText("Le perdant est " + nameLose);
-        loseScore.setText("Score : " + scoreLose);
+    public void fillEndScreen(String nameWin, int scoreWin, String nameLose, int scoreLose, boolean teamWin,
+            boolean notPat) {
+        if (!notPat) {
+            winName.setText("Le gagnant est " + nameWin);
+            winScore.setText("Score : " + scoreWin);
+            loseName.setText("Le perdant est " + nameLose);
+            loseScore.setText("Score : " + scoreLose);
+            lblTitle.setText("Echec et Mat !");
+            setTitle("Echec et Mat");
 
-        // if white wins
-        if (teamWin) {
+            // if white wins
+            if (teamWin) {
+                imageW.setIcon(new ImageIcon(DisplayBoard.class.getResource("/resources/wpawn.png")));
+
+                imageL.setIcon(new ImageIcon(DisplayBoard.class.getResource("/resources/bpawn.png")));
+            }
+            // if black wins
+            else {
+                imageW.setIcon(new ImageIcon(DisplayBoard.class.getResource("/resources/bpawn.png")));
+
+                imageL.setIcon(new ImageIcon(DisplayBoard.class.getResource("/resources/wpawn.png")));
+            }
+        } else {
+            winName.setText("Joueur 1 : " + nameWin);
+            winScore.setText("Score : " + scoreWin);
+            loseName.setText("Joueur 2 :  " + nameLose);
+            loseScore.setText("Score : " + scoreLose);
+            lblTitle.setText("Pat !");
+            setTitle("Pat");
+
             imageW.setIcon(new ImageIcon(DisplayBoard.class.getResource("/resources/wpawn.png")));
-
             imageL.setIcon(new ImageIcon(DisplayBoard.class.getResource("/resources/bpawn.png")));
-        }
-        // if black wins
-        else {
-            imageW.setIcon(new ImageIcon(DisplayBoard.class.getResource("/resources/bpawn.png")));
 
-            imageL.setIcon(new ImageIcon(DisplayBoard.class.getResource("/resources/wpawn.png")));
         }
     }
 

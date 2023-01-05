@@ -343,7 +343,7 @@ public class Mover {
 
                 // SW
                 while (posYVariableSW < 8 && posXVariableSW >= 0) {
-                    if (board.doesCaseContainPieceOfTeam(posYVariableSW, posYVariableSW, bishop.getTeam())) {
+                    if (board.doesCaseContainPieceOfTeam(posYVariableSW, posXVariableSW, bishop.getTeam())) {
                         break;
                     }
                     if (board.doesCaseContainPieceOfTeam(posYVariableSW, posXVariableSW, !bishop.getTeam())) {

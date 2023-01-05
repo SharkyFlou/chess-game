@@ -201,6 +201,18 @@ public class Supervisor {
     private void doTheChecks(boolean currentTeam) {
         if (!checkChecker.isCheck(currentTeam)) { // si pas d'echec
             if (checkChecker.isPat(currentTeam, false)) { // sans preview des lockedpiece
+                EndScreen end = new EndScreen(initialiser);
+
+                end.fillEndScreen(name1,
+                        manager.getPoints(true),
+                        name2,
+                        manager.getPoints(false),
+                        // peu importe si false ou true
+                        false,
+                        true);
+
+                board.notifyCheckmateOrPat();
+
                 System.out.println("Pat !");
             } else {
                 System.out.println("Rien !");
@@ -216,7 +228,8 @@ public class Supervisor {
                             manager.getPoints(!currentTeam),
                             name1,
                             manager.getPoints(currentTeam),
-                            !currentTeam);
+                            !currentTeam,
+                            false);
 
                 } // on envoie white comme gagnant
                 else {
@@ -224,12 +237,13 @@ public class Supervisor {
                             manager.getPoints(!currentTeam),
                             name2,
                             manager.getPoints(currentTeam),
-                            !currentTeam);
+                            !currentTeam,
+                            false);
 
                 }
 
                 // puis on doit desactiver displayBoard
-                board.notifyCheckmate();
+                board.notifyCheckmateOrPat();
                 // setActive(false);
                 System.out.println("Echec et mat !");
             }
