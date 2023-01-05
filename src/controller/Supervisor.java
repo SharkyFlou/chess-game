@@ -18,6 +18,7 @@ public class Supervisor {
     // promotion
     public String pieceProm = "";
     public boolean hasClicked = false;
+    public boolean finishedPromotion = true;
 
     public String name1 = "";
     public String name2 = "";
@@ -31,8 +32,13 @@ public class Supervisor {
         checkChecker = gaveCheckChecker;
     }
 
+    //
+
     // est appelé par GameFacade, fait les test pour savoir comment réagire
     public boolean clickedOnSomeCase(int posY, int posX, boolean team) {
+        if (!finishedPromotion) {
+            return false;
+        }
 
         // les prints ci dessous sont ici pour le debug : temporaire
         if (board.getPiece(posY, posX) == null) {
@@ -76,6 +82,7 @@ public class Supervisor {
                     // board.addObsProm(prom);
                     prom.displayPromotion(posY, posX,
                             board.getPiece(lastClickedPiecePosY, lastClickedPiecePosX).getTeam());
+                    finishedPromotion = false;
 
                     // @@@@@@@@@@@@@ on doit bloquer les pieces
 
@@ -129,7 +136,7 @@ public class Supervisor {
                 PromotionWindow prom = new PromotionWindow(this);
                 // board.addObsProm(prom);
                 prom.displayPromotion(posY, posX, board.getPiece(lastClickedPiecePosY, lastClickedPiecePosX).getTeam());
-
+                finishedPromotion = false;
                 // @@@@@@@@@@@@@@@@@@@@@@@ ici on doit bloquer la piece
 
             } // si on fait un mouvement normal, on ne fait que deplacer la piece
@@ -169,6 +176,9 @@ public class Supervisor {
         return false;
     }
 
+    //
+
+    //
     public void sendPromotion(int posY, int posX, boolean team) {
         if (hasClicked) {
             if (pieceProm != "") {
@@ -182,6 +192,7 @@ public class Supervisor {
                 hasClicked = false;
 
                 // verifie si la nouvelle piece cause un echec
+                finishedPromotion = true;
                 doTheChecks(!team);
             }
         }

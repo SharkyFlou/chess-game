@@ -34,32 +34,32 @@ Début d'un diagramme, résumant les intéractions entre les classes:
 ## 5ème séance :
 
 - Ajout de la classe `Mover` qui remplace `Interactions` (vu a la [4e séance](#4e-séance)), responsable de calculer les déplacements et attaques réelement possible, et de renvoyer un tableau de tableau de booléan correspondant (permet de respecter le modèle MVC).
-- Calcul des mouvements théorique des pièces défini dans chaque pièce.
+- Calcul des mouvements théorique des pièces définies dans chaque pièce.
 - Ajout de l''interface `FirstMovement` dont hérite `Pawn`, `Rook` et `King`, qui permet de savoir si les pièces ont déjà bougé, afin de calculer les mouvements possibles.
 
 ## 6ème séance :
 
 - Ajout `ScoreObserver` qui observe `Manager` (vu a la [4e séance](#4e-séance)).
-- Début codage de `Mover`, passe des mouvement théorique des pièces aux mouvement réelement possible sur le plateau.
-- Choix : tout les commentaires seront desormai en français.
+- Début codage de `Mover`, qui passe des mouvement théorique des pièces aux mouvement réelement possible sur le plateau.
+- Choix : tout les commentaires seront désormais en français.
 
 ## 7ème séance :
 
 - `Rapport.md` plus beau 😎.
-- Ajout de `PanelScore` qui implémente `ScoreObserver` et étends JPanel; `DisplayBoard` possède deux `PanelScore`, un pour chaque équipe.
+- Ajout de `PanelScore` qui implémente `ScoreObserver` et étend JPanel; `DisplayBoard` possède deux `PanelScore`, un pour chaque équipe.
 - Calcul de chaque type de movement fini, tout mouvement (de théorique à pratique) est fait dans `Mover` (ex: calcul de la trajectoire d'un Bishop).
 - Nettoyage du code + commentaires.
-- Suppression de la vue `Terminal` inutile créé lors de la [2ème séance](#2ème-séance)).
+- Suppression de la vue `Terminal` inutile créée lors de la [2ème séance](#2ème-séance)).
 
 ## 8ème séance :
 
 - Développement de l'interface "Promotion" : création de `PromotionWindow`, qui affiche les pièces possibles en situation de promotion.
 - Utilisation de `PromotionObserver`, qui décompose une fonction de `BoardObserver` dédiée aux promotions.
-- Modification de `Supervisor`: après avoir check si la pièce peut être promoted, elle attend la réponse de `PromotionWindow` pour modifier le pion en question.
 - Modification PUML
 
 ## 9ème séance :
 
 - Élimination de `PromotionObserver`, passage directement par `Supervisor` qui vérifie l'éventuelle promotion et lance `PromotionWindow`, créé dan la [8ème séance](#8ème-séance)).
 - Création de `StartScreen` et `EndScreen`, interfaces qui permettent de lancer le jeu et voir les scores ; de même, la fermeture des fenêtres est plus logique maintenant.
+- Bloquage des pièces lorsqu'il y a une promotion en cours
 - Modification PUML (relations entre quelques classes revisitées)
