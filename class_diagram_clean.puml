@@ -261,7 +261,7 @@
 
         class EndScreen extends JFrame{
             + EndScreen(gaveInitialiser : Initialiser)
-            + fillEndScreen(nameWin : String, scoreWin : Integer, nameLose : String, scoreLose : Integer, teamWin : Boolean)
+            + fillEndScreen(nameWin : String, scoreWin : Integer, nameLose : String, scoreLose : Integer, teamWin : Boolean, notPat : Boolean)
             - replayGame()
         }
 
