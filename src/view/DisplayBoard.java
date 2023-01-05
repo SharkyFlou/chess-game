@@ -4,6 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 
 import java.awt.image.BufferedImage;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import controller.GameFacade;
 import model.Board;
@@ -98,8 +100,8 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         title.setForeground(Color.WHITE);
         panelTitle.add(title, BorderLayout.NORTH);
 
-        //Ajout JLabel tour
-        subtitle = new JLabel("Tour de Blanc",SwingConstants.CENTER);
+        // Ajout JLabel tour
+        subtitle = new JLabel("Tour de Blanc", SwingConstants.CENTER);
         subtitle.setFont(new Font("Verdana", Font.PLAIN, 20));
         subtitle.setForeground(Color.WHITE);
         panelTitle.add(subtitle, BorderLayout.SOUTH);
@@ -137,9 +139,9 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         setVisible(true);
     }
 
-    public void setNames(String whtName, String blkName){
-        whiteName=whtName;
-        blackName=blkName;
+    public void setNames(String whtName, String blkName) {
+        whiteName = whtName;
+        blackName = blkName;
         displayTeamToPlay(true);
     }
 
@@ -386,6 +388,19 @@ public class DisplayBoard extends JFrame implements PreviewObserver, BoardObserv
         coordsKingHigh[0] = -1;
         coordsKingHigh[1] = -1;
         erasePreviews();
+    }
+
+    public void closeApp() {
+
+        // Timer timer = new Timer(2000, new ActionListener() {
+        // public void actionPerformed(ActionEvent e) {
+        // timer.stop();
+        // }
+        // });
+        // timer.start();
+
+        dispose();
+
     }
 
 }

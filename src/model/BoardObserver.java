@@ -8,4 +8,6 @@ public interface BoardObserver {
     public void displayPieceTaken(Piece piece);
 
     public void displayTeamToPlay(boolean team);
+
+    public void closeApp();
 }

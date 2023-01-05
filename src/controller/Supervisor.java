@@ -4,6 +4,7 @@ import model.Board;
 import model.CheckChecker;
 import model.Mover;
 import model.PointsManager;
+import view.EndScreen;
 import view.PromotionWindow;
 
 public class Supervisor {
@@ -17,6 +18,10 @@ public class Supervisor {
     // promotion
     public String pieceProm = "";
     public boolean hasClicked = false;
+
+    public String name1 = "";
+    public String name2 = "";
+    public Initialiser initialiser;
 
     // on donne au supervisor le Mover, le Board, le manager, et le checkChecker
     public void addLinks(Board gaveBoard, Mover gaveMover, PointsManager gaveManager, CheckChecker gaveCheckChecker) {
@@ -46,7 +51,7 @@ public class Supervisor {
                     posY + ";" + posX);
         }
 
-        // si le joueur veut manger une piece adverse
+        // si le joueur veut manger une piece adverse ATK
         if (mover.isCasePreviewAtk(posY, posX)) {
             // vide les preview APRES avoir testé si le joueur à cliqué dessus
             mover.emptyPreviews();
@@ -180,7 +185,6 @@ public class Supervisor {
                 doTheChecks(!team);
             }
         }
-
     }
 
     private void doTheChecks(boolean currentTeam) {
@@ -192,12 +196,37 @@ public class Supervisor {
             }
         } else { // si echec
             if (checkChecker.isPat(currentTeam, true)) { // + preview des lockedpieces
+                EndScreen end = new EndScreen(initialiser);
+
+                // if(currentTeam)== si white en mat
+                // on envoie black comme gagnant
+                if (currentTeam) {
+                    end.fillEndScreen(name2,
+                            manager.getPoints(!currentTeam),
+                            name1,
+                            manager.getPoints(currentTeam),
+                            !currentTeam);
+
+                } // on envoie white comme gagnant
+                else {
+                    end.fillEndScreen(name1,
+                            manager.getPoints(!currentTeam),
+                            name2,
+                            manager.getPoints(currentTeam),
+                            !currentTeam);
+
+                }
+
+                // puis on doit desactiver displayBoard
+                board.notifyCheckmate();
+                // setActive(false);
                 System.out.println("Echec et mat !");
-            } else {
+            }
+            // met en surbrillance le roi
+            else {
                 checkChecker.highlightKing(currentTeam);
                 System.out.println("Echec !");
             }
-            // met en surbrillance le roi
         }
     }
 }

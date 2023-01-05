@@ -70,8 +70,6 @@ public class Board {
         return board[posY][posX];
     }
 
-
-
     // retourne vrai si la case contient une pièce, faux sinon
     public boolean doesCaseContainPiece(int posY, int posX) {
         return this.getPiece(posY, posX) != null;
@@ -207,6 +205,13 @@ public class Board {
     private void notifyChangeTeam(boolean newTeam) {
         for (BoardObserver obs : listObs) {
             obs.displayTeamToPlay(newTeam);
+        }
+    }
+
+    // permet de fermet l'appli dès qu'il y a yn checkmate
+    public void notifyCheckmate() {
+        for (BoardObserver obs : listObs) {
+            obs.closeApp();
         }
     }
 

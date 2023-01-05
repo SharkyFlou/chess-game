@@ -30,14 +30,6 @@ public class PointsManager {
         }
     }
 
-    /*
-     * public boolean managePromotion(boolean team) {
-     * Queen queen = new Queen(team);
-     * 
-     * return true;
-     * }
-     */
-
     public void addObsersver(ScoreObserver obs) {
         observers.add(obs);
     }
@@ -48,6 +40,5 @@ public class PointsManager {
             obs.changeScore(pts, team);
         }
     }
-
 
 }

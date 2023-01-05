@@ -99,7 +99,7 @@ public class PromotionWindow extends JFrame implements ActionListener {
                 supervisor.hasClicked = true;
                 supervisor.pieceProm = queen.getChessName();
                 supervisor.sendPromotion(posY, posX, team);
-                JOptionPane.showMessageDialog(null, supervisor.pieceProm);
+                // JOptionPane.showMessageDialog(null, supervisor.pieceProm);
                 setVisible(false);
             }
         });
@@ -114,7 +114,7 @@ public class PromotionWindow extends JFrame implements ActionListener {
                 supervisor.hasClicked = true;
                 supervisor.pieceProm = rook.getChessName();
                 supervisor.sendPromotion(posY, posX, team);
-                JOptionPane.showMessageDialog(null, supervisor.pieceProm);
+                // JOptionPane.showMessageDialog(null, supervisor.pieceProm);
                 setVisible(false);
             }
         });
@@ -129,7 +129,7 @@ public class PromotionWindow extends JFrame implements ActionListener {
                 supervisor.hasClicked = true;
                 supervisor.pieceProm = bishop.getChessName();
                 supervisor.sendPromotion(posY, posX, team);
-                JOptionPane.showMessageDialog(null, supervisor.pieceProm);
+                // JOptionPane.showMessageDialog(null, supervisor.pieceProm);
                 setVisible(false);
             }
         });
@@ -144,7 +144,7 @@ public class PromotionWindow extends JFrame implements ActionListener {
                 supervisor.hasClicked = true;
                 supervisor.pieceProm = knight.getChessName();
                 supervisor.sendPromotion(posY, posX, team);
-                JOptionPane.showMessageDialog(null, supervisor.pieceProm);
+                // JOptionPane.showMessageDialog(null, supervisor.pieceProm);
                 setVisible(false);
             }
         });

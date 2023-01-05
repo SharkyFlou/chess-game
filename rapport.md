@@ -57,3 +57,9 @@ Début d'un diagramme, résumant les intéractions entre les classes:
 - Utilisation de `PromotionObserver`, qui décompose une fonction de `BoardObserver` dédiée aux promotions.
 - Modification de `Supervisor`: après avoir check si la pièce peut être promoted, elle attend la réponse de `PromotionWindow` pour modifier le pion en question.
 - Modification PUML
+
+## 9ème séance :
+
+- Élimination de `PromotionObserver`, passage directement par `Supervisor` qui vérifie l'éventuelle promotion et lance `PromotionWindow`, créé dan la [8ème séance](#8ème-séance)).
+- Création de `StartScreen` et `EndScreen`, interfaces qui permettent de lancer le jeu et voir les scores ; de même, la fermeture des fenêtres est plus logique maintenant.
+- Modification PUML (relations entre quelques classes revisitées)

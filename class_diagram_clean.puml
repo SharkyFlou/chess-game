@@ -121,6 +121,7 @@
             + {abstract} DisplayGame()
             + {abstract} displayPieceTaken(piece : Piece)
             + {abstract} displayTeamToPlay(team : Boolean)
+            + {abstract} closeApp()
         }
 
         interface LockedObserver{
@@ -182,8 +183,10 @@
         class Supervisor{
             - lastClickedPiecePosx : Integer
             - lastClickedPiecePosy : Integer 
-            - pieceProm : String
-            - hasClicked : Boolean
+            + pieceProm : String
+            + hasClicked : Boolean
+            + name1 : String
+            + name2 : String
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
             + addLinks(gaveBoard : Board, gaveMover : Mover, gavePointsManager : PointsManager, gaveCheckChecker : CheckChecker)
             + clickedOnSomeCase(posY : Integer, posX : Integer, team : Boolean) : Boolean
@@ -213,7 +216,7 @@
             + setNames(whtName : String , blkName : String)
             + creationBoardBlackWhite()
             + createSidesBoard()
-            + clickedOnCase(jButton : JButton)
+            + clickedOnSomeCase(jButton : JButton)
             + displayGame()
             + displayPreviewMvt(previews : Boolean[])
             + displayPreviewAtk(previews : Boolean[])
@@ -223,6 +226,7 @@
             + displayKing(posY : Integer, posX : Integer)
             + erasePreview()
             + erasePreviewsLock()
+            + closeApp()
         }
 
         class DisplayGame{
@@ -236,7 +240,8 @@
             + PromotionWindow(supervisor : Supervisor)
             - createButtons()
             + displayPromotion(posX : Integer, posY : Integer, team : Boolean)
-            + actionPerformed() 'Overrides ActionPerformed from ActionListener
+            + actionPerformed() 
+            'Overrides ActionPerformed from ActionListener
         }
 
         class LabelScore extends ScoreObserver{
@@ -250,6 +255,13 @@
         class StartScreen{
             + StartScreen(gaveInitialiser : Initialiser)
             - beginGame()
+            + closeApp()
+        }
+
+        class EndScreen extends JFrame{
+            + EndScreen(gaveInitialiser : Initialiser)
+            + fillEndScreen(nameWin : String, scoreWin : Integer, nameLose : String, scoreLose : Integer, teamWin : Boolean)
+            - replayGame()
         }
 
         
@@ -274,8 +286,6 @@
     Initialiser ..> StartScreen : > instantiate 
     
     'view
-    'DisplayBoard o-d-> PanelBoard : "use >"
-    'DisplayBoard o--> PanelPlayer : "use >"
 
     'model
     Board  o--> "*\n -observers" BoardObserver : > is observed by
@@ -302,7 +312,7 @@
     Board ..> King : > instantiate 
     Board ..> Queen : > instantiate 
 
-    Board *-> "*\n-pieces" Piece : > contains
+    Board *--> "*\n-pieces" Piece : > contains
 
     'controller
     GameFacade o--> "1\n-supervisor " Supervisor : > own
@@ -314,7 +324,9 @@
 
     'relation view - controller
 
-    StartScreen o--> "1\n -initialiser" Initialiser : > call back
+    StartScreen o-> "1\n -initialiser" Initialiser : > call back
+    EndScreen o-> "1\n -initialiser" Initialiser : > call back
+
 
     'cette relation envoie la position de la case cliquee a controller
     DisplayBoard o-right-> "1\n-gameFacade" GameFacade : > calls  
@@ -346,8 +358,9 @@
     Supervisor o--> "1\n -board" Board : > watch 
     Supervisor o-r-> "1\n -mover" Mover : > own 
     Supervisor o-r-> "1\n -checkChecker" CheckChecker : > own 
+    Supervisor ..> EndScreen : > instantiate
 
-    Supervisor ..> PromotionWindow : > instantiate 
+    Supervisor .> PromotionWindow : > instantiate 
 
     'layout
     Supervisor o-> "1\n -PointsManager" PointsManager : > calls 
