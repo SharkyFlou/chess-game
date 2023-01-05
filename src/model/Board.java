@@ -209,7 +209,7 @@ public class Board {
     }
 
     // permet de fermet l'appli dès qu'il y a yn checkmate
-    public void notifyCheckmate() {
+    public void notifyCheckmateOrPat() {
         for (BoardObserver obs : listObs) {
             obs.closeApp();
         }
