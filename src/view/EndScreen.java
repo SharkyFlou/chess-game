@@ -10,7 +10,7 @@ import controller.Initialiser;
 public class EndScreen extends JFrame {
 
     final int WIDTH = 500;
-    final int HEIGHT = 200;
+    final int HEIGHT = 220;
     final int WIDTH_IMAGE = 30;
     final int HEIGHT_UNDERMID = 30;
     final int WIDTH_INPUT = 200;
