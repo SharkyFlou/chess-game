@@ -19,24 +19,30 @@
 
     package model{
         class Board{
+            - coordsPawnBigJump : Integer[]
             + Board()
             + initBoard()
-            + getPiece(posX : Integer, posY : Integer)
+            + getPiece(posY : Integer, posX : Integer)
             + movePiece(oldPosX : Integer, oldPosY : Integer, newPosX : Integer, newPosY : Integer)
-            + doesCaseContainPlayerPiece(posX : Integer, posY : Integer, team Boolean) : Boolean
-            + destroyPiece(posX : Integer, posY : Integer)
+            + doesCaseContainPlayerPiece(posY : Integer, posX : Integer, team Boolean) : Boolean
+            + destroyPiece(posY : Integer, posX : Integer, toMoveIt : Boolean)
+            + changePiecePromotion(posY : Integer, posX : Integer, newPiece : Piece)
             + addObs(obs : InteractionsObserver)
-            - notifyPieceTaken(team : Boolean, imageLink : String)
+            - notifyPieceTaken(piece : Piece)
+            - notifyChangeTeam(newTeam : Boolean)
             - notifyMov()
+            + notifyCheckmateOrPat()
+            + getCoordsPawnBigJump() : Integer[]
+            + canGetPromoted(lastClickedPiecePosY : Integer, lastClickedPiecePosX : Integer , posY Integer, posX : Integer) : Boolean
+            + setPiece(piece : Piece, posY : Integer, posX : Integer)
         }
 
         class Mover{
             - casesPreviewedMvt : Boolean[]
             - casesPreviewedAtk : Boolean[]
-            + Mover()
-            + setBoard(gaveBoard : Board)
-            + isCasePreviewMvt(posX : Integer, posY : Integer) : Boolean
-            + isCasePreviewAtk(posX : Inteer, posY : Integer) : Boolean
+            + Mover(gaveBoard : Board, gaveCheckChecker : CheckChecker)
+            + isCasePreviewMvt(posY : Integer, posX : Integer) : Boolean
+            + isCasePreviewAtk(posY : Integer, posX : Integer) : Boolean
             + emptyPreviews()
             + initializePreviews() : Boolean[]
             + calculateRealMvt(posY : Integer, posX : Integer)
@@ -48,9 +54,13 @@
             - calculateMvtAtkKnight(posY : Integer, posX : Integer, mvtAtk : Boolean, piece : Piece) : Boolean[]
             - calculateMvtAtkPlusCross(posY : Integer, posX : Integer, mvtAtk : Boolean, reach : Integer, piece : Piece) : Boolean[]
             + addObserver(obs : PreviewObserver)
+            - notifyEraseDisplays()
             - notifyObsDisplayAtk(cases : Boolean[])
             - notifyObsDisplayMvt(cases : Boolean[])
             - notifyObsEraseDisplay()
+            + getAtk() : Boolean[]
+            + getMvt() : Boolean[]
+            + mergeTab(tab1 : boolean[], tab2 : boolean[]) : Boolean[]
         }
 
         interface PreviewObserver{
@@ -110,23 +120,58 @@
 
         interface BoardObserver{
             + {abstract} DisplayGame()
-            + {abstract} displayPromotion(posX : Integer, posY : Integer)
+            + {abstract} displayPieceTaken(piece : Piece)
+            + {abstract} displayTeamToPlay(team : Boolean)
+            + {abstract} closeApp()
         }
 
-        class Manager{
+        interface LockedObserver{
+            + {abstract} erasePreviewsLock()
+            + {abstract} displayLocked(cases : Boolean[])
+            + {abstract} displayKing(posY : Integer, posX : Integer)
+        }
+
+        class PointsManager{
             - whitePts : Integer
             - blackPts : Integer
-            - notifyWin(team : Boolean)
-            - notifyDraw()
+            + PointsManager()
             + addPoints(team : Boolean, pts : Integer)
             + getPoints(team : Boolean)
             + addObs(obs : ScoreObserver)
-            + notifyObsPtsChanged(team : Boolean, pts : Integer)
+            - notifyChangeScore(team : Boolean, pts : Integer)
         }
 
         interface ScoreObserver{
             + {abstract} DisplayScore(team : Boolean, points : Integer)
         }
+
+
+        class CheckChecker{
+            - lockedPieces : Boolean[]
+            - giantFilter : Boolean[]
+
+            + CheckChecker(gaveBoard : Board)
+            + isCheck(team : Boolean) : Boolean
+            - isCheck(team : boolean, gaveBoard : Board) : Boolean
+            - resetGiantFilter()
+            + isPat(team : Boolean, lockPieces Boolean) : Boolean
+            - disableCastle(posY Integer, queenside : Boolean, kingsinde Boolean)
+            - browseTabCheckCheck(tab : Boolean[], mover : Mover, posY : Integer, posX : int, team : Boolean) : Boolean 
+            - mergeTab(tab1 : boolean[], tab2 : boolean[]) : Boolean[]
+            - isPosInTab(posY : int, posX : int, tab : Boolean[]) : Boolean
+            - copyBoard(toCopy : Board) : Board
+            - findKing(team : Boolean, gaveBoard : Board) : int[]
+            + highlightKing(team : Boolean)
+            + addObsersver(obs : LockedObserver)
+            - notifyChangeLocked()
+            - notifyKingCheck(posY : int, posX : int)
+            - notifyReset()
+            - initializePreviews() : Boolean[]
+            - isLocked(posY : int, posX : int) : Boolean
+            + filterOutImpossibleMoves(posY : int, posX : int, moves : Boolean[]) : Boolean[]
+        }
+
+
 
 
     }
@@ -139,33 +184,50 @@
         class Supervisor{
             - lastClickedPiecePosx : Integer
             - lastClickedPiecePosy : Integer 
+            + pieceProm : String
+            + hasClicked : Boolean
+            + name1 : String
+            + name2 : String
             ' on garde pas une piece en privé car on peut trouver la piece selon sa position
-            + Supervisor()
-            + setMoverAndBoard(gaveMover : Mover, gaveBoard : Board)
-            + clickedOnSomeCase(posX : Integer, posY : Integer, team : Boolean) : Boolean
+            + addLinks(gaveBoard : Board, gaveMover : Mover, gavePointsManager : PointsManager, gaveCheckChecker : CheckChecker)
+            + clickedOnSomeCase(posY : Integer, posX : Integer, team : Boolean) : Boolean
+            + sendPromotion(posY : Integer, posX : Integer, team : Boolean)
+            - doTheChecks(currentTeam : boolean)
         }
 
         class GameFacade{
-            - team : Boolean
+            - nextToPlay : Boolean
+            + GameFacade(gaveSupervisor : Supervisor)
             + clickedOnSomeCase(posx : Integer, posy : Intenger)
-            + turnEnd()
-            + draw()
-            + win()
+        }
+
+        class Initialiser{
+            + LaunchStartMenu()
+            + LaunchGame(whiteName : String, blackName : String)
         }
 
     }
 
     package view{
         class DisplayBoard{
-            + DisplayBoard()
-            + setBoard()
-            + setGameFacadeAndBoard(gaveGameFacade : GameFacade, gaveBoard : Board)
-            + clickedOnCase(posx : Integer, posy : Integer)
+            - {static} COLUMNS : String
+            - whiteName : String
+            - blackName : String
+            + DisplayBoard(XgameFacade : GameFacade, xBoard : Board, lblWht : LabelScore, lblBlk : LabelScore)
+            + setNames(whtName : String , blkName : String)
+            + creationBoardBlackWhite()
+            + createSidesBoard()
+            + clickedOnSomeCase(jButton : JButton)
             + displayGame()
             + displayPreviewMvt(previews : Boolean[])
             + displayPreviewAtk(previews : Boolean[])
-            + displayPromotion(posX : Integer, posY : Integer)
+            + displayPieceTaken(piece : Piece)
+            + displayTeamToPlay(team : Boolean)
+            + displayLocked(casesLocked : Boolean[])
+            + displayKing(posY : Integer, posX : Integer)
             + erasePreview()
+            + erasePreviewsLock()
+            + closeApp()
         }
 
         class DisplayGame{
@@ -175,11 +237,32 @@
             + displayScore(team : Boolean)
         }
 
+        class PromotionWindow{
+            + PromotionWindow(supervisor : Supervisor)
+            - createButtons()
+            + displayPromotion(posX : Integer, posY : Integer, team : Boolean)
+            + actionPerformed() 
+            'Overrides ActionPerformed from ActionListener
+        }
 
-        class PanelScore extends JPanel{
-            - team : Boolean
-            + PanelScore(team : Boolean)
-            + DisplayScore(team : Boolean, points : Integer)
+        class LabelScore extends ScoreObserver{
+            - team : Boolean 
+            - name : String 
+            + LabelScore(gaveTeam : boolean, gaveName : String)
+            + changeScore(pts : Integer, xTeam : Boolean)
+        }
+
+
+        class StartScreen{
+            + StartScreen(gaveInitialiser : Initialiser)
+            - beginGame()
+            + closeApp()
+        }
+
+        class EndScreen extends JFrame{
+            + EndScreen(gaveInitialiser : Initialiser)
+            + fillEndScreen(nameWin : String, scoreWin : Integer, nameLose : String, scoreLose : Integer, teamWin : Boolean, notPat : Boolean)
+            - replayGame()
         }
 
         
@@ -189,22 +272,33 @@
 'class PanelPlayer{}
 
     'main
-    Main ..> Board : > instantiate 
-    Main ...> GameFacade : > instantiate 
-    Main ..> DisplayBoard : > instantiate 
-    Main ..> Supervisor : > instantiate 
-    Main ..> Manager : > instantiate 
-    Main ..> Mover : > instantiate 
+    Main ..> Initialiser : > instantiate 
+
+    'instantiate
+    Initialiser ..> Board : > instantiate 
+    Initialiser ...> GameFacade : > instantiate 
+    Initialiser ..> DisplayBoard : > instantiate 
+    Initialiser ..> Supervisor : > instantiate 
+    Initialiser ..> PointsManager : > instantiate 
+    Initialiser ..> Mover : > instantiate 
+    Initialiser ..> LabelScore : > instantiate 
+    Initialiser ..> CheckChecker : > instantiate 
+
+    Initialiser ..> StartScreen : > instantiate 
     
     'view
-    'DisplayBoard o-d-> PanelBoard : "use >"
-    'DisplayBoard o--> PanelPlayer : "use >"
 
     'model
     Board  o--> "*\n -observers" BoardObserver : > is observed by
-    Manager  o--> "*\n -observers" ScoreObserver : > is observed by
+    PointsManager  o--> "*\n -observers" ScoreObserver : > is observed by
     Mover  o--> "*\n -observers" PreviewObserver : > is observed by
+    CheckChecker  o--> "*\n -listObs" LockedObserver : > is observed by
+    
    
+    CheckChecker o--> "1\n -board" Board : > copy
+    CheckChecker ..> Mover : > instantiate and use
+    CheckChecker ..> Piece : > use
+
     ' Piece <|.down.. Knight 
     ' Piece <|.down.. Pawn 
     ' Piece <|.down.. Bishop 
@@ -219,43 +313,71 @@
     Board ..> King : > instantiate 
     Board ..> Queen : > instantiate 
 
-    Board *-> "*\n-pieces" Piece : > contains
+    Board *--> "*\n-pieces" Piece : > contains
 
     'controller
     GameFacade o--> "1\n-supervisor " Supervisor : > own
    
 
     'view
-    DisplayBoard *-> "1\npanelScoreWht" PanelScore : > own
-    DisplayBoard *-> "1\npanelScoreBlk" PanelScore : > own
+    DisplayBoard *-> "1\-npanelScoreWht" LabelScore : > own
+    DisplayBoard *-> "1\-npanelScoreBlk" LabelScore : > own
 
     'relation view - controller
+
+    StartScreen o-> "1\n -initialiser" Initialiser : > call back
+    EndScreen o-> "1\n -initialiser" Initialiser : > call back
+
+
     'cette relation envoie la position de la case cliquee a controller
     DisplayBoard o-right-> "1\n-gameFacade" GameFacade : > calls  
-    GameFacade -> DisplayGame : > display
+    GameFacade --> DisplayGame : > display
     
     'relation view - model
     DisplayBoard .down.|> BoardObserver : ""
     DisplayBoard .down.|> PreviewObserver : ""
+    DisplayBoard .down.|> LockedObserver : ""
+    
+
+    LabelScore ..|> ScoreObserver : ""
+    LabelScore --|> JLabel : ""
+
+    DisplayBoard --|> JFrame : ""
+    StartScreen --|> JFrame : ""
+    PromotionWindow --|> JFrame : ""
+
+    PromotionWindow ..|> ActionListener : ""
+
     DisplayBoard o-down-> "1\n-board" Board : > watch
-    PanelScore ..|> ScoreObserver
+    PromotionWindow <- Supervisor : "instantiates <"
+    PromotionWindow o-> "1\n-supervisor" Supervisor : "calls >
+
+
+    BoardObserver ..> Piece : > use
 
     'relation controller - model
     Supervisor o--> "1\n -board" Board : > watch 
     Supervisor o-r-> "1\n -mover" Mover : > own 
+    Supervisor o-r-> "1\n -checkChecker" CheckChecker : > own 
+    Supervisor ..> EndScreen : > instantiate
 
+    Supervisor .> PromotionWindow : > instantiate 
 
     'layout
-    Supervisor o-> "1\n -manager" Manager : > calls 
+    Supervisor o-> "1\n -PointsManager" PointsManager : > calls 
     
     'DisplayBoard -[hidden]> Supervisor : "consults >"
 
     Mover  o-> "1\n -board" Board : > watch
+    Mover .u.> Piece : > uses
     Mover .u.> Rook : > uses
     Mover .u.> Pawn : > uses
     Mover .u.> King : > uses
     Mover .u.> Bishop : > uses
     Mover .u.> Queen : > uses
+
+    Mover o--> "1\n-board " Board : > watch
+    Mover o--> "1\n-checkChecker " CheckChecker : > call to filter mvts
 
 
     @enduml
