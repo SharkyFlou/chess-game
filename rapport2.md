@@ -1,6 +1,6 @@
 # Rapport 2ème rendu
 
-Ci dessous ce trouve la liste complète des modifications ayant était apportées afin de compléter notre jeu d'échec.
+Ci-dessous se trouve la liste complète des modifications ayant était apportées afin de compléter notre jeu d'échec.
  
 ## Ajout de la détection d'échec, d'échec et mat, et de pat
 
@@ -18,7 +18,7 @@ Modification de `Mover`, ajout d'un lien vers le `CheckChecker` pour filtrer les
 
 Modification de `Board`, la fonction de déplacement prend un booléen supplémentaire afin de savoir si elle est appelé pour faire des calcul depuis `CheckChecker`, ou bien pour réellement déplacer la pièce (afin de ne pas initialiser les premiers mouvements du roi, de la tour ou du pion).
 
-## Bug graphique
+## Bugs graphiques
 
 Changement de Layout dans `DisplayBoard` BoxLayout principal et PanelLow, en un simple BorderLayout.
 
@@ -83,4 +83,4 @@ L'idée est d'appeler `Initialiser`, la classe qui relancera le jeu.
 
 #Autres
 
-Suppression de divers fichier, tel que "!", "rapport.md", "DS_STORE"
+Suppression de divers fichier, tel que "!", "rapport.md", "DS_STORE", ".idea".
