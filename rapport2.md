@@ -41,7 +41,7 @@ Pas besoin de mettre le système d'echec à jour !
 ## Ajout de la promotion :
 
 Création de `PromotionWindow`, la fenêtre qui s'affiche au moment où une Promotion possible est vérifiée.
-<<<<<<< HEAD
+
 Ceci est fait par `Supervisor`, qui, dès qu'un(e) mouvement/attaque est réalisé(e), vérifie et instancie cette Promotion.
 
 Au moment du choix sur `PromotionWindow`(pion devient reine, fou, tour ou chevalier), une action est déclenchée qui change la pièce et ferme la fenêtre.
@@ -49,12 +49,6 @@ Au moment du choix sur `PromotionWindow`(pion devient reine, fou, tour ou cheval
 Modification de `Supervisor` qui compte maintenant avec un Boolean et un String qui vérifient si une pièce (des options disponibles) a été choisie.
 
 Les pièces sont bloquées jusqu'à que cette promotion soit finie : ceci est fait avec un trigger Boolean sur `Supervisor`
-=======
-
-Ceci est fait par `Supervisor`, qui, dès qu'un(e) mouvement/attaque est réalisé(e), vérifie et instancie cette Promotion.
-
-Au moment du choix sur `PromotionWindow`(pion devient reine, fou, tour ou chevalier),
->>>>>>> a3fecf026adf422d11480c8dd8aef0292fe32d74
 
 ## Ajout écran de début :
 
@@ -73,16 +67,11 @@ La partie peut commencer !
 
 ## Ajout écran de fin :
 
-<<<<<<< HEAD
 Modification de `Supervisor`, où on ajoute des String qui permettent de stocker les noms des joueurs : celle-ci est la forme choisie car ces noms, stockés dans DisplayBoard, n'ont pas de relation avec Supervisor.
 
 En passant en paramètre les infos sur chaque joueur depuis `Supervisor`, `EndScreen` permet d'afficher les scores et noms de chaque joueur après un checkmate.
 `Supervisor` instancie cette classe au moment ou le Checkmate est vérifié ; le joueur gagnant et perdant sont affichés.
 De même lorsqu'il y a un Pat.
-=======
-En passant en paramètre les infos sur chaque joueur depuis `Supervisor`, `EndScreen` permet d'afficher les scores et noms de chaque joueur après un checkmate.
-`Supervisor` instancie cette classe au moment ou le Checkmate est vérifié ; le joueur gagnant et perdant sont affichés.
->>>>>>> a3fecf026adf422d11480c8dd8aef0292fe32d74
 
 `EndScreen` permet aussi de relancer le jeu.
 L'idée est d'appeler `Initialiser`, la classe qui relancera le jeu.
