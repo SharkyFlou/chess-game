@@ -16,6 +16,4 @@ Pour lancer le jeu, lancez le fichier nommé "Awful-Chessgame.jar":
 
 ## Sur linux
 
-Pour lancer le jeu, lancez le fichier nommé "Awful-Chessgame.jar":
-- Soit avec double click sur l'icône
-- Soit avec java -jar Awful-Chessgame.jar
+Pour lancer le jeu, lancez le fichier nommé "Awful-Chessgame.jar" avec java -jar Awful-Chessgame.jar
